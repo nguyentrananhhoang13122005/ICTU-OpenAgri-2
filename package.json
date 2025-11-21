@@ -16,15 +16,14 @@
   },
   "lint-staged": {
     "frontend/**/*.{ts,tsx}": [
-      "cd frontend && eslint --fix",
-      "cd frontend && prettier --write"
+      "npx prettier --write",
+      "npx eslint --fix --max-warnings 0"
     ],
     "frontend/**/*.{css,json}": [
-      "cd frontend && prettier --write"
+      "npx prettier --write"
     ],
-    "backend/**/*.py": [
-      "cd backend && black",
-      "cd backend && isort"
+    "*.{md,yml,yaml}": [
+      "npx prettier --write"
     ]
   }
 }
