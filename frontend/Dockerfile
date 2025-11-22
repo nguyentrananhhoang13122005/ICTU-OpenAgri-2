@@ -1,30 +1,23 @@
-# ICTU-OpenAgri Frontend Dockerfile
-FROM node:20-alpine as build
+# Stage 1: Build environment
+FROM ghcr.io/cirruslabs/flutter:stable AS build
 
+# Set working directory
 WORKDIR /app
 
-# Copy package files
-COPY package*.json ./
+# Copy pubspec files
+COPY pubspec.yaml pubspec.lock ./
 
-# Install dependencies
-RUN npm ci
+# Get dependencies
+RUN flutter pub get
 
-# Copy application code
+# Copy the rest of the application
 COPY . .
 
-# Build the application
-RUN npm run build
-
-# Production stage
-FROM nginx:alpine
-
-# Copy built assets from build stage
-COPY --from=build /app/dist /usr/share/nginx/html
-
-# Copy nginx configuration
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+# Enable web support
+RUN flutter config --enable-web
 
 # Expose port
-EXPOSE 80
+EXPOSE 3000
 
-CMD ["nginx", "-g", "daemon off;"]
+# Run the application
+CMD ["flutter", "run", "-d", "web-server", "--web-port", "3000", "--web-hostname", "0.0.0.0"]

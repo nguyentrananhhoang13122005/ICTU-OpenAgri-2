@@ -22,7 +22,7 @@ install:
 	@echo "Installing backend dependencies..."
 	cd backend && pip install -r requirements.txt
 	@echo "Installing frontend dependencies..."
-	cd frontend && npm install
+	cd frontend && flutter pub get
 	@echo "Installation complete!"
 
 dev:
@@ -30,7 +30,7 @@ dev:
 	@echo "Backend will run on http://localhost:8000"
 	@echo "Frontend will run on http://localhost:3000"
 	@powershell -Command "Start-Process powershell -ArgumentList '-NoExit', '-Command', 'cd backend; uvicorn app.main:app --reload'"
-	@powershell -Command "Start-Process powershell -ArgumentList '-NoExit', '-Command', 'cd frontend; npm run dev'"
+	@powershell -Command "Start-Process powershell -ArgumentList '-NoExit', '-Command', 'cd frontend; flutter run -d chrome --web-port 3000'"
 
 dev-docker:
 	docker-compose -f docker-compose.yml up --build
@@ -50,7 +50,7 @@ logs:
 clean:
 	@echo "Cleaning generated files..."
 	cd backend && rmdir /s /q __pycache__ 2>nul || true
-	cd frontend && rmdir /s /q node_modules dist 2>nul || true
+	cd frontend && flutter clean
 	docker-compose down -v
 	@echo "Clean complete!"
 
@@ -58,7 +58,7 @@ test:
 	@echo "Running backend tests..."
 	cd backend && pytest
 	@echo "Running frontend tests..."
-	cd frontend && npm run test
+	cd frontend && flutter test
 
 restart:
 	docker-compose restart

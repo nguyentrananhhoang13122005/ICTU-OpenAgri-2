@@ -4,23 +4,20 @@
   "private": true,
   "scripts": {
     "prepare": "husky",
-    "install:all": "cd backend && pip install -r requirements.txt && cd ../frontend && npm install",
+    "install:all": "cd backend && pip install -r requirements.txt && cd ../frontend && flutter pub get",
     "dev:backend": "cd backend && uvicorn app.main:app --reload",
-    "dev:frontend": "cd frontend && npm run dev",
-    "lint:frontend": "cd frontend && npm run lint",
-    "format:frontend": "cd frontend && npm run format"
+    "dev:frontend": "cd frontend && flutter run -d chrome",
+    "lint:frontend": "cd frontend && flutter analyze",
+    "format:frontend": "cd frontend && dart format ."
   },
   "devDependencies": {
     "husky": "^9.0.11",
     "lint-staged": "^15.2.0"
   },
   "lint-staged": {
-    "frontend/**/*.{ts,tsx}": [
-      "npx prettier --write",
-      "npx eslint --fix --max-warnings 0"
-    ],
-    "frontend/**/*.{css,json}": [
-      "npx prettier --write"
+    "frontend/**/*.dart": [
+      "dart format",
+      "flutter analyze"
     ],
     "*.{md,yml,yaml}": [
       "npx prettier --write"
