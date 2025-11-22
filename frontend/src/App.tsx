@@ -13,7 +13,6 @@ function App() {
           <nav>
             <h1>ICTU-OpenAgri</h1>
             <ul>
-              <li><a href="/">Home</a></li>
               <li><a href="/users">Users</a></li>
             </ul>
           </nav>
