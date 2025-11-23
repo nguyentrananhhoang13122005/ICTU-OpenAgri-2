@@ -4,6 +4,7 @@ from fastapi import HTTPException
 from app.application.dto.soil_moisture_dto import SoilMoistureRequest, SoilMoistureResponse
 from app.infrastructure.external_services.sentinel_client import search_sentinel_products, download_product
 from app.infrastructure.image_processing.soil_moisture_processing import find_s1_band_path, compute_soil_moisture_proxy
+from app.infrastructure.image_processing.utils import convert_tiff_to_base64_png
 from app.infrastructure.config.settings import get_settings
 
 settings = get_settings()
@@ -37,7 +38,10 @@ class CalculateSoilMoistureUseCase:
             # Compute
             compute_soil_moisture_proxy(vv_path, out_tif)
 
-            return SoilMoistureResponse(status="success", soil_moisture_map=out_tif)
+            # Convert to Base64 PNG
+            img_base64 = convert_tiff_to_base64_png(out_tif, colormap='Blues', vmin=0, vmax=1)
+
+            return SoilMoistureResponse(status="success", soil_moisture_map=out_tif, image_base64=img_base64)
             
         except Exception as e:
             print(f"Error in CalculateSoilMoistureUseCase: {e}")
