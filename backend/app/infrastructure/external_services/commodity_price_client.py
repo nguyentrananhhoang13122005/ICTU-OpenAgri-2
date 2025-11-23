@@ -86,7 +86,7 @@ def get_all_commodities(
         
         # Chuyển đổi prices sang PricePoint
         price_points = [
-            PricePoint(date=p["date"], price=p["price"], market=p["market"])
+            PricePoint(date=p["date"], price=p["price"])
             for p in prices
         ]
         
