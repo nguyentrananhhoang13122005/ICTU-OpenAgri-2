@@ -4,6 +4,7 @@ from fastapi import HTTPException
 from app.application.dto.ndvi_dto import NDVIRequest, NDVIResponse
 from app.infrastructure.external_services.sentinel_client import search_sentinel_products, download_product
 from app.infrastructure.image_processing.ndvi_processing import find_band_paths, compute_ndvi
+from app.infrastructure.image_processing.utils import convert_tiff_to_base64_png
 from app.infrastructure.config.settings import get_settings
 
 settings = get_settings()
@@ -49,7 +50,10 @@ class CalculateNDVIUseCase:
             # Compute
             compute_ndvi(red_path, nir_path, out_tif)
 
-            return NDVIResponse(status="success", ndvi_geotiff=out_tif)
+            # Convert to Base64 PNG
+            img_base64 = convert_tiff_to_base64_png(out_tif, colormap='RdYlGn', vmin=-1, vmax=1)
+
+            return NDVIResponse(status="success", ndvi_geotiff=out_tif, image_base64=img_base64)
             
         except Exception as e:
             # Log error here
