@@ -23,6 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- **Backend**: Replaced `sentinelsat` dependency with custom OData client using `requests` to support the new Copernicus Data Space Ecosystem.
 - **Frontend**: **Major Refactor** - Migrated frontend from React.js to **Flutter**.
   - Updated Dockerfile for Flutter Web.
   - Updated `docker-compose.yml` to support Flutter container.
@@ -32,6 +33,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- **Backend**: Fixed Sentinel-2 API connection issues (403 Forbidden) by migrating to CDSE OData API.
 - **Backend**: Fixed missing dependencies for NDVI module (`sentinelsat`, `rasterio`, etc.).
 - **Backend**: Fixed `ImportError` for email validation.
 - **Git**: Resolved merge conflicts during frontend refactoring.
