@@ -6,6 +6,7 @@ class AuthService {
   factory AuthService() => _instance;
   AuthService._internal();
 
+  // ignore: unused_field
   final ApiService _apiService = ApiService();
   User? _currentUser;
   User? get currentUser => _currentUser;
