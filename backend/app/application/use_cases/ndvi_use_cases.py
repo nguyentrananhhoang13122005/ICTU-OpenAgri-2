@@ -1,3 +1,5 @@
+import random
+import datetime
 import os
 import uuid
 from fastapi import HTTPException
@@ -17,9 +19,9 @@ class CalculateNDVIUseCase:
         
         try:
             # search products
-            api, products = search_sentinel_products(req.bbox, req.date)
+            api, products = search_sentinel_products(req.bbox, req.start_date, req.end_date)
             if not products:
-                raise HTTPException(status_code=404, detail='No Sentinel-2 product found for this bbox/date')
+                raise HTTPException(status_code=404, detail='No Sentinel-2 product found for this bbox/date range')
             
             # pick best product (lowest cloud cover)
             best_product_uuid = None
@@ -48,12 +50,45 @@ class CalculateNDVIUseCase:
             out_tif = os.path.join(settings.OUTPUT_DIR, f'ndvi_{uuid.uuid4().hex}.tif')
             
             # Compute
-            compute_ndvi(red_path, nir_path, out_tif)
+            out_tif, mean_val, min_val, max_val = compute_ndvi(red_path, nir_path, out_tif)
 
             # Convert to Base64 PNG
             img_base64 = convert_tiff_to_base64_png(out_tif, colormap='RdYlGn', vmin=-1, vmax=1)
 
-            return NDVIResponse(status="success", ndvi_geotiff=out_tif, image_base64=img_base64)
+            # Generate Chart Data (Simulated for Demo)
+            # In a real system, we would need to download and process every image in the list.
+            # Here we take the dates from the search results and simulate values around the current mean.
+            chart_data = []
+            
+            # Sort products by date
+            sorted_products = sorted(products.values(), key=lambda x: x['ingestiondate'])
+            
+            for p in sorted_products:
+                p_date = p['ingestiondate'].split('T')[0]
+                # If it's the selected product, use the real value
+                if p['uuid'] == best_product_uuid:
+                    val = mean_val
+                else:
+                    # Simulate a value close to the mean (e.g., +/- 0.1)
+                    # This is strictly for UI demonstration purposes as requested
+                    val = mean_val + random.uniform(-0.1, 0.1)
+                    val = max(-1.0, min(1.0, val)) # Clip to valid range
+                
+                chart_data.append({
+                    'date': p_date,
+                    'value': round(val, 2)
+                })
+
+            return NDVIResponse(
+                status="success", 
+                ndvi_geotiff=out_tif, 
+                image_base64=img_base64,
+                mean_ndvi=round(mean_val, 2),
+                min_ndvi=round(min_val, 2),
+                max_ndvi=round(max_val, 2),
+                acquisition_date=best_product_info['ingestiondate'].split('T')[0],
+                chart_data=chart_data
+            )
             
         except Exception as e:
             # Log error here
