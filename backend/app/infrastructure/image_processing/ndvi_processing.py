@@ -23,7 +23,7 @@ def find_band_paths(safe_path: str) -> Tuple[str, str]:
         raise FileNotFoundError('Could not find B04 or B08 in SAFE product')
     return red, nir
 
-def compute_ndvi(red_path: str, nir_path: str, out_path: str, resampling=Resampling.bilinear) -> str:
+def compute_ndvi(red_path: str, nir_path: str, out_path: str, resampling=Resampling.bilinear) -> Tuple[str, float, float, float]:
     """Compute NDVI from red and nir bands and save to GeoTIFF.
     NDVI = (NIR - RED) / (NIR + RED)
     """
@@ -65,4 +65,11 @@ def compute_ndvi(red_path: str, nir_path: str, out_path: str, resampling=Resampl
         with rasterio.open(out_path, 'w', **profile) as dst:
             dst.write(ndvi.astype(rasterio.float32), 1)
 
-    return out_path
+    # Calculate stats
+    # Mask out NaN values for stats
+    valid_ndvi = ndvi[~np.isnan(ndvi)]
+    mean_val = float(np.mean(valid_ndvi)) if valid_ndvi.size > 0 else 0.0
+    min_val = float(np.min(valid_ndvi)) if valid_ndvi.size > 0 else 0.0
+    max_val = float(np.max(valid_ndvi)) if valid_ndvi.size > 0 else 0.0
+
+    return out_path, mean_val, min_val, max_val
