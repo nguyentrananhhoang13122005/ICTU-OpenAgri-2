@@ -8,3 +8,4 @@ class NDVIRequest(BaseModel):
 class NDVIResponse(BaseModel):
     status: str
     ndvi_geotiff: str
+    image_base64: str
