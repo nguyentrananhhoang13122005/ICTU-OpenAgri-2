@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import '../views/signup_view.dart';
 import 'package:provider/provider.dart';
+
+import '../views/signup_view.dart';
 import 'signup_viewmodel.dart';
 
 class LoginViewModel extends ChangeNotifier {
