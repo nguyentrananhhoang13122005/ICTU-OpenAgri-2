@@ -113,7 +113,7 @@ class LoginView extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              'Email hoặc Tên người dùng',
+              'Email hoặc Số điện thoại',
               style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w500,
@@ -123,9 +123,9 @@ class LoginView extends StatelessWidget {
             const SizedBox(height: 8),
             TextField(
               controller: viewModel.emailController,
-              keyboardType: TextInputType.emailAddress,
+              keyboardType: TextInputType.text,
               decoration: InputDecoration(
-                hintText: 'Nhập email hoặc tên người dùng của bạn',
+                hintText: 'Nhập email hoặc số điện thoại của bạn',
                 hintStyle: const TextStyle(
                   color: Colors.black26,
                   fontSize: 14,
