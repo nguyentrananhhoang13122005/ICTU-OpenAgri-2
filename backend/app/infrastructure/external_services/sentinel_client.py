@@ -61,7 +61,7 @@ def search_sentinel_products(bbox: List[float], date: str, platformname='SENTINE
     elif platformname == 'SENTINEL-1':
         # Filter for GRD products (Ground Range Detected) and IW mode (Interferometric Wide Swath)
         filter_query += " and Attributes/OData.CSC.StringAttribute/any(att:att/Name eq 'productType' and att/Value eq 'GRD')"
-        filter_query += " and Attributes/OData.CSC.StringAttribute/any(att:att/Name eq 'sensorOperationalMode' and att/Value eq 'IW')"
+        filter_query += " and Attributes/OData.CSC.StringAttribute/any(att:att/Name eq 'operationalMode' and att/Value eq 'IW')"
 
     url = "https://catalogue.dataspace.copernicus.eu/odata/v1/Products"
     params = {
