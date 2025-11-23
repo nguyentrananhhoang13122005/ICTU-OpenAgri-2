@@ -12,11 +12,7 @@ class HomeScreen extends StatelessWidget {
         elevation: 1,
         title: Row(
           children: [
-            Icon(
-              Icons.agriculture,
-              color: const Color(0xFF0BDA50),
-              size: 32,
-            ),
+            Icon(Icons.agriculture, color: const Color(0xFF0BDA50), size: 32),
             const SizedBox(width: 12),
             const Text(
               'AgriTech',
@@ -29,10 +25,7 @@ class HomeScreen extends StatelessWidget {
           ],
         ),
         actions: [
-          TextButton(
-            onPressed: () {},
-            child: const Text('Đăng Nhập'),
-          ),
+          TextButton(onPressed: () {}, child: const Text('Đăng Nhập')),
           const SizedBox(width: 8),
           ElevatedButton(
             onPressed: () {},
@@ -53,7 +46,7 @@ class HomeScreen extends StatelessWidget {
               width: double.infinity,
               height: 500,
               decoration: BoxDecoration(
-                color: const Color(0xFF0BDA50).withOpacity(0.2),
+                color: const Color(0xFF0BDA50).withValues(alpha: 0.2),
               ),
               child: Center(
                 child: Padding(
@@ -88,7 +81,9 @@ class HomeScreen extends StatelessWidget {
                           backgroundColor: const Color(0xFF0BDA50),
                           foregroundColor: Colors.black,
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 24, vertical: 16),
+                            horizontal: 24,
+                            vertical: 16,
+                          ),
                         ),
                         child: const Text('Truy Cập Dashboard'),
                       ),
@@ -97,7 +92,7 @@ class HomeScreen extends StatelessWidget {
                 ),
               ),
             ),
-            
+
             // Features Section
             Padding(
               padding: const EdgeInsets.all(40.0),
@@ -121,31 +116,34 @@ class HomeScreen extends StatelessWidget {
                       _FeatureCard(
                         icon: Icons.api,
                         title: 'API Dữ liệu Mở',
-                        description: 'Dễ dàng tích hợp và chia sẻ dữ liệu nông nghiệp.',
+                        description:
+                            'Dễ dàng tích hợp và chia sẻ dữ liệu nông nghiệp.',
                       ),
                       _FeatureCard(
                         icon: Icons.pest_control,
                         title: 'Cảnh báo Sâu bệnh',
-                        description: 'Nhận cảnh báo kịp thời để ngăn ngừa dịch hại.',
+                        description:
+                            'Nhận cảnh báo kịp thời để ngăn ngừa dịch hại.',
                       ),
                       _FeatureCard(
                         icon: Icons.science,
                         title: 'Phân tích Đất',
-                        description: 'Hiểu rõ sức khỏe của đất để tối ưu hóa phân bón.',
+                        description:
+                            'Hiểu rõ sức khỏe của đất để tối ưu hóa phân bón.',
                       ),
                     ],
                   ),
                 ],
               ),
             ),
-            
+
             // CTA Section
             Container(
               width: double.infinity,
               padding: const EdgeInsets.all(60.0),
               margin: const EdgeInsets.all(20.0),
               decoration: BoxDecoration(
-                color: const Color(0xFF0BDA50).withOpacity(0.1),
+                color: const Color(0xFF0BDA50).withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Column(
@@ -153,10 +151,7 @@ class HomeScreen extends StatelessWidget {
                   const Text(
                     'Sẵn Sàng Tối Ưu Hóa Nông Trại Của Bạn?',
                     textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 28,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 32),
                   ElevatedButton(
@@ -165,14 +160,16 @@ class HomeScreen extends StatelessWidget {
                       backgroundColor: const Color(0xFF0BDA50),
                       foregroundColor: Colors.black,
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 32, vertical: 20),
+                        horizontal: 32,
+                        vertical: 20,
+                      ),
                     ),
                     child: const Text('Bắt Đầu Sử Dụng Miễn Phí'),
                   ),
                 ],
               ),
             ),
-            
+
             // Footer
             Container(
               width: double.infinity,
@@ -211,7 +208,7 @@ class _FeatureCard extends StatelessWidget {
         color: Colors.white,
         borderRadius: BorderRadius.circular(8),
         border: Border.all(
-          color: const Color(0xFF0BDA50).withOpacity(0.2),
+          color: const Color(0xFF0BDA50).withValues(alpha: 0.2),
         ),
       ),
       child: Column(
