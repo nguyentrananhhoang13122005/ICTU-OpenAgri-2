@@ -11,15 +11,10 @@ from app.application.use_cases.user_use_cases import (
     LoginUserUseCase,
     LogoutUserUseCase
 )
-from app.infrastructure.database.database import get_db
 from app.infrastructure.repositories.user_repository_impl import SQLAlchemyUserRepository
+from app.presentation.deps import get_user_repository
 
 router = APIRouter()
-
-
-def get_user_repository(db: AsyncSession = Depends(get_db)) -> SQLAlchemyUserRepository:
-    """Dependency to get user repository."""
-    return SQLAlchemyUserRepository(db)
 
 
 @router.post("/register", response_model=UserDTO, status_code=status.HTTP_201_CREATED)
