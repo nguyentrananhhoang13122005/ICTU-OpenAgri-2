@@ -10,11 +10,18 @@ class HomeScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 1,
-        title: Row(
+        title: const Row(
           children: [
             Icon(Icons.agriculture, color: const Color(0xFF0BDA50), size: 32),
             const SizedBox(width: 12),
             const Text(
+            Icon(
+              Icons.agriculture,
+              color: Color(0xFF0BDA50),
+              size: 32,
+            ),
+            SizedBox(width: 12),
+            Text(
               'AgriTech',
               style: TextStyle(
                 fontSize: 20,
@@ -94,11 +101,11 @@ class HomeScreen extends StatelessWidget {
             ),
 
             // Features Section
-            Padding(
-              padding: const EdgeInsets.all(40.0),
+            const Padding(
+              padding: EdgeInsets.all(40.0),
               child: Column(
                 children: [
-                  const Text(
+                  Text(
                     'Lợi Ích Chính Cho Người Nông Dân Hiện Đại',
                     textAlign: TextAlign.center,
                     style: TextStyle(
@@ -107,7 +114,7 @@ class HomeScreen extends StatelessWidget {
                       color: Color(0xFF111827),
                     ),
                   ),
-                  const SizedBox(height: 40),
+                  SizedBox(height: 40),
                   Wrap(
                     spacing: 20,
                     runSpacing: 20,
