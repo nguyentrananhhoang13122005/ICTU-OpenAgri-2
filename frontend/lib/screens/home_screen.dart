@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dashboard_screen.dart';
 import 'satellite_monitoring_screen.dart';
+import 'weather_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -81,6 +82,17 @@ class _AgriTechAppBar extends StatelessWidget {
                   children: [
                     _NavLink(title: 'Trang Chủ', onTap: () {}),
                     _NavLink(title: 'Tính Năng', onTap: () {}),
+                    _NavLink(
+                      title: 'Thời Tiết',
+                      icon: Icons.wb_sunny,
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => const WeatherScreen(),
+                          ),
+                        );
+                      },
+                    ),
                     _NavLink(
                       title: 'Giám sát Vệ tinh',
                       icon: Icons.satellite_alt,
