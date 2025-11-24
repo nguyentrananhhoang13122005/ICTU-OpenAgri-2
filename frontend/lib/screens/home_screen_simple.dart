@@ -9,40 +9,44 @@ class HomeScreen extends StatelessWidget {
       backgroundColor: const Color(0xFFF5F8F6),
       appBar: AppBar(
         backgroundColor: Colors.white,
-        elevation: 1,
-        title: const Row(
+        elevation: 0.5,
+        surfaceTintColor: Colors.transparent,
+        centerTitle: false,
+        titleSpacing: 16,
+        title: Row(
+          mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(Icons.agriculture, color: const Color(0xFF0BDA50), size: 32),
+            Container(
+              width: 32,
+              height: 32,
+              decoration: BoxDecoration(
+                color: const Color(0xFF0BDA50),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: const Icon(
+                Icons.eco,
+                color: Colors.white,
+                size: 18,
+              ),
+            ),
             const SizedBox(width: 12),
             const Text(
-            Icon(
-              Icons.agriculture,
-              color: Color(0xFF0BDA50),
-              size: 32,
-            ),
-            SizedBox(width: 12),
-            Text(
-              'AgriTech',
+              'OpenAgri',
               style: TextStyle(
                 fontSize: 20,
-                fontWeight: FontWeight.bold,
+                fontWeight: FontWeight.w600,
                 color: Color(0xFF111827),
+                letterSpacing: -0.3,
               ),
             ),
           ],
         ),
         actions: [
-          TextButton(onPressed: () {}, child: const Text('Đăng Nhập')),
-          const SizedBox(width: 8),
-          ElevatedButton(
+          IconButton(
+            icon: const Icon(Icons.menu, color: Color(0xFF111827), size: 24),
             onPressed: () {},
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF0BDA50),
-              foregroundColor: Colors.black,
-            ),
-            child: const Text('Dashboard'),
+            padding: const EdgeInsets.all(16),
           ),
-          const SizedBox(width: 16),
         ],
       ),
       body: SingleChildScrollView(
