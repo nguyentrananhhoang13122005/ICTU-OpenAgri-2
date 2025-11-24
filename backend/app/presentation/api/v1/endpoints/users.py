@@ -5,14 +5,16 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from fastapi.security import OAuth2PasswordRequestForm
 
-from app.application.dto.user_dto import CreateUserDTO, UserDTO, UserLoginDTO, TokenDTO
+from app.application.dto.user_dto import CreateUserDTO, UserDTO, UserLoginDTO, TokenDTO, ChangePasswordDTO
 from app.application.use_cases.user_use_cases import (
     CreateUserUseCase,
     LoginUserUseCase,
-    LogoutUserUseCase
+    LogoutUserUseCase,
+    ChangePasswordUseCase
 )
 from app.infrastructure.repositories.user_repository_impl import SQLAlchemyUserRepository
-from app.presentation.deps import get_user_repository
+from app.presentation.deps import get_user_repository, get_current_user
+from app.domain.entities.user import User
 
 router = APIRouter()
 
@@ -59,4 +61,19 @@ async def logout():
     use_case = LogoutUserUseCase()
     await use_case.execute()
     return {"message": "Successfully logged out"}
+
+
+@router.post("/change-password")
+async def change_password(
+    password_data: ChangePasswordDTO,
+    current_user: User = Depends(get_current_user),
+    repository: SQLAlchemyUserRepository = Depends(get_user_repository)
+):
+    """Change user password."""
+    use_case = ChangePasswordUseCase(repository, current_user.id)
+    try:
+        await use_case.execute(password_data)
+        return {"message": "Password changed successfully"}
+    except ValueError as e:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
 
