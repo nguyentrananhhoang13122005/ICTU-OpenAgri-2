@@ -62,3 +62,9 @@ coverage/
 # Testing
 .pytest_cache/
 .tox/
+
+# AI Models
+backend/models/*.gguf
+
+# Output Data
+backend/output/
