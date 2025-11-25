@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import '../screens/dashboard_screen.dart';
 import '../screens/satellite_monitoring_screen.dart';
 import '../screens/field_map_screen.dart';
+import '../screens/weather_screen.dart';
+import '../screens/plant_health_screen.dart';
 
 class AppNavigationBar extends StatelessWidget implements PreferredSizeWidget {
   final int currentIndex;
@@ -154,9 +156,21 @@ class AppNavigationBar extends StatelessWidget implements PreferredSizeWidget {
           ),
           _buildNavTab(
             context: context,
-            label: isDesktop ? 'Giám sát Vệ tinh' : 'Vệ tinh',
+            label: isDesktop ? 'Thời tiết' : 'Thời tiết',
             isActive: currentIndex == 2,
             onTap: () => _navigateTo(context, 2),
+          ),
+          _buildNavTab(
+            context: context,
+            label: isDesktop ? 'Giám sát Vệ tinh' : 'Vệ tinh',
+            isActive: currentIndex == 3,
+            onTap: () => _navigateTo(context, 3),
+          ),
+          _buildNavTab(
+            context: context,
+            label: isDesktop ? 'Sức khỏe cây' : 'Bệnh tật',
+            isActive: currentIndex == 4,
+            onTap: () => _navigateTo(context, 4),
           ),
         ],
       ),
@@ -205,7 +219,11 @@ class AppNavigationBar extends StatelessWidget implements PreferredSizeWidget {
     } else if (index == 1) {
       destination = const FieldMapScreen();
     } else if (index == 2) {
+      destination = const WeatherScreen();
+    } else if (index == 3) {
       destination = const SatelliteMonitoringScreen();
+    } else if (index == 4) {
+      destination = const PlantHealthScreen();
     } else {
       return;
     }

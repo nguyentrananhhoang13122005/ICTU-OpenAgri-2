@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dashboard_screen.dart';
 import 'satellite_monitoring_screen.dart';
+import 'weather_screen.dart';
+import 'plant_health_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -81,6 +83,17 @@ class _AgriTechAppBar extends StatelessWidget {
                   children: [
                     _NavLink(title: 'Trang Chủ', onTap: () {}),
                     _NavLink(title: 'Tính Năng', onTap: () {}),
+                    _NavLink(
+                      title: 'Thời Tiết',
+                      icon: Icons.wb_sunny,
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => const WeatherScreen(),
+                          ),
+                        );
+                      },
+                    ),
                     _NavLink(
                       title: 'Giám sát Vệ tinh',
                       icon: Icons.satellite_alt,
@@ -554,9 +567,16 @@ class _FeatureGrid extends StatelessWidget {
       ),
       _FeatureData(
         icon: Icons.bug_report,
-        title: 'Cảnh báo Sâu bệnh',
+        title: 'Giám sát Sức khỏe',
         description:
-            'Nhận cảnh báo kịp thời để ngăn ngừa dịch hại và thiệt hại cây trồng.',
+            'Phát hiện bệnh tật trên cây trồng bằng AI, chính xác và nhanh chóng.',
+        onTap: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => const PlantHealthScreen(),
+            ),
+          );
+        },
       ),
       _FeatureData(
         icon: Icons.science,

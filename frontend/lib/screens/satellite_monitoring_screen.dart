@@ -41,7 +41,7 @@ class _SatelliteMonitoringScreenState extends State<SatelliteMonitoringScreen> {
 
     return Scaffold(
       backgroundColor: const Color(0xFFF5F8F6),
-      appBar: const AppNavigationBar(currentIndex: 2),
+      appBar: const AppNavigationBar(currentIndex: 3),
       body: SafeArea(
         child: isDesktop ? _buildDesktopLayout() : _buildMobileLayout(),
       ),
@@ -127,7 +127,7 @@ class _SatelliteMonitoringScreenState extends State<SatelliteMonitoringScreen> {
                       borderRadius: BorderRadius.circular(20),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.15),
+                          color: Colors.black.withValues(alpha: 0.15),
                           blurRadius: 8,
                           offset: const Offset(0, 2),
                         ),
@@ -165,7 +165,7 @@ class _SatelliteMonitoringScreenState extends State<SatelliteMonitoringScreen> {
                     borderRadius: BorderRadius.circular(12),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
+                        color: Colors.black.withValues(alpha: 0.1),
                         blurRadius: 8,
                         offset: const Offset(0, 2),
                       ),
@@ -212,7 +212,7 @@ class _SatelliteMonitoringScreenState extends State<SatelliteMonitoringScreen> {
               borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.05),
+                  color: Colors.black.withValues(alpha: 0.05),
                   blurRadius: 10,
                   offset: const Offset(0, -2),
                 ),
@@ -478,7 +478,7 @@ class _SatelliteMonitoringScreenState extends State<SatelliteMonitoringScreen> {
                           ),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withOpacity(0.3),
+                              color: Colors.black.withValues(alpha: 0.3),
                               blurRadius: 8,
                             ),
                           ],
@@ -811,7 +811,7 @@ class _SatelliteMonitoringScreenState extends State<SatelliteMonitoringScreen> {
               boxShadow: isActive
                   ? [
                       BoxShadow(
-                        color: const Color(0xFF0BDA50).withOpacity(0.25),
+                        color: const Color(0xFF0BDA50).withValues(alpha: 0.25),
                         blurRadius: 8,
                         offset: const Offset(0, 2),
                       ),
@@ -1106,7 +1106,7 @@ class _SatelliteMonitoringScreenState extends State<SatelliteMonitoringScreen> {
               width: 40,
               height: 40,
               decoration: BoxDecoration(
-                color: _getCropColor(field.cropType).withOpacity(0.2),
+                color: _getCropColor(field.cropType).withValues(alpha: 0.2),
                 shape: BoxShape.circle,
               ),
               child: Icon(
@@ -1141,7 +1141,7 @@ class _SatelliteMonitoringScreenState extends State<SatelliteMonitoringScreen> {
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                         decoration: BoxDecoration(
-                          color: _getNDVIColor(field.ndviValue).withOpacity(0.1),
+                          color: _getNDVIColor(field.ndviValue).withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: Text(
@@ -1193,7 +1193,7 @@ class _SatelliteMonitoringScreenState extends State<SatelliteMonitoringScreen> {
                 width: 36,
                 height: 36,
                 decoration: BoxDecoration(
-                  color: iconColor.withOpacity(0.1),
+                  color: iconColor.withValues(alpha: 0.1),
                   shape: BoxShape.circle,
                 ),
                 child: Icon(icon, color: iconColor, size: 20),
@@ -1239,7 +1239,7 @@ class _SatelliteMonitoringScreenState extends State<SatelliteMonitoringScreen> {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                 decoration: BoxDecoration(
-                  color: statusColor.withOpacity(0.1),
+                  color: statusColor.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Text(
@@ -1274,9 +1274,9 @@ class _SatelliteMonitoringScreenState extends State<SatelliteMonitoringScreen> {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.05),
+        color: color.withValues(alpha: 0.05),
         borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: color.withOpacity(0.2)),
+        border: Border.all(color: color.withValues(alpha: 0.2)),
       ),
       child: Column(
         children: [

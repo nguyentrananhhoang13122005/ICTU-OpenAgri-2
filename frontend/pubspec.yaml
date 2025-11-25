@@ -27,6 +27,9 @@ dependencies:
 
   # HTTP Client (for API calls)
   http: ^1.1.2
+  
+  # Image Picker (for Plant Health feature)
+  image_picker: ^1.0.4
 
   # Authentication (Optional - for future implementation)
   # firebase_auth: ^4.15.3
