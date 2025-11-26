@@ -12,3 +12,7 @@ api_router.include_router(farm_api.router, prefix="/farms", tags=["farms"])
 api_router.include_router(ndvi.router, prefix="/ndvi", tags=["ndvi"])
 api_router.include_router(soil_moisture.router, prefix="/soil-moisture", tags=["soil-moisture"])
 api_router.include_router(commodity_prices.router, prefix="/commodity-prices", tags=["commodity-prices"])
+
+# Weather router - import after others
+from app.presentation.api.v1.endpoints import weather
+api_router.include_router(weather.router, prefix="/weather", tags=["weather"])
