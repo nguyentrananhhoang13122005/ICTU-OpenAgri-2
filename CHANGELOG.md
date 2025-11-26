@@ -9,12 +9,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- **Backend**: Implemented NDVI (Normalized Difference Vegetation Index) module.
+- **Frontend**: Implemented **Plant Health Monitoring** feature.
+  - Added disease detection and analysis screen.
+  - Integrated into app navigation.
+- **Frontend**: Implemented **Field Map** feature.
+  - Added 4-point polygon drawing mode for field definition.
+  - Added area calculation functionality.
+- **Frontend**: Added **Satellite Monitoring** screen.
+  - Added date and layer pickers.
+  - Integrated map tiles for satellite imagery.
+- **Frontend**: Added **Dashboard** and **Settings** screens.
+- **Frontend**: Added comprehensive Theme system with Material 3 support.
+- **Backend**: Implemented **Weather Service** module.
+  - Added `WeatherService` for fetching weather data.
+  - Added `GetWeatherUseCase` and related DTOs.
+  - Added REST API endpoint `GET /api/v1/weather`.
+  - Added unit tests for weather service.
+- **Backend**: Implemented **Change Password** feature.
+  - Added `ChangePasswordUseCase` and API endpoint.
+  - Updated user repository to handle password hashing.
+- **Backend**: Implemented **NDVI** (Normalized Difference Vegetation Index) module.
   - Added Sentinel-2 client for searching and downloading satellite imagery.
   - Added NDVI processing logic using `rasterio` and `numpy`.
   - Added `CalculateNDVIUseCase` and related DTOs.
   - Added REST API endpoint `POST /api/v1/ndvi/calculate`.
   - Added configuration for Copernicus credentials and output directories.
+- **Auth**: Added phone number support for Login and Registration.
 - **Backend**: Added `aiosqlite` for asynchronous SQLite support.
 - **Backend**: Added `email-validator` dependency for Pydantic.
 - **Docs**: Added Contributor Covenant Code of Conduct.
@@ -23,16 +43,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- **Backend**: Replaced `sentinelsat` dependency with custom OData client using `requests` to support the new Copernicus Data Space Ecosystem.
 - **Frontend**: **Major Refactor** - Migrated frontend from React.js to **Flutter**.
   - Updated Dockerfile for Flutter Web.
   - Updated `docker-compose.yml` to support Flutter container.
   - Updated `Makefile` and `package.json` scripts for Dart/Flutter tooling.
+- **Frontend**: Improved Mobile UI/UX.
+  - Enhanced navigation bar with OpenAgri branding.
+  - Refactored Home screen layout.
+  - Updated Satellite Monitoring layout.
+- **Backend**: Replaced `sentinelsat` dependency with custom OData client using `requests` to support the new Copernicus Data Space Ecosystem.
 - **DevOps**: Simplified Docker setup to use a single `docker-compose.yml` file.
 - **DevOps**: Updated `lint-staged` to use `npx` for better compatibility.
+- **Chore**: Updated `.gitignore` to exclude large AI models (`*.gguf`) and output data.
+- **Chore**: Updated project dependencies.
 
 ### Fixed
 
+- **Frontend**: Fixed deprecated `withOpacity` usage by replacing with `withValues`.
+- **Frontend**: Resolved syntax errors and updated `fl_chart` API usage.
 - **Backend**: Fixed Sentinel-2 API connection issues (403 Forbidden) by migrating to CDSE OData API.
 - **Backend**: Fixed missing dependencies for NDVI module (`sentinelsat`, `rasterio`, etc.).
 - **Backend**: Fixed `ImportError` for email validation.
