@@ -14,6 +14,9 @@ api_router.include_router(soil_moisture.router, prefix="/soil-moisture", tags=["
 api_router.include_router(commodity_prices.router, prefix="/commodity-prices", tags=["commodity-prices"])
 api_router.include_router(pest.router, prefix="/pest", tags=["pest"])
 
+from app.presentation.api.v1.endpoints import disease_detection
+api_router.include_router(disease_detection.router, prefix="/disease-detection", tags=["disease-detection"])
+
 # Weather router - import after others
 from app.presentation.api.v1.endpoints import weather
 api_router.include_router(weather.router, prefix="/weather", tags=["weather"])
