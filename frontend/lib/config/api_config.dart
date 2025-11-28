@@ -51,6 +51,6 @@ class ApiConfig {
     }
   }
 
-  static const int connectTimeout = 30000; // 30 seconds
-  static const int receiveTimeout = 30000; // 30 seconds
+  static const int connectTimeout = 300000; // 300 seconds
+  static const int receiveTimeout = 300000; // 300 seconds
 }
