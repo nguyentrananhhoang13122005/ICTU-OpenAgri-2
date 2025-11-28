@@ -31,23 +31,31 @@ class DashboardViewModel extends ChangeNotifier {
       _fields = FieldStatus.getMockList();
       _activities = ActivityLog.getMockList();
 
-      // Fetch real weather data
-      try {
-        final position = await _weatherService.getCurrentLocation();
-        final weatherData = await _weatherService.getWeatherData(
-          position.latitude,
-          position.longitude,
-        );
-        _weather = _mapToWeatherData(weatherData);
-      } catch (e) {
-        debugPrint('Error fetching weather: $e');
-        _weather = WeatherData.getMockData();
-      }
-    } catch (e) {
-      debugPrint('Error initializing dashboard: $e');
-    } finally {
+      // Stop loading to show UI immediately
       _isLoading = false;
       notifyListeners();
+
+      // Fetch real weather data in background
+      await _fetchWeatherData();
+    } catch (e) {
+      debugPrint('Error initializing dashboard: $e');
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> _fetchWeatherData() async {
+    try {
+      final position = await _weatherService.getCurrentLocation();
+      final weatherData = await _weatherService.getWeatherData(
+        position.latitude,
+        position.longitude,
+      );
+      _weather = _mapToWeatherData(weatherData);
+      notifyListeners();
+    } catch (e) {
+      debugPrint('Error fetching weather: $e');
+      // Keep using mock data if fetch fails
     }
   }
 
