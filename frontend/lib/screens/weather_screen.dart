@@ -4,7 +4,6 @@ import 'package:intl/intl.dart';
 import 'package:latlong2/latlong.dart';
 
 import '../services/weather_service.dart';
-import '../widgets/app_navigation_bar.dart';
 
 class WeatherScreen extends StatefulWidget {
   const WeatherScreen({super.key});
@@ -16,7 +15,7 @@ class WeatherScreen extends StatefulWidget {
 class _WeatherScreenState extends State<WeatherScreen> {
   final WeatherService _weatherService = WeatherService();
   final MapController _mapController = MapController();
-  
+
   // State
   bool _isLoading = true;
   String _locationName = "Đang tải...";
@@ -24,7 +23,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
   List<Map<String, dynamic>> _searchResults = [];
   bool _showSearchResults = false;
   final TextEditingController _searchController = TextEditingController();
-  
+
   // Default location (Hanoi)
   LatLng _currentLocation = const LatLng(21.0285, 105.8542);
   String _forecastTab = 'hourly'; // hourly, daily, weekly
@@ -40,13 +39,15 @@ class _WeatherScreenState extends State<WeatherScreen> {
     try {
       final position = await _weatherService.getCurrentLocation();
       _currentLocation = LatLng(position.latitude, position.longitude);
-      _locationName = "Vị trí hiện tại"; // Will update with reverse geocoding if available or just generic
-      
-      await _fetchWeather(_currentLocation.latitude, _currentLocation.longitude);
+      _locationName =
+          "Vị trí hiện tại"; // Will update with reverse geocoding if available or just generic
+
+      await _fetchWeather(
+          _currentLocation.latitude, _currentLocation.longitude);
     } catch (e) {
-      print('Error initializing weather: $e');
       // Fallback to default location
-      await _fetchWeather(_currentLocation.latitude, _currentLocation.longitude);
+      await _fetchWeather(
+          _currentLocation.latitude, _currentLocation.longitude);
     }
   }
 
@@ -57,17 +58,19 @@ class _WeatherScreenState extends State<WeatherScreen> {
         _weatherData = data;
         _isLoading = false;
       });
-      
+
       // Move map
       WidgetsBinding.instance.addPostFrameCallback((_) {
-         _mapController.move(LatLng(lat, lon), 13);
+        _mapController.move(LatLng(lat, lon), 13);
       });
-      
     } catch (e) {
       setState(() => _isLoading = false);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Không thể tải dữ liệu thời tiết: $e')),
-      );
+      if (context.mounted) {
+        // ignore: use_build_context_synchronously
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Không thể tải dữ liệu thời tiết: $e')),
+        );
+      }
     }
   }
 
@@ -84,7 +87,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
     final lat = location['lat'];
     final lon = location['lon'];
     final name = location['name'];
-    
+
     setState(() {
       _currentLocation = LatLng(lat, lon);
       _locationName = name;
@@ -93,7 +96,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
       _searchResults = [];
       _isLoading = true;
     });
-    
+
     _fetchWeather(lat, lon);
   }
 
@@ -101,9 +104,9 @@ class _WeatherScreenState extends State<WeatherScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF6F8F6),
-      appBar: const AppNavigationBar(currentIndex: 2),
-      body: _isLoading 
-          ? const Center(child: CircularProgressIndicator(color: Color(0xFF0BDA50)))
+      body: _isLoading
+          ? const Center(
+              child: CircularProgressIndicator(color: Color(0xFF0BDA50)))
           : SafeArea(
               child: Stack(
                 children: [
@@ -146,7 +149,8 @@ class _WeatherScreenState extends State<WeatherScreen> {
                               final result = _searchResults[index];
                               return ListTile(
                                 title: Text(result['name']),
-                                subtitle: Text('${result['city']}, ${result['country']}'),
+                                subtitle: Text(
+                                    '${result['city']}, ${result['country']}'),
                                 onTap: () => _selectLocation(result),
                               );
                             },
@@ -164,10 +168,10 @@ class _WeatherScreenState extends State<WeatherScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
+        const Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-             const Expanded(
+            Expanded(
               child: Text(
                 'Dự Báo Thời Tiết',
                 style: TextStyle(
@@ -327,15 +331,20 @@ class _WeatherScreenState extends State<WeatherScreen> {
       crossAxisSpacing: 12,
       mainAxisSpacing: 12,
       children: [
-        _buildDetailItem(Icons.thermostat, 'Cảm giác như', '${current['apparent_temperature']}°C', Colors.green),
-        _buildDetailItem(Icons.water_drop, 'Độ ẩm', '${current['relative_humidity_2m']}%', Colors.blue),
-        _buildDetailItem(Icons.air, 'Gió', '${current['wind_speed_10m']} km/h', Colors.grey),
-        _buildDetailItem(Icons.umbrella, 'Khả năng mưa', '${current['precipitation'] ?? 0}%', Colors.purple),
+        _buildDetailItem(Icons.thermostat, 'Cảm giác như',
+            '${current['apparent_temperature']}°C', Colors.green),
+        _buildDetailItem(Icons.water_drop, 'Độ ẩm',
+            '${current['relative_humidity_2m']}%', Colors.blue),
+        _buildDetailItem(
+            Icons.air, 'Gió', '${current['wind_speed_10m']} km/h', Colors.grey),
+        _buildDetailItem(Icons.umbrella, 'Khả năng mưa',
+            '${current['precipitation'] ?? 0}%', Colors.purple),
       ],
     );
   }
 
-  Widget _buildDetailItem(IconData icon, String label, String value, Color color) {
+  Widget _buildDetailItem(
+      IconData icon, String label, String value, Color color) {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
@@ -418,13 +427,15 @@ class _WeatherScreenState extends State<WeatherScreen> {
           const SizedBox(height: 24),
           SizedBox(
             height: 140,
-            child: _forecastTab == 'hourly' ? _buildHourlyForecast() : _buildDailyForecast(),
+            child: _forecastTab == 'hourly'
+                ? _buildHourlyForecast()
+                : _buildDailyForecast(),
           ),
         ],
       ),
     );
   }
-  
+
   Widget _buildTabButton(String id, String label) {
     final isSelected = _forecastTab == id;
     return GestureDetector(
@@ -434,19 +445,22 @@ class _WeatherScreenState extends State<WeatherScreen> {
         decoration: BoxDecoration(
           color: isSelected ? Colors.white : Colors.transparent,
           borderRadius: BorderRadius.circular(6),
-          boxShadow: isSelected ? [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.1),
-              blurRadius: 2,
-            )
-          ] : [],
+          boxShadow: isSelected
+              ? [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.1),
+                    blurRadius: 2,
+                  )
+                ]
+              : [],
         ),
         child: Text(
           label,
           style: TextStyle(
             fontSize: 12,
             fontWeight: FontWeight.w600,
-            color: isSelected ? const Color(0xFF111813) : const Color(0xFF61896F),
+            color:
+                isSelected ? const Color(0xFF111813) : const Color(0xFF61896F),
           ),
         ),
       ),
@@ -459,15 +473,15 @@ class _WeatherScreenState extends State<WeatherScreen> {
     final temps = hourly['temperature_2m'] as List;
     final codes = hourly['weather_code'] as List;
     final probs = hourly['precipitation_probability'] as List;
-    
+
     // Get next 24 hours starting from current hour
     final now = DateTime.now();
     final currentHour = now.hour;
-    
+
     // Find index of current hour (simplified)
     int startIndex = 0;
-    for(int i=0; i<times.length; i++) {
-      if(DateTime.parse(times[i]).hour == currentHour) {
+    for (int i = 0; i < times.length; i++) {
+      if (DateTime.parse(times[i]).hour == currentHour) {
         startIndex = i;
         break;
       }
@@ -479,8 +493,8 @@ class _WeatherScreenState extends State<WeatherScreen> {
       separatorBuilder: (_, __) => const SizedBox(width: 12),
       itemBuilder: (context, index) {
         final i = startIndex + index;
-        if(i >= times.length) return const SizedBox();
-        
+        if (i >= times.length) return const SizedBox();
+
         final time = DateTime.parse(times[i]);
         final temp = temps[i];
         final code = codes[i];
@@ -499,12 +513,14 @@ class _WeatherScreenState extends State<WeatherScreen> {
             children: [
               Text(
                 '${time.hour}:00',
-                style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
+                style:
+                    const TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
               ),
               _getWeatherIcon(weatherInfo['icon'], 32),
               Text(
                 '$temp°',
-                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                style:
+                    const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -522,7 +538,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
       },
     );
   }
-  
+
   Widget _buildDailyForecast() {
     final daily = _weatherData!['daily'];
     final times = daily['time'] as List;
@@ -542,8 +558,9 @@ class _WeatherScreenState extends State<WeatherScreen> {
         final code = codes[index];
         final prob = probs[index];
         final weatherInfo = _weatherService.getWeatherInfo(code);
-        
-        final dayName = index == 0 ? 'Hôm nay' : DateFormat('E', 'vi').format(time);
+
+        final dayName =
+            index == 0 ? 'Hôm nay' : DateFormat('E', 'vi').format(time);
 
         return Container(
           width: 100,
@@ -557,12 +574,14 @@ class _WeatherScreenState extends State<WeatherScreen> {
             children: [
               Text(
                 dayName,
-                style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
+                style:
+                    const TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
               ),
               _getWeatherIcon(weatherInfo['icon'], 32),
               Text(
                 '$maxTemp° / $minTemp°',
-                style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                style:
+                    const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -587,7 +606,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
-           BoxShadow(
+          BoxShadow(
             color: Colors.black.withValues(alpha: 0.05),
             blurRadius: 10,
             offset: const Offset(0, 4),
@@ -644,7 +663,8 @@ class _WeatherScreenState extends State<WeatherScreen> {
               color: Colors.white,
               shape: BoxShape.circle,
             ),
-            child: const Icon(Icons.lightbulb, color: Color(0xFF0BDA50), size: 32),
+            child:
+                const Icon(Icons.lightbulb, color: Color(0xFF0BDA50), size: 32),
           ),
           const SizedBox(width: 16),
           const Expanded(
@@ -678,7 +698,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
   Widget _getWeatherIcon(String iconName, double size) {
     IconData iconData;
     Color color = Colors.orange;
-    
+
     switch (iconName) {
       case 'clear_day':
         iconData = Icons.wb_sunny;
@@ -712,8 +732,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
       default:
         iconData = Icons.wb_sunny;
     }
-    
+
     return Icon(iconData, size: size, color: color);
   }
 }
-
