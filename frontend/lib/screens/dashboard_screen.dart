@@ -1,8 +1,10 @@
-import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+
 import '../models/dashboard_data.dart';
-import '../widgets/app_navigation_bar.dart';
+import 'satellite_monitoring_screen.dart';
+import 'weather_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -52,7 +54,12 @@ class _DashboardScreenState extends State<DashboardScreen>
 
     return Scaffold(
       backgroundColor: const Color(0xFFF5F8F6),
-      appBar: const AppNavigationBar(currentIndex: 0),
+      appBar: AppBar(
+        title: const Text('AgriSmart'),
+        automaticallyImplyLeading: false,
+        backgroundColor: Colors.white,
+        surfaceTintColor: Colors.transparent,
+      ),
       body: SafeArea(
         child: FadeTransition(
           opacity: _fadeAnimation,
@@ -139,6 +146,14 @@ class _DashboardScreenState extends State<DashboardScreen>
         value: this.stats.averageNDVI.toStringAsFixed(2),
         unit: '',
         color: const Color(0xFF10B981),
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const SatelliteMonitoringScreen(),
+            ),
+          );
+        },
       ),
       _StatCardData(
         icon: Icons.warning_amber_rounded,
@@ -187,77 +202,80 @@ class _DashboardScreenState extends State<DashboardScreen>
   }
 
   Widget _buildStatCard(_StatCardData data) {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: const Color(0xFFF0F5F1)),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Row(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: data.color.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(12),
+    return GestureDetector(
+      onTap: data.onTap,
+      child: Container(
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: const Color(0xFFF0F5F1)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.04),
+              blurRadius: 8,
+              offset: const Offset(0, 2),
             ),
-            child: Icon(data.icon, color: data.color, size: 24),
-          ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  data.label,
-                  style: const TextStyle(
-                    fontSize: 13,
-                    color: Color(0xFF608a6e),
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Flexible(
-                      child: Text(
-                        data.value,
-                        style: const TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFF111813),
-                        ),
-                        overflow: TextOverflow.ellipsis,
-                      ),
+          ],
+        ),
+        child: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: data.color.withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Icon(data.icon, color: data.color, size: 24),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    data.label,
+                    style: const TextStyle(
+                      fontSize: 13,
+                      color: Color(0xFF608a6e),
                     ),
-                    if (data.unit.isNotEmpty) ...[
-                      const SizedBox(width: 4),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 2),
+                  ),
+                  const SizedBox(height: 4),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Flexible(
                         child: Text(
-                          data.unit,
+                          data.value,
                           style: const TextStyle(
-                            fontSize: 12,
-                            color: Color(0xFF608a6e),
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF111813),
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      if (data.unit.isNotEmpty) ...[
+                        const SizedBox(width: 4),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 2),
+                          child: Text(
+                            data.unit,
+                            style: const TextStyle(
+                              fontSize: 12,
+                              color: Color(0xFF608a6e),
+                            ),
                           ),
                         ),
-                      ),
+                      ],
                     ],
-                  ],
-                ),
-              ],
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -306,96 +324,107 @@ class _DashboardScreenState extends State<DashboardScreen>
   }
 
   Widget _buildWeatherCard() {
-    return TweenAnimationBuilder<double>(
-      tween: Tween(begin: 0, end: 1),
-      duration: const Duration(milliseconds: 800),
-      builder: (context, value, child) {
-        return Transform.translate(
-          offset: Offset(20 * (1 - value), 0),
-          child: Opacity(opacity: value, child: child),
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const WeatherScreen(),
+          ),
         );
       },
-      child: Container(
-        padding: const EdgeInsets.all(24),
-        decoration: BoxDecoration(
-          gradient: const LinearGradient(
-            colors: [Color(0xFF0BDA50), Color(0xFF059669)],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
+      child: TweenAnimationBuilder<double>(
+        tween: Tween(begin: 0, end: 1),
+        duration: const Duration(milliseconds: 800),
+        builder: (context, value, child) {
+          return Transform.translate(
+            offset: Offset(20 * (1 - value), 0),
+            child: Opacity(opacity: value, child: child),
+          );
+        },
+        child: Container(
+          padding: const EdgeInsets.all(24),
+          decoration: BoxDecoration(
+            gradient: const LinearGradient(
+              colors: [Color(0xFF0BDA50), Color(0xFF059669)],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderRadius: BorderRadius.circular(12),
+            boxShadow: [
+              BoxShadow(
+                color: const Color(0xFF0BDA50).withValues(alpha: 0.3),
+                blurRadius: 20,
+                offset: const Offset(0, 8),
+              ),
+            ],
           ),
-          borderRadius: BorderRadius.circular(12),
-          boxShadow: [
-            BoxShadow(
-              color: const Color(0xFF0BDA50).withValues(alpha: 0.3),
-              blurRadius: 20,
-              offset: const Offset(0, 8),
-            ),
-          ],
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Row(
-              children: [
-                Icon(Icons.wb_sunny, color: Colors.white, size: 20),
-                SizedBox(width: 8),
-                Text(
-                  'Thời tiết hiện tại',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Row(
+                children: [
+                  Icon(Icons.wb_sunny, color: Colors.white, size: 20),
+                  SizedBox(width: 8),
+                  Text(
+                    'Thời tiết hiện tại',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white,
+                    ),
                   ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      '${weather.temperature.toStringAsFixed(1)}°C',
-                      style: const TextStyle(
-                        fontSize: 48,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                ],
+              ),
+              const SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '${weather.temperature.toStringAsFixed(1)}°C',
+                        style: const TextStyle(
+                          fontSize: 48,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      weather.condition,
-                      style: const TextStyle(fontSize: 16, color: Colors.white),
-                    ),
-                  ],
-                ),
-                Text(weather.icon, style: const TextStyle(fontSize: 64)),
-              ],
-            ),
-            const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                _buildWeatherDetail(
-                  Icons.water_drop,
-                  'Độ ẩm',
-                  '${weather.humidity}%',
-                ),
-                _buildWeatherDetail(
-                  Icons.umbrella,
-                  'Mưa',
-                  '${weather.rainfall}mm',
-                ),
-                _buildWeatherDetail(
-                  Icons.opacity,
-                  'Ẩm đất',
-                  '${stats.soilMoisture}%',
-                ),
-              ],
-            ),
-          ],
+                      const SizedBox(height: 4),
+                      Text(
+                        weather.condition,
+                        style:
+                            const TextStyle(fontSize: 16, color: Colors.white),
+                      ),
+                    ],
+                  ),
+                  Text(weather.icon, style: const TextStyle(fontSize: 64)),
+                ],
+              ),
+              const SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  _buildWeatherDetail(
+                    Icons.water_drop,
+                    'Độ ẩm',
+                    '${weather.humidity}%',
+                  ),
+                  _buildWeatherDetail(
+                    Icons.umbrella,
+                    'Mưa',
+                    '${weather.rainfall}mm',
+                  ),
+                  _buildWeatherDetail(
+                    Icons.opacity,
+                    'Ẩm đất',
+                    '${stats.soilMoisture}%',
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -622,8 +651,8 @@ class _DashboardScreenState extends State<DashboardScreen>
                   drawVerticalLine: false,
                   horizontalInterval: 20,
                   getDrawingHorizontalLine: (value) {
-                    return FlLine(
-                      color: const Color(0xFFF0F5F1),
+                    return const FlLine(
+                      color: Color(0xFFF0F5F1),
                       strokeWidth: 1,
                     );
                   },
@@ -784,6 +813,7 @@ class _StatCardData {
   final String value;
   final String unit;
   final Color color;
+  final VoidCallback? onTap;
 
   _StatCardData({
     required this.icon,
@@ -791,5 +821,6 @@ class _StatCardData {
     required this.value,
     required this.unit,
     required this.color,
+    this.onTap,
   });
 }
