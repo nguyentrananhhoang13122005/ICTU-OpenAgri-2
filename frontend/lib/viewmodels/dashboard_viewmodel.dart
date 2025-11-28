@@ -12,6 +12,7 @@ class DashboardViewModel extends ChangeNotifier {
   List<FieldStatus> _fields = [];
   List<ActivityLog> _activities = [];
   WeatherData _weather = WeatherData.getMockData();
+  String? _selectedFarmId;
 
   // Getters
   bool get isLoading => _isLoading;
@@ -19,6 +20,7 @@ class DashboardViewModel extends ChangeNotifier {
   List<FieldStatus> get fields => _fields;
   List<ActivityLog> get activities => _activities;
   WeatherData get weather => _weather;
+  String? get selectedFarmId => _selectedFarmId;
 
   final WeatherService _weatherService = WeatherService();
   final FarmService _farmService = FarmService();
@@ -53,10 +55,22 @@ class DashboardViewModel extends ChangeNotifier {
     try {
       final farmDtos = await _farmService.getMyFarms();
       _fields = farmDtos.map((dto) => _mapDtoToFieldStatus(dto)).toList();
+
+      if (_fields.isNotEmpty && _selectedFarmId == null) {
+        _selectedFarmId = _fields.first.id;
+      }
     } catch (e) {
       debugPrint('Error fetching farms: $e');
       _fields = FieldStatus.getMockList(); // Fallback
+      if (_fields.isNotEmpty && _selectedFarmId == null) {
+        _selectedFarmId = _fields.first.id;
+      }
     }
+  }
+
+  void selectFarm(String id) {
+    _selectedFarmId = id;
+    notifyListeners();
   }
 
   FieldStatus _mapDtoToFieldStatus(FarmAreaResponseDTO dto) {
