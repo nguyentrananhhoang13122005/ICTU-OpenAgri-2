@@ -4,6 +4,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
 
 import '../viewmodels/farm_map_viewmodel.dart';
+import 'satellite_monitoring_screen.dart';
 
 class FarmMapScreen extends StatefulWidget {
   const FarmMapScreen({super.key});
@@ -276,8 +277,15 @@ class _FarmMapScreenState extends State<FarmMapScreen> {
                         child: GestureDetector(
                           onTap: () {
                             if (!viewModel.isDrawingMode) {
-                              viewModel.selectField(field);
-                              _mapController.move(field.center, 16);
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      SatelliteMonitoringScreen(
+                                    initialFieldId: field.id,
+                                  ),
+                                ),
+                              );
                             }
                           },
                           child: Container(
@@ -558,8 +566,14 @@ class _FarmMapScreenState extends State<FarmMapScreen> {
                 final isSelected = viewModel.selectedField?.id == field.id;
                 return InkWell(
                   onTap: () {
-                    viewModel.selectField(field);
-                    _mapController.move(field.center, 16);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => SatelliteMonitoringScreen(
+                          initialFieldId: field.id,
+                        ),
+                      ),
+                    );
                   },
                   child: Container(
                     padding: const EdgeInsets.all(12),
