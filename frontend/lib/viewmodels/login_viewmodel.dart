@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../screens/home_screen.dart';
+import '../screens/main_layout.dart';
 import '../views/signup_view.dart';
 import 'signup_viewmodel.dart';
 
@@ -80,7 +80,7 @@ class LoginViewModel extends ChangeNotifier {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => const HomeScreen(),
+            builder: (context) => const MainLayout(),
           ),
         );
       }
@@ -113,7 +113,7 @@ class LoginViewModel extends ChangeNotifier {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => const HomeScreen(),
+            builder: (context) => const MainLayout(),
           ),
         );
       }
