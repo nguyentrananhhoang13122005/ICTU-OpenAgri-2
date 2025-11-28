@@ -51,7 +51,8 @@ class DashboardView extends StatelessWidget {
       builder: (context) {
         final authService = AuthService();
         final currentUser = authService.currentUser;
-        final displayName = currentUser?.displayName ?? currentUser?.email ?? 'Người dùng';
+        final displayName =
+            currentUser?.displayName ?? currentUser?.email ?? 'Người dùng';
 
         return Container(
           padding: const EdgeInsets.all(16),
@@ -840,7 +841,8 @@ class DashboardView extends StatelessWidget {
     );
   }
 
-  Widget _buildNavItem(BuildContext context, String icon, String label, bool isActive, String? route) {
+  Widget _buildNavItem(BuildContext context, String icon, String label,
+      bool isActive, String? route) {
     return InkWell(
       onTap: route != null ? () => Navigator.pushNamed(context, route) : null,
       child: Column(
@@ -856,7 +858,8 @@ class DashboardView extends StatelessWidget {
             style: TextStyle(
               fontSize: 11,
               fontWeight: FontWeight.w500,
-              color: isActive ? const Color(0xFF13EC5B) : const Color(0xFF9CA3AF),
+              color:
+                  isActive ? const Color(0xFF13EC5B) : const Color(0xFF9CA3AF),
             ),
           ),
         ],
