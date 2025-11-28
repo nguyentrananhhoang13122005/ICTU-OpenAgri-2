@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../screens/main_layout.dart';
 import '../viewmodels/login_viewmodel.dart';
 
 class LoginView extends StatelessWidget {
@@ -297,16 +296,8 @@ class LoginView extends StatelessWidget {
         return SizedBox(
           height: 56,
           child: ElevatedButton(
-            onPressed: viewModel.isLoading
-                ? null
-                : () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const MainLayout(),
-                      ),
-                    );
-                  },
+            onPressed:
+                viewModel.isLoading ? null : () => viewModel.login(context),
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFF00C853),
               foregroundColor: Colors.white,
