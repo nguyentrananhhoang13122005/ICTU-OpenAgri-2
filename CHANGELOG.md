@@ -7,16 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.0] - 2025-11-28
+
 ### Added
 
 - **CI/CD**: Configured GitHub Actions workflow for automated Android release builds.
   - Automatically builds APK on tag push (`v*`).
   - Creates GitHub Release and uploads APK artifact.
-
-## [0.2.0] - 2025-11-28
-
-### Added
-
 - **Backend**: Implemented **Soil Moisture** calculation from Sentinel-1 satellite data.
   - Added logic to calculate mean soil moisture value (0-100%) for a specific area.
   - Updated API to return both visual map and numeric value.
