@@ -1,7 +1,8 @@
 from pydantic import BaseModel
-from typing import List
+from typing import List, Optional
 
 class NDVIRequest(BaseModel):
+    farm_id: Optional[int] = None
     bbox: List[float]
     start_date: str  # YYYY-MM-DD
     end_date: str    # YYYY-MM-DD
