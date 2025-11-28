@@ -305,7 +305,7 @@ class _DashboardScreenState extends State<DashboardScreen>
               children: [
                 _buildFieldStatusList(viewModel),
                 const SizedBox(height: 24),
-                _buildSoilMoistureChart(),
+                _buildSoilMoistureChart(viewModel),
               ],
             ),
           ),
@@ -329,7 +329,7 @@ class _DashboardScreenState extends State<DashboardScreen>
           const SizedBox(height: 24),
           _buildFieldStatusList(viewModel),
           const SizedBox(height: 24),
-          _buildSoilMoistureChart(),
+          _buildSoilMoistureChart(viewModel),
           const SizedBox(height: 24),
           _buildActivityFeed(viewModel),
         ],
@@ -588,7 +588,7 @@ class _DashboardScreenState extends State<DashboardScreen>
     );
   }
 
-  Widget _buildSoilMoistureChart() {
+  Widget _buildSoilMoistureChart(DashboardViewModel viewModel) {
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
@@ -673,15 +673,13 @@ class _DashboardScreenState extends State<DashboardScreen>
                   },
                 ),
                 borderData: FlBorderData(show: false),
-                barGroups: [
-                  _createBarGroup(0, 65),
-                  _createBarGroup(1, 70),
-                  _createBarGroup(2, 55),
-                  _createBarGroup(3, 75),
-                  _createBarGroup(4, 68),
-                  _createBarGroup(5, 72),
-                  _createBarGroup(6, 68),
-                ],
+                barGroups: List.generate(7, (index) {
+                  double value = 0;
+                  if (index < viewModel.stats.soilMoistureHistory.length) {
+                    value = viewModel.stats.soilMoistureHistory[index];
+                  }
+                  return _createBarGroup(index, value);
+                }),
               ),
             ),
           ),
