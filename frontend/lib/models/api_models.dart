@@ -144,11 +144,13 @@ class SoilMoistureResponse {
   final String status;
   final String soilMoistureMap;
   final String imageBase64;
+  final double meanValue;
 
   SoilMoistureResponse({
     required this.status,
     required this.soilMoistureMap,
     required this.imageBase64,
+    required this.meanValue,
   });
 
   factory SoilMoistureResponse.fromJson(Map<String, dynamic> json) {
@@ -156,6 +158,7 @@ class SoilMoistureResponse {
       status: json['status'],
       soilMoistureMap: json['soil_moisture_map'],
       imageBase64: json['image_base64'],
+      meanValue: (json['mean_value'] as num?)?.toDouble() ?? 0.0,
     );
   }
 }
