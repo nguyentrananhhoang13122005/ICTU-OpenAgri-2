@@ -5,6 +5,7 @@ import tensorflow as tf
 from pathlib import Path
 from typing import List, Dict, Any
 import io
+from .disease_info import DISEASE_INFO
 
 class DiseaseDetectionService:
     _instance = None
@@ -115,24 +116,28 @@ class DiseaseDetectionService:
 
             # Predict
             predictions = self._model.predict(img_array)
-            score = predictions[0]  # Model already has softmax activation, so this is the probability distribution
+            score = predictions[0]  # Model already has softmax activation
 
-            # Get top predictions or all predictions
-            # For now, let's return the top prediction and confidence
+            # Get top prediction
+            predicted_index = np.argmax(score)
+            class_name = self._class_names[predicted_index]
+            confidence = float(score[predicted_index])
             
-            results = []
-            for i, confidence in enumerate(score):
-                class_name = self._class_names[i]
-                vietnamese_name = self._vietnamese_names.get(class_name, class_name)
-                results.append({
-                    "class_name": vietnamese_name,
-                    "confidence": float(confidence)
-                })
+            vietnamese_name = self._vietnamese_names.get(class_name, class_name)
+            disease_info = DISEASE_INFO.get(class_name, {})
             
-            # Sort by confidence descending
-            results.sort(key=lambda x: x["confidence"], reverse=True)
+            result = {
+                "class_name": vietnamese_name,
+                "original_name": class_name,
+                "confidence": confidence,
+                "description": disease_info.get("description", ""),
+                "symptoms": disease_info.get("symptoms", []),
+                "treatment": disease_info.get("treatment", []),
+                "prevention": disease_info.get("prevention", []),
+                "severity": disease_info.get("severity", "")
+            }
             
-            return results[0]
+            return result
 
         except Exception as e:
             print(f"Error during prediction: {e}")
