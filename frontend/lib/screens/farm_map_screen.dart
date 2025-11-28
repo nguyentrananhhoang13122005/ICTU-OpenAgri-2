@@ -506,8 +506,8 @@ class _FarmMapScreenState extends State<FarmMapScreen> {
         child: Container(
           width: 48,
           height: 48,
-          padding: const EdgeInsets.all(12),
-          child: Icon(icon, size: 24, color: color ?? const Color(0xFF4A5C52)),
+          padding: const EdgeInsets.all(10),
+          child: Icon(icon, size: 28, color: color ?? Colors.black),
         ),
       ),
     );
