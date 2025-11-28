@@ -1,15 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:latlong2/latlong.dart';
+import '../models/api_models.dart';
 import '../models/crop_field.dart';
+import '../services/analysis_service.dart';
+import '../services/farm_service.dart';
 
 class SatelliteMonitoringViewModel extends ChangeNotifier {
+  final FarmService _farmService = FarmService();
+  final AnalysisService _analysisService = AnalysisService();
+
   List<CropField> _fields = [];
   CropField? _selectedField;
+  bool _isLoading = false;
 
   String _mapMode = 'NDVI';
   String _mapLayerType = 'Satellite';
 
   String _activeControlTab = 'filter';
-  DateTime _selectedDate = DateTime(2024, 9);
+  DateTime _selectedDate = DateTime.now();
   String _selectedDataLayer = 'Tất cả';
   bool _showCropType = true;
   bool _showHealth = true;
@@ -17,6 +25,7 @@ class SatelliteMonitoringViewModel extends ChangeNotifier {
   // Getters
   List<CropField> get fields => _fields;
   CropField? get selectedField => _selectedField;
+  bool get isLoading => _isLoading;
   String get mapMode => _mapMode;
   String get mapLayerType => _mapLayerType;
   String get activeControlTab => _activeControlTab;
@@ -26,25 +35,176 @@ class SatelliteMonitoringViewModel extends ChangeNotifier {
   bool get showHealth => _showHealth;
 
   // Initialize
-  void initData({String? initialFieldId}) {
-    _fields = CropField.getMockFields();
-    if (initialFieldId != null) {
-      try {
-        _selectedField = _fields.firstWhere((f) => f.id == initialFieldId);
-      } catch (e) {
-        if (_fields.isNotEmpty) {
-          _selectedField = _fields.first;
-        }
-      }
-    } else if (_fields.isNotEmpty) {
-      _selectedField = _fields.first;
-    }
+  Future<void> initData({String? initialFieldId}) async {
+    _isLoading = true;
     notifyListeners();
+
+    try {
+      final farmDtos = await _farmService.getMyFarms();
+      _fields = farmDtos.map((dto) => _mapDtoToCropField(dto)).toList();
+
+      if (initialFieldId != null) {
+        try {
+          _selectedField = _fields.firstWhere((f) => f.id == initialFieldId);
+        } catch (e) {
+          if (_fields.isNotEmpty) {
+            _selectedField = _fields.first;
+          }
+        }
+      } else if (_fields.isNotEmpty) {
+        _selectedField = _fields.first;
+      }
+
+      if (_selectedField != null) {
+        await _fetchSatelliteData(_selectedField!);
+      }
+    } catch (e) {
+      debugPrint('Error initializing satellite monitoring: $e');
+      // Fallback to mock data if fetch fails
+      _fields = CropField.getMockFields();
+      if (_fields.isNotEmpty) {
+        _selectedField = _fields.first;
+      }
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> _fetchSatelliteData(CropField field) async {
+    try {
+      // Calculate bbox
+      final bbox = _calculateBBox(field.polygonPoints);
+
+      // Fetch NDVI
+      final ndviRequest = NDVIRequest(
+        bbox: bbox,
+        startDate:
+            _selectedDate.subtract(const Duration(days: 30)).toIso8601String(),
+        endDate: _selectedDate.toIso8601String(),
+      );
+      final ndviResponse = await _analysisService.calculateNDVI(ndviRequest);
+
+      // Fetch Soil Moisture
+      double soilMoisture = 0.0;
+      String soilMoistureStatus = 'Chưa có dữ liệu';
+      try {
+        final smRequest = SoilMoistureRequest(
+          bbox: bbox,
+          date: _selectedDate.toIso8601String(),
+        );
+        final smResponse = await _analysisService.calculateSoilMoisture(smRequest);
+        
+        // Convert 0-1 index to percentage
+        soilMoisture = smResponse.meanValue * 100;
+        
+        if (soilMoisture < 30) {
+          soilMoistureStatus = 'Thiếu nước';
+        } else if (soilMoisture < 70) {
+          soilMoistureStatus = 'Đủ ẩm';
+        } else {
+          soilMoistureStatus = 'Dư nước';
+        }
+      } catch (e) {
+        debugPrint('Error fetching soil moisture: $e');
+      }
+
+      // Update field with new data
+      // Since CropField is immutable, we replace it in the list
+      final updatedField = CropField(
+        id: field.id,
+        name: field.name,
+        cropType: field.cropType,
+        area: field.area,
+        ndviValue: ndviResponse.meanNdvi,
+        trendDirection: 'stable', // Calculate based on history
+        lastUpdated: DateTime.now(),
+        ndviHistory: ndviResponse.chartData.map((d) {
+          return NDVIDataPoint(
+            date: DateTime.parse(d['date']),
+            value: (d['mean'] as num).toDouble(),
+          );
+        }).toList(),
+        imageUrl: field.imageUrl,
+        polygonPoints: field.polygonPoints,
+        center: field.center,
+        ndviStatus: _getNdviStatus(ndviResponse.meanNdvi),
+        soilMoisture: soilMoisture,
+        soilMoistureStatus: soilMoistureStatus,
+      );
+
+      _updateFieldInList(updatedField);
+      _selectedField = updatedField;
+    } catch (e) {
+      debugPrint('Error fetching satellite data: $e');
+    }
+  }
+
+  void _updateFieldInList(CropField updatedField) {
+    final index = _fields.indexWhere((f) => f.id == updatedField.id);
+    if (index != -1) {
+      _fields[index] = updatedField;
+    }
+  }
+
+  List<double> _calculateBBox(List<LatLng> points) {
+    if (points.isEmpty) return [0, 0, 0, 0];
+    double minLon = points[0].longitude;
+    double minLat = points[0].latitude;
+    double maxLon = points[0].longitude;
+    double maxLat = points[0].latitude;
+
+    for (var p in points) {
+      if (p.longitude < minLon) minLon = p.longitude;
+      if (p.latitude < minLat) minLat = p.latitude;
+      if (p.longitude > maxLon) maxLon = p.longitude;
+      if (p.latitude > maxLat) maxLat = p.latitude;
+    }
+    return [minLon, minLat, maxLon, maxLat];
+  }
+
+  CropField _mapDtoToCropField(FarmAreaResponseDTO dto) {
+    // Calculate center
+    double lat = 0;
+    double lng = 0;
+    if (dto.coordinates.isNotEmpty) {
+      for (var p in dto.coordinates) {
+        lat += p.latitude;
+        lng += p.longitude;
+      }
+      lat /= dto.coordinates.length;
+      lng /= dto.coordinates.length;
+    }
+
+    return CropField(
+      id: dto.id.toString(),
+      name: dto.name,
+      cropType: dto.cropType ?? 'Chưa xác định',
+      area: dto.areaSize ?? 0.0,
+      ndviValue: 0.0, // Initial value
+      trendDirection: 'stable',
+      lastUpdated: DateTime.now(),
+      ndviHistory: [],
+      imageUrl: '',
+      polygonPoints: dto.coordinates,
+      center: LatLng(lat, lng),
+    );
+  }
+
+  String _getNdviStatus(double value) {
+    if (value < 0.2) return 'Kém';
+    if (value < 0.4) return 'Trung bình';
+    if (value < 0.6) return 'Khá';
+    if (value < 0.8) return 'Tốt';
+    return 'Rất tốt';
   }
 
   // Actions
   void selectField(CropField? field) {
     _selectedField = field;
+    if (field != null) {
+      _fetchSatelliteData(field);
+    }
     notifyListeners();
   }
 
