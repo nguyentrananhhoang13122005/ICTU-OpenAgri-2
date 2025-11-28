@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:openagri_app/viewmodels/commodity_price_viewmodel.dart';
+import 'package:openagri_app/viewmodels/dashboard_viewmodel.dart';
+import 'package:openagri_app/viewmodels/disease_scan_viewmodel.dart';
+import 'package:openagri_app/viewmodels/farm_map_viewmodel.dart';
 import 'package:openagri_app/viewmodels/login_viewmodel.dart';
+import 'package:openagri_app/viewmodels/satellite_monitoring_viewmodel.dart';
+import 'package:openagri_app/viewmodels/weather_viewmodel.dart';
 import 'package:openagri_app/views/login_view.dart';
 import 'package:provider/provider.dart';
+
 import 'screens/main_layout.dart';
 
 void main() async {
@@ -20,7 +26,12 @@ class AgriTechApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => LoginViewModel()),
+        ChangeNotifierProvider(create: (_) => DashboardViewModel()),
+        ChangeNotifierProvider(create: (_) => FarmMapViewModel()),
+        ChangeNotifierProvider(create: (_) => DiseaseScanViewModel()),
+        ChangeNotifierProvider(create: (_) => SatelliteMonitoringViewModel()),
         ChangeNotifierProvider(create: (_) => CommodityPriceViewModel()),
+        ChangeNotifierProvider(create: (_) => WeatherViewModel()),
       ],
       child: MaterialApp(
         title: 'AgriSmart - Nông Nghiệp Thông Minh',
