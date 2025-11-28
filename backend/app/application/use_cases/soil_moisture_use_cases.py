@@ -45,7 +45,7 @@ class CalculateSoilMoistureUseCase:
             out_tif = os.path.join(settings.OUTPUT_DIR, f'soil_moisture_{uuid.uuid4().hex}.tif')
             
             # Compute
-            _, mean_val = compute_soil_moisture_proxy(vv_path, out_tif)
+            _, mean_val = compute_soil_moisture_proxy(vv_path, out_tif, bbox=req.bbox)
 
             # Convert to Base64 PNG
             img_base64 = convert_tiff_to_base64_png(out_tif, colormap='Blues', vmin=0, vmax=1)
