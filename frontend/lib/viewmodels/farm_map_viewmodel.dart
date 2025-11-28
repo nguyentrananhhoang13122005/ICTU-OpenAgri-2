@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
 import '../models/crop_field.dart';
+import '../services/location_service.dart';
 
 class FarmMapViewModel extends ChangeNotifier {
+  final LocationService _locationService = LocationService();
   List<CropField> _fields = [];
   CropField? _selectedField;
   List<LatLng> _newFieldPoints = [];
   bool _isDrawingMode = false;
   bool _isDrawingComplete = false;
+  LatLng? _currentLocation;
 
   // Getters
   List<CropField> get fields => _fields;
@@ -15,11 +18,21 @@ class FarmMapViewModel extends ChangeNotifier {
   List<LatLng> get newFieldPoints => _newFieldPoints;
   bool get isDrawingMode => _isDrawingMode;
   bool get isDrawingComplete => _isDrawingComplete;
+  LatLng? get currentLocation => _currentLocation;
 
   // Initialize
   void initData() {
     _fields = CropField.getMockFields();
+    _getCurrentLocation();
     notifyListeners();
+  }
+
+  Future<void> _getCurrentLocation() async {
+    final position = await _locationService.getCurrentLocation();
+    if (position != null) {
+      _currentLocation = LatLng(position.latitude, position.longitude);
+      notifyListeners();
+    }
   }
 
   // Selection
