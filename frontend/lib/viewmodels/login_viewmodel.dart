@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../screens/main_layout.dart';
+import '../services/auth_service.dart';
 import '../views/signup_view.dart';
 import 'signup_viewmodel.dart';
 
@@ -26,13 +27,11 @@ class LoginViewModel extends ChangeNotifier {
   // Validate email
   String? validateEmail(String? value) {
     if (value == null || value.isEmpty) {
-      return 'Vui lòng nhập email hoặc tên người dùng';
+      return 'Vui lòng nhập email';
     }
-    if (value.contains('@')) {
-      final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
-      if (!emailRegex.hasMatch(value)) {
-        return 'Email không hợp lệ';
-      }
+    final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+    if (!emailRegex.hasMatch(value)) {
+      return 'Email không hợp lệ';
     }
     return null;
   }
@@ -65,7 +64,7 @@ class LoginViewModel extends ChangeNotifier {
     notifyListeners();
 
     try {
-      await Future.delayed(const Duration(seconds: 2));
+      await AuthService().login(emailController.text, passwordController.text);
 
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -85,7 +84,7 @@ class LoginViewModel extends ChangeNotifier {
         );
       }
     } catch (e) {
-      _errorMessage = 'Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin.';
+      _errorMessage = e.toString().replaceAll('Exception: ', '');
     } finally {
       _isLoading = false;
       notifyListeners();
