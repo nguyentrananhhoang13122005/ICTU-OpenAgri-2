@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:openagri_app/viewmodels/commodity_price_viewmodel.dart';
 import 'package:openagri_app/viewmodels/login_viewmodel.dart';
+import 'package:openagri_app/viewmodels/admin_viewmodel.dart';
 import 'package:openagri_app/views/commodity_prices_list_view.dart';
 import 'package:openagri_app/views/dashboard_view.dart';
 import 'package:openagri_app/views/login_view.dart';
 import 'package:openagri_app/views/settings_view.dart';
+import 'package:openagri_app/screens/admin_panel_screen.dart';
 import 'package:provider/provider.dart';
 import 'screens/home_screen.dart';
 
@@ -24,6 +26,7 @@ class AgriTechApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => LoginViewModel()),
         ChangeNotifierProvider(create: (_) => CommodityPriceViewModel()),
+        ChangeNotifierProvider(create: (_) => AdminViewModel()),
       ],
       child: MaterialApp(
         title: 'AgriSmart - Nông Nghiệp Thông Minh',
@@ -37,6 +40,7 @@ class AgriTechApp extends StatelessWidget {
           '/commodity-prices': (context) => const CommodityPricesListView(),
           '/dashboard': (context) => const DashboardView(),
           '/settings': (context) => const SettingsView(),
+          '/admin': (context) => const AdminPanelScreen(),
         },
       ),
     );
