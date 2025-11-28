@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../screens/main_layout.dart';
 import '../services/auth_service.dart';
 
 class SignUpViewModel extends ChangeNotifier {
@@ -146,12 +147,17 @@ class SignUpViewModel extends ChangeNotifier {
           ),
         );
 
-        // Navigate to login screen
-        Navigator.pop(context);
+        // Navigate to HomeScreen after successful registration and login
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const MainLayout(),
+          ),
+          (route) => false,
+        );
       }
     } catch (e) {
-      _errorMessage = 'Đăng ký thất bại. ${e.toString()}';
-      notifyListeners();
+      _errorMessage = e.toString().replaceAll('Exception: ', '');
     } finally {
       _isLoading = false;
       notifyListeners();
