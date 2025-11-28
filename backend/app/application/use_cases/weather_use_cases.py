@@ -93,6 +93,7 @@ class GetWeatherForecastUseCase:
             hourly_weather_code = hourly.get("weather_code", [])
             hourly_wind_speed = hourly.get("wind_speed_10m", [])
             hourly_precipitation = hourly.get("precipitation", [])
+            hourly_soil_moisture = hourly.get("soil_moisture_0_to_1cm", [])
             
             hourly_weather_list = []
             for i in range(min(len(hourly_times), hours_ahead)):
@@ -103,7 +104,8 @@ class GetWeatherForecastUseCase:
                         relative_humidity_2m=int(hourly_humidity[i]) if i < len(hourly_humidity) else 0,
                         weather_code=int(hourly_weather_code[i]) if i < len(hourly_weather_code) else 0,
                         wind_speed_10m=hourly_wind_speed[i] if i < len(hourly_wind_speed) else 0.0,
-                        precipitation=hourly_precipitation[i] if i < len(hourly_precipitation) else 0.0
+                        precipitation=hourly_precipitation[i] if i < len(hourly_precipitation) else 0.0,
+                        soil_moisture_0_to_1cm=hourly_soil_moisture[i] if i < len(hourly_soil_moisture) else 0.0
                     )
                 )
             
