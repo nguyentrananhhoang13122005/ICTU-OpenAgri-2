@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.0] - 2025-11-28
+
 ### Added
 
 - **Backend**: Implemented **Soil Moisture** calculation from Sentinel-1 satellite data.
