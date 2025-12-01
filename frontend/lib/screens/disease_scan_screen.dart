@@ -1,26 +1,20 @@
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import '../widgets/app_navigation_bar.dart';
+import 'package:provider/provider.dart';
+import '../viewmodels/disease_scan_viewmodel.dart';
 
-class PlantHealthScreen extends StatefulWidget {
-  const PlantHealthScreen({super.key});
+class DiseaseScanScreen extends StatefulWidget {
+  const DiseaseScanScreen({super.key});
 
   @override
-  State<PlantHealthScreen> createState() => _PlantHealthScreenState();
+  State<DiseaseScanScreen> createState() => _DiseaseScanScreenState();
 }
 
-class _PlantHealthScreenState extends State<PlantHealthScreen>
+class _DiseaseScanScreenState extends State<DiseaseScanScreen>
     with SingleTickerProviderStateMixin {
-  final ImagePicker _picker = ImagePicker();
-  File? _selectedImage;
-  bool _isAnalyzing = false;
-  bool _hasResult = false;
-  double _analysisProgress = 0.0;
   late AnimationController _animationController;
-
-  // Mock result data (will be replaced with real ML model results)
-  Map<String, dynamic>? _analysisResult;
 
   @override
   void initState() {
@@ -37,116 +31,52 @@ class _PlantHealthScreenState extends State<PlantHealthScreen>
     super.dispose();
   }
 
-  Future<void> _pickImage(ImageSource source) async {
-    try {
-      final XFile? image = await _picker.pickImage(
-        source: source,
-        maxWidth: 1920,
-        maxHeight: 1080,
-        imageQuality: 85,
-      );
-
-      if (image != null) {
-        setState(() {
-          _selectedImage = File(image.path);
-          _hasResult = false;
-        });
-      }
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Lỗi khi chọn ảnh: $e')),
-      );
-    }
-  }
-
-  Future<void> _analyzeImage() async {
-    if (_selectedImage == null) return;
-
-    setState(() {
-      _isAnalyzing = true;
-      _hasResult = false;
-      _analysisProgress = 0.0;
-    });
-
-    // Simulate analysis progress
-    for (int i = 0; i <= 100; i += 5) {
-      await Future.delayed(const Duration(milliseconds: 150));
-      if (mounted) {
-        setState(() {
-          _analysisProgress = i / 100;
-        });
-      }
-    }
-
-    // Mock ML result (replace with actual ML model API call)
-    await Future.delayed(const Duration(milliseconds: 500));
-    
-    setState(() {
-      _isAnalyzing = false;
-      _hasResult = true;
-      _analysisResult = {
-        'disease_name': 'Đạo ôn lúa',
-        'confidence': 0.98,
-        'severity': 'Trung bình',
-        'description':
-            'Đạo ôn lúa là bệnh do nấm Pyricularia oryzae gây ra, thường xuất hiện khi độ ẩm cao và nhiệt độ từ 25-28°C.',
-        'symptoms': [
-          'Lá có các đốm màu nâu, hình thoi',
-          'Đốm lan rộng và làm lá chết',
-          'Cổ bông bị gãy, hạt lép',
-        ],
-        'treatment': [
-          'Phun thuốc Tricyclazole 75% WP (3-4g/lít nước)',
-          'Sử dụng Isoprothiolane 40% EC',
-          'Tăng cường thông thoáng ruộng',
-          'Bón phân cân đối, tránh bón quá nhiều đạm',
-        ],
-        'prevention': [
-          'Chọn giống kháng bệnh',
-          'Luân canh cây trồng',
-          'Làm sạch cỏ dại và tàn dư cây trồng',
-          'Quản lý nước tưới hợp lý',
-        ],
-      };
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFFF6F8F6),
-      appBar: const AppNavigationBar(currentIndex: 4),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              _buildHeader(),
-              const SizedBox(height: 24),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: Column(
-                  children: [
-                    _buildUploadSection(),
-                    if (_selectedImage != null) ...[
-                      const SizedBox(height: 24),
-                      _buildImagePreview(),
-                    ],
-                    if (_isAnalyzing) ...[
-                      const SizedBox(height: 32),
-                      _buildAnalysisSection(),
-                    ],
-                    if (_hasResult && _analysisResult != null) ...[
-                      const SizedBox(height: 32),
-                      _buildResultSection(),
-                    ],
-                    const SizedBox(height: 40),
-                  ],
-                ),
-              ),
-            ],
+    return Consumer<DiseaseScanViewModel>(
+      builder: (context, viewModel, child) {
+        return Scaffold(
+          backgroundColor: const Color(0xFFF6F8F6),
+          appBar: AppBar(
+            title: const Text('Chẩn đoán bệnh'),
+            backgroundColor: Colors.white,
+            surfaceTintColor: Colors.transparent,
+            automaticallyImplyLeading: false,
           ),
-        ),
-      ),
+          body: SafeArea(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  _buildHeader(),
+                  const SizedBox(height: 24),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    child: Column(
+                      children: [
+                        _buildUploadSection(viewModel),
+                        if (viewModel.selectedImage != null) ...[
+                          const SizedBox(height: 24),
+                          _buildImagePreview(viewModel),
+                        ],
+                        if (viewModel.isAnalyzing) ...[
+                          const SizedBox(height: 32),
+                          _buildAnalysisSection(viewModel),
+                        ],
+                        if (viewModel.hasResult &&
+                            viewModel.analysisResult != null) ...[
+                          const SizedBox(height: 32),
+                          _buildResultSection(viewModel),
+                        ],
+                        const SizedBox(height: 40),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 
@@ -203,7 +133,7 @@ class _PlantHealthScreenState extends State<PlantHealthScreen>
     );
   }
 
-  Widget _buildUploadSection() {
+  Widget _buildUploadSection(DiseaseScanViewModel viewModel) {
     return Container(
       padding: const EdgeInsets.all(32),
       decoration: BoxDecoration(
@@ -250,7 +180,7 @@ class _PlantHealthScreenState extends State<PlantHealthScreen>
                 child: _buildActionButton(
                   icon: Icons.photo_library_outlined,
                   label: 'Chọn ảnh',
-                  onPressed: () => _pickImage(ImageSource.gallery),
+                  onPressed: () => viewModel.pickImage(ImageSource.gallery),
                 ),
               ),
               const SizedBox(width: 16),
@@ -258,7 +188,7 @@ class _PlantHealthScreenState extends State<PlantHealthScreen>
                 child: _buildActionButton(
                   icon: Icons.camera_alt_outlined,
                   label: 'Chụp ảnh',
-                  onPressed: () => _pickImage(ImageSource.camera),
+                  onPressed: () => viewModel.pickImage(ImageSource.camera),
                   isPrimary: true,
                 ),
               ),
@@ -319,7 +249,7 @@ class _PlantHealthScreenState extends State<PlantHealthScreen>
     );
   }
 
-  Widget _buildImagePreview() {
+  Widget _buildImagePreview(DiseaseScanViewModel viewModel) {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -337,25 +267,26 @@ class _PlantHealthScreenState extends State<PlantHealthScreen>
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(12),
-            child: Image.file(
-              _selectedImage!,
-              height: 300,
-              width: double.infinity,
-              fit: BoxFit.cover,
-            ),
+            child: kIsWeb
+                ? Image.network(
+                    viewModel.selectedImage!.path,
+                    height: 300,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                  )
+                : Image.file(
+                    File(viewModel.selectedImage!.path),
+                    height: 300,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                  ),
           ),
           const SizedBox(height: 16),
           Row(
             children: [
               Expanded(
                 child: OutlinedButton.icon(
-                  onPressed: () {
-                    setState(() {
-                      _selectedImage = null;
-                      _hasResult = false;
-                      _analysisResult = null;
-                    });
-                  },
+                  onPressed: viewModel.clearImage,
                   icon: const Icon(Icons.close, size: 18),
                   label: const Text('Hủy'),
                   style: OutlinedButton.styleFrom(
@@ -369,7 +300,8 @@ class _PlantHealthScreenState extends State<PlantHealthScreen>
               Expanded(
                 flex: 2,
                 child: ElevatedButton.icon(
-                  onPressed: _isAnalyzing ? null : _analyzeImage,
+                  onPressed:
+                      viewModel.isAnalyzing ? null : viewModel.analyzeImage,
                   icon: const Icon(Icons.analytics_outlined, size: 20),
                   label: const Text('Phân tích ngay'),
                   style: ElevatedButton.styleFrom(
@@ -387,7 +319,7 @@ class _PlantHealthScreenState extends State<PlantHealthScreen>
     );
   }
 
-  Widget _buildAnalysisSection() {
+  Widget _buildAnalysisSection(DiseaseScanViewModel viewModel) {
     return Container(
       padding: const EdgeInsets.all(32),
       decoration: BoxDecoration(
@@ -403,31 +335,14 @@ class _PlantHealthScreenState extends State<PlantHealthScreen>
       ),
       child: Column(
         children: [
-          SizedBox(
-            width: 120,
-            height: 120,
-            child: Stack(
-              alignment: Alignment.center,
-              children: [
-                RotationTransition(
-                  turns: _animationController,
-                  child: CircularProgressIndicator(
-                    value: null,
-                    strokeWidth: 8,
-                    valueColor: const AlwaysStoppedAnimation<Color>(
-                      Color(0xFF0BDA50),
-                    ),
-                  ),
-                ),
-                Text(
-                  '${(_analysisProgress * 100).toInt()}%',
-                  style: const TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFF0BDA50),
-                  ),
-                ),
-              ],
+          const SizedBox(
+            width: 80,
+            height: 80,
+            child: CircularProgressIndicator(
+              strokeWidth: 6,
+              valueColor: AlwaysStoppedAnimation<Color>(
+                Color(0xFF0BDA50),
+              ),
             ),
           ),
           const SizedBox(height: 24),
@@ -453,9 +368,25 @@ class _PlantHealthScreenState extends State<PlantHealthScreen>
     );
   }
 
-  Widget _buildResultSection() {
-    final result = _analysisResult!;
-    final confidence = (result['confidence'] * 100).toInt();
+  Widget _buildResultSection(DiseaseScanViewModel viewModel) {
+    final result = viewModel.analysisResult!;
+    final confidence = (result.confidence * 100).toInt();
+
+    Color severityColor;
+    switch (result.severity?.toLowerCase()) {
+      case 'thấp':
+        severityColor = const Color(0xFF0BDA50);
+        break;
+      case 'trung bình':
+        severityColor = const Color(0xFFFFA000);
+        break;
+      case 'cao':
+      case 'rất cao':
+        severityColor = const Color(0xFFFF5252);
+        break;
+      default:
+        severityColor = const Color(0xFFFFA000);
+    }
 
     return Column(
       children: [
@@ -467,13 +398,13 @@ class _PlantHealthScreenState extends State<PlantHealthScreen>
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
               colors: [
-                _getSeverityColor(result['severity']).withValues(alpha: 0.1),
-                _getSeverityColor(result['severity']).withValues(alpha: 0.05),
+                severityColor.withValues(alpha: 0.1),
+                severityColor.withValues(alpha: 0.05),
               ],
             ),
             borderRadius: BorderRadius.circular(20),
             border: Border.all(
-              color: _getSeverityColor(result['severity']),
+              color: severityColor,
               width: 2,
             ),
           ),
@@ -484,13 +415,12 @@ class _PlantHealthScreenState extends State<PlantHealthScreen>
                   Container(
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
-                      color: _getSeverityColor(result['severity'])
-                          .withValues(alpha: 0.2),
+                      color: severityColor.withValues(alpha: 0.2),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Icon(
                       Icons.warning_amber_rounded,
-                      color: _getSeverityColor(result['severity']),
+                      color: severityColor,
                       size: 32,
                     ),
                   ),
@@ -508,7 +438,7 @@ class _PlantHealthScreenState extends State<PlantHealthScreen>
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          result['disease_name'],
+                          result.className,
                           style: const TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
@@ -535,9 +465,9 @@ class _PlantHealthScreenState extends State<PlantHealthScreen>
                   Expanded(
                     child: _buildMetricCard(
                       'Mức độ',
-                      result['severity'],
+                      result.severity ?? 'Chưa xác định',
                       Icons.insights,
-                      _getSeverityColor(result['severity']),
+                      severityColor,
                     ),
                   ),
                 ],
@@ -547,50 +477,26 @@ class _PlantHealthScreenState extends State<PlantHealthScreen>
         ),
         const SizedBox(height: 24),
 
-        // Description Card
-        _buildInfoCard(
-          title: 'Mô tả bệnh',
-          icon: Icons.description_outlined,
-          content: result['description'],
-        ),
-        const SizedBox(height: 16),
+        // Detailed Info
+        if (result.description != null)
+          _buildInfoCard('Mô tả', result.description!, Icons.info_outline),
 
-        // Symptoms Card
-        _buildListCard(
-          title: 'Triệu chứng',
-          icon: Icons.coronavirus_outlined,
-          items: List<String>.from(result['symptoms']),
-          color: const Color(0xFFEF4444),
-        ),
-        const SizedBox(height: 16),
+        if (result.symptoms != null && result.symptoms!.isNotEmpty)
+          _buildListCard('Triệu chứng', result.symptoms!, Icons.sick_outlined),
 
-        // Treatment Card
-        _buildListCard(
-          title: 'Cách điều trị',
-          icon: Icons.medical_services_outlined,
-          items: List<String>.from(result['treatment']),
-          color: const Color(0xFF3B82F6),
-        ),
-        const SizedBox(height: 16),
+        if (result.treatment != null && result.treatment!.isNotEmpty)
+          _buildListCard(
+              'Cách điều trị', result.treatment!, Icons.healing_outlined),
 
-        // Prevention Card
-        _buildListCard(
-          title: 'Biện pháp phòng ngừa',
-          icon: Icons.shield_outlined,
-          items: List<String>.from(result['prevention']),
-          color: const Color(0xFF10B981),
-        ),
+        if (result.prevention != null && result.prevention!.isNotEmpty)
+          _buildListCard(
+              'Cách phòng ngừa', result.prevention!, Icons.shield_outlined),
+
         const SizedBox(height: 24),
 
         // Action Buttons
         ElevatedButton.icon(
-          onPressed: () {
-            setState(() {
-              _selectedImage = null;
-              _hasResult = false;
-              _analysisResult = null;
-            });
-          },
+          onPressed: viewModel.clearImage,
           icon: const Icon(Icons.refresh, size: 20),
           label: const Text('Phân tích ảnh khác'),
           style: ElevatedButton.styleFrom(
@@ -604,6 +510,111 @@ class _PlantHealthScreenState extends State<PlantHealthScreen>
           ),
         ),
       ],
+    );
+  }
+
+  Widget _buildInfoCard(String title, String content, IconData icon) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 16),
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.05),
+            blurRadius: 20,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(icon, color: const Color(0xFF0BDA50)),
+              const SizedBox(width: 8),
+              Text(
+                title,
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF111813),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          Text(
+            content,
+            style: TextStyle(
+              fontSize: 14,
+              color: Colors.grey.shade700,
+              height: 1.5,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildListCard(String title, List<String> items, IconData icon) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 16),
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.05),
+            blurRadius: 20,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(icon, color: const Color(0xFF0BDA50)),
+              const SizedBox(width: 8),
+              Text(
+                title,
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF111813),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          ...items.map((item) => Padding(
+                padding: const EdgeInsets.only(bottom: 8),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text('• ',
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold)),
+                    Expanded(
+                      child: Text(
+                        item,
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.grey.shade700,
+                          height: 1.5,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              )),
+        ],
+      ),
     );
   }
 
@@ -644,141 +655,4 @@ class _PlantHealthScreenState extends State<PlantHealthScreen>
       ),
     );
   }
-
-  Widget _buildInfoCard({
-    required String title,
-    required IconData icon,
-    required String content,
-  }) {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Icon(icon, color: const Color(0xFF0BDA50), size: 24),
-              const SizedBox(width: 12),
-              Text(
-                title,
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFF111813),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 12),
-          Text(
-            content,
-            style: TextStyle(
-              fontSize: 14,
-              color: Colors.grey.shade700,
-              height: 1.5,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildListCard({
-    required String title,
-    required IconData icon,
-    required List<String> items,
-    required Color color,
-  }) {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Icon(icon, color: color, size: 24),
-              const SizedBox(width: 12),
-              Text(
-                title,
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFF111813),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 16),
-          ...items.map(
-            (item) => Padding(
-              padding: const EdgeInsets.only(bottom: 12),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    margin: const EdgeInsets.only(top: 6),
-                    width: 6,
-                    height: 6,
-                    decoration: BoxDecoration(
-                      color: color,
-                      shape: BoxShape.circle,
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Text(
-                      item,
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.grey.shade700,
-                        height: 1.5,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Color _getSeverityColor(String severity) {
-    switch (severity.toLowerCase()) {
-      case 'cao':
-      case 'nghiêm trọng':
-        return const Color(0xFFEF4444);
-      case 'trung bình':
-        return const Color(0xFFFBBF24);
-      case 'thấp':
-      case 'nhẹ':
-        return const Color(0xFF10B981);
-      default:
-        return const Color(0xFF608a6e);
-    }
-  }
 }
-

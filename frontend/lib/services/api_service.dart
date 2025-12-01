@@ -34,7 +34,7 @@ class ApiService {
           // if (token != null) {
           //   options.headers['Authorization'] = 'Bearer $token';
           // }
-          
+
           if (kDebugMode) {
             print('REQUEST[${options.method}] => PATH: ${options.path}');
           }
@@ -42,13 +42,15 @@ class ApiService {
         },
         onResponse: (response, handler) {
           if (kDebugMode) {
-            print('RESPONSE[${response.statusCode}] => PATH: ${response.requestOptions.path}');
+            print(
+                'RESPONSE[${response.statusCode}] => PATH: ${response.requestOptions.path}');
           }
           return handler.next(response);
         },
         onError: (DioException e, handler) {
           if (kDebugMode) {
-            print('ERROR[${e.response?.statusCode}] => PATH: ${e.requestOptions.path}');
+            print(
+                'ERROR[${e.response?.statusCode}] => PATH: ${e.requestOptions.path}');
           }
           return handler.next(e);
         },
@@ -59,7 +61,8 @@ class ApiService {
   Dio get client => _dio;
 
   // Helper methods for common requests
-  Future<Response> get(String path, {Map<String, dynamic>? queryParameters}) async {
+  Future<Response> get(String path,
+      {Map<String, dynamic>? queryParameters}) async {
     try {
       return await _dio.get(path, queryParameters: queryParameters);
     } catch (e) {
@@ -67,15 +70,18 @@ class ApiService {
     }
   }
 
-  Future<Response> post(String path, {dynamic data, Map<String, dynamic>? queryParameters}) async {
+  Future<Response> post(String path,
+      {dynamic data, Map<String, dynamic>? queryParameters}) async {
     try {
-      return await _dio.post(path, data: data, queryParameters: queryParameters);
+      return await _dio.post(path,
+          data: data, queryParameters: queryParameters);
     } catch (e) {
       rethrow;
     }
   }
 
-  Future<Response> put(String path, {dynamic data, Map<String, dynamic>? queryParameters}) async {
+  Future<Response> put(String path,
+      {dynamic data, Map<String, dynamic>? queryParameters}) async {
     try {
       return await _dio.put(path, data: data, queryParameters: queryParameters);
     } catch (e) {
@@ -83,9 +89,11 @@ class ApiService {
     }
   }
 
-  Future<Response> delete(String path, {dynamic data, Map<String, dynamic>? queryParameters}) async {
+  Future<Response> delete(String path,
+      {dynamic data, Map<String, dynamic>? queryParameters}) async {
     try {
-      return await _dio.delete(path, data: data, queryParameters: queryParameters);
+      return await _dio.delete(path,
+          data: data, queryParameters: queryParameters);
     } catch (e) {
       rethrow;
     }

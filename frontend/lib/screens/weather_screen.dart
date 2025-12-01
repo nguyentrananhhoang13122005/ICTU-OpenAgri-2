@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:intl/intl.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:provider/provider.dart';
 
-import '../services/weather_service.dart';
-import '../widgets/app_navigation_bar.dart';
+import '../viewmodels/weather_viewmodel.dart';
 
 class WeatherScreen extends StatefulWidget {
   const WeatherScreen({super.key});
@@ -14,160 +14,129 @@ class WeatherScreen extends StatefulWidget {
 }
 
 class _WeatherScreenState extends State<WeatherScreen> {
-  final WeatherService _weatherService = WeatherService();
   final MapController _mapController = MapController();
-  
-  // State
-  bool _isLoading = true;
-  String _locationName = "Đang tải...";
-  Map<String, dynamic>? _weatherData;
-  List<Map<String, dynamic>> _searchResults = [];
-  bool _showSearchResults = false;
   final TextEditingController _searchController = TextEditingController();
-  
-  // Default location (Hanoi)
-  LatLng _currentLocation = const LatLng(21.0285, 105.8542);
-  String _forecastTab = 'hourly'; // hourly, daily, weekly
 
   @override
   void initState() {
     super.initState();
-    _initWeather();
-  }
-
-  Future<void> _initWeather() async {
-    setState(() => _isLoading = true);
-    try {
-      final position = await _weatherService.getCurrentLocation();
-      _currentLocation = LatLng(position.latitude, position.longitude);
-      _locationName = "Vị trí hiện tại"; // Will update with reverse geocoding if available or just generic
-      
-      await _fetchWeather(_currentLocation.latitude, _currentLocation.longitude);
-    } catch (e) {
-      print('Error initializing weather: $e');
-      // Fallback to default location
-      await _fetchWeather(_currentLocation.latitude, _currentLocation.longitude);
-    }
-  }
-
-  Future<void> _fetchWeather(double lat, double lon) async {
-    try {
-      final data = await _weatherService.getWeatherData(lat, lon);
-      setState(() {
-        _weatherData = data;
-        _isLoading = false;
-      });
-      
-      // Move map
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-         _mapController.move(LatLng(lat, lon), 13);
-      });
-      
-    } catch (e) {
-      setState(() => _isLoading = false);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Không thể tải dữ liệu thời tiết: $e')),
-      );
-    }
-  }
-
-  Future<void> _searchLocation(String query) async {
-    if (query.isEmpty) return;
-    final results = await _weatherService.searchLocation(query);
-    setState(() {
-      _searchResults = results;
-      _showSearchResults = true;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<WeatherViewModel>().initWeather();
     });
-  }
-
-  void _selectLocation(Map<String, dynamic> location) {
-    final lat = location['lat'];
-    final lon = location['lon'];
-    final name = location['name'];
-    
-    setState(() {
-      _currentLocation = LatLng(lat, lon);
-      _locationName = name;
-      _showSearchResults = false;
-      _searchController.text = name;
-      _searchResults = [];
-      _isLoading = true;
-    });
-    
-    _fetchWeather(lat, lon);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF6F8F6),
-      appBar: const AppNavigationBar(currentIndex: 2),
-      body: _isLoading 
-          ? const Center(child: CircularProgressIndicator(color: Color(0xFF0BDA50)))
-          : SafeArea(
-              child: Stack(
-                children: [
-                  SingleChildScrollView(
-                    child: Padding(
-                      padding: const EdgeInsets.all(24.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          _buildHeader(),
-                          const SizedBox(height: 24),
-                          if (_weatherData != null) ...[
-                            _buildCurrentWeatherCard(),
-                            const SizedBox(height: 24),
-                            _buildDetailsGrid(),
-                            const SizedBox(height: 24),
-                            _buildForecastSection(),
-                            const SizedBox(height: 24),
-                            _buildMapSection(),
-                            const SizedBox(height: 24),
-                            _buildAdviceSection(),
-                          ],
-                        ],
-                      ),
-                    ),
-                  ),
-                  if (_showSearchResults)
-                    Positioned(
-                      top: 80,
-                      left: 24,
-                      right: 24,
-                      child: Card(
-                        elevation: 4,
-                        child: Container(
-                          constraints: const BoxConstraints(maxHeight: 200),
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: _searchResults.length,
-                            itemBuilder: (context, index) {
-                              final result = _searchResults[index];
-                              return ListTile(
-                                title: Text(result['name']),
-                                subtitle: Text('${result['city']}, ${result['country']}'),
-                                onTap: () => _selectLocation(result),
-                              );
-                            },
+      body: Consumer<WeatherViewModel>(
+        builder: (context, viewModel, child) {
+          // Listen for error messages
+          if (viewModel.errorMessage != null) {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(viewModel.errorMessage!)),
+              );
+              viewModel.clearErrorMessage();
+            });
+          }
+
+          // Move map when location changes
+          // Note: This might be called frequently, so we should check if it's needed
+          // Ideally, we should use a listener, but for now this works if we check distance
+          // or just let it move. To avoid loop, we can check if map center is different.
+          // However, mapController.move is safe to call.
+          // Better approach: Use a listener in initState on the viewModel.
+
+          return viewModel.isLoading
+              ? const Center(
+                  child: CircularProgressIndicator(color: Color(0xFF0BDA50)))
+              : SafeArea(
+                  child: Stack(
+                    children: [
+                      SingleChildScrollView(
+                        child: Padding(
+                          padding: const EdgeInsets.all(24.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              _buildHeader(viewModel),
+                              const SizedBox(height: 24),
+                              if (viewModel.weatherData != null) ...[
+                                _buildCurrentWeatherCard(viewModel),
+                                const SizedBox(height: 24),
+                                _buildDetailsGrid(viewModel),
+                                const SizedBox(height: 24),
+                                _buildForecastSection(viewModel),
+                                const SizedBox(height: 24),
+                                _buildMapSection(viewModel),
+                                const SizedBox(height: 24),
+                                _buildAdviceSection(),
+                              ],
+                            ],
                           ),
                         ),
                       ),
-                    ),
-                ],
-              ),
-            ),
+                      if (viewModel.showSearchResults)
+                        Positioned(
+                          top: 80,
+                          left: 24,
+                          right: 24,
+                          child: Card(
+                            elevation: 4,
+                            child: Container(
+                              constraints: const BoxConstraints(maxHeight: 200),
+                              child: ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: viewModel.searchResults.length,
+                                itemBuilder: (context, index) {
+                                  final result = viewModel.searchResults[index];
+                                  return ListTile(
+                                    title: Text(result['name']),
+                                    subtitle: Text(
+                                        '${result['city']}, ${result['country']}'),
+                                    onTap: () {
+                                      viewModel.selectLocation(result);
+                                      _searchController.text = result['name'];
+                                      _mapController.move(
+                                          LatLng(result['lat'], result['lon']),
+                                          13);
+                                    },
+                                  );
+                                },
+                              ),
+                            ),
+                          ),
+                        ),
+                    ],
+                  ),
+                );
+        },
+      ),
     );
   }
 
-  Widget _buildHeader() {
+  Widget _buildHeader(WeatherViewModel viewModel) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-             const Expanded(
+            GestureDetector(
+              onTap: () => Navigator.pop(context),
+              child: Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: Colors.grey.shade200),
+                ),
+                child: const Icon(Icons.arrow_back_ios_new,
+                    size: 20, color: Color(0xFF111813)),
+              ),
+            ),
+            const SizedBox(width: 16),
+            const Expanded(
               child: Text(
                 'Dự Báo Thời Tiết',
                 style: TextStyle(
@@ -181,6 +150,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
             ),
           ],
         ),
+        const SizedBox(height: 8),
         const Text(
           'Thông tin thời tiết nông nghiệp chi tiết và chính xác',
           style: TextStyle(
@@ -201,7 +171,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
                 ),
                 child: TextField(
                   controller: _searchController,
-                  onSubmitted: _searchLocation,
+                  onSubmitted: (query) => viewModel.searchLocation(query),
                   decoration: const InputDecoration(
                     hintText: 'Tìm kiếm địa điểm...',
                     border: InputBorder.none,
@@ -237,10 +207,10 @@ class _WeatherScreenState extends State<WeatherScreen> {
     );
   }
 
-  Widget _buildCurrentWeatherCard() {
-    final current = _weatherData!['current'];
+  Widget _buildCurrentWeatherCard(WeatherViewModel viewModel) {
+    final current = viewModel.weatherData!['current'];
     final weatherCode = current['weather_code'];
-    final weatherInfo = _weatherService.getWeatherInfo(weatherCode);
+    final weatherInfo = viewModel.getWeatherInfo(weatherCode);
     final now = DateTime.now();
     final dateStr = DateFormat('EEEE, dd/MM/yyyy - HH:mm', 'vi').format(now);
 
@@ -266,7 +236,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    _locationName,
+                    viewModel.locationName,
                     style: const TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
@@ -317,8 +287,8 @@ class _WeatherScreenState extends State<WeatherScreen> {
     );
   }
 
-  Widget _buildDetailsGrid() {
-    final current = _weatherData!['current'];
+  Widget _buildDetailsGrid(WeatherViewModel viewModel) {
+    final current = viewModel.weatherData!['current'];
     return GridView.count(
       crossAxisCount: 2,
       shrinkWrap: true,
@@ -327,15 +297,20 @@ class _WeatherScreenState extends State<WeatherScreen> {
       crossAxisSpacing: 12,
       mainAxisSpacing: 12,
       children: [
-        _buildDetailItem(Icons.thermostat, 'Cảm giác như', '${current['apparent_temperature']}°C', Colors.green),
-        _buildDetailItem(Icons.water_drop, 'Độ ẩm', '${current['relative_humidity_2m']}%', Colors.blue),
-        _buildDetailItem(Icons.air, 'Gió', '${current['wind_speed_10m']} km/h', Colors.grey),
-        _buildDetailItem(Icons.umbrella, 'Khả năng mưa', '${current['precipitation'] ?? 0}%', Colors.purple),
+        _buildDetailItem(Icons.thermostat, 'Cảm giác như',
+            '${current['apparent_temperature']}°C', Colors.green),
+        _buildDetailItem(Icons.water_drop, 'Độ ẩm',
+            '${current['relative_humidity_2m']}%', Colors.blue),
+        _buildDetailItem(
+            Icons.air, 'Gió', '${current['wind_speed_10m']} km/h', Colors.grey),
+        _buildDetailItem(Icons.umbrella, 'Khả năng mưa',
+            '${current['precipitation'] ?? 0}%', Colors.purple),
       ],
     );
   }
 
-  Widget _buildDetailItem(IconData icon, String label, String value, Color color) {
+  Widget _buildDetailItem(
+      IconData icon, String label, String value, Color color) {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
@@ -373,7 +348,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
     );
   }
 
-  Widget _buildForecastSection() {
+  Widget _buildForecastSection(WeatherViewModel viewModel) {
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
@@ -408,8 +383,8 @@ class _WeatherScreenState extends State<WeatherScreen> {
                 ),
                 child: Row(
                   children: [
-                    _buildTabButton('hourly', 'Hàng giờ'),
-                    _buildTabButton('daily', 'Hàng ngày'),
+                    _buildTabButton(viewModel, 'hourly', 'Hàng giờ'),
+                    _buildTabButton(viewModel, 'daily', 'Hàng ngày'),
                   ],
                 ),
               ),
@@ -418,56 +393,61 @@ class _WeatherScreenState extends State<WeatherScreen> {
           const SizedBox(height: 24),
           SizedBox(
             height: 140,
-            child: _forecastTab == 'hourly' ? _buildHourlyForecast() : _buildDailyForecast(),
+            child: viewModel.forecastTab == 'hourly'
+                ? _buildHourlyForecast(viewModel)
+                : _buildDailyForecast(viewModel),
           ),
         ],
       ),
     );
   }
-  
-  Widget _buildTabButton(String id, String label) {
-    final isSelected = _forecastTab == id;
+
+  Widget _buildTabButton(WeatherViewModel viewModel, String id, String label) {
+    final isSelected = viewModel.forecastTab == id;
     return GestureDetector(
-      onTap: () => setState(() => _forecastTab = id),
+      onTap: () => viewModel.setForecastTab(id),
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
         decoration: BoxDecoration(
           color: isSelected ? Colors.white : Colors.transparent,
           borderRadius: BorderRadius.circular(6),
-          boxShadow: isSelected ? [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.1),
-              blurRadius: 2,
-            )
-          ] : [],
+          boxShadow: isSelected
+              ? [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.1),
+                    blurRadius: 2,
+                  )
+                ]
+              : [],
         ),
         child: Text(
           label,
           style: TextStyle(
             fontSize: 12,
             fontWeight: FontWeight.w600,
-            color: isSelected ? const Color(0xFF111813) : const Color(0xFF61896F),
+            color:
+                isSelected ? const Color(0xFF111813) : const Color(0xFF61896F),
           ),
         ),
       ),
     );
   }
 
-  Widget _buildHourlyForecast() {
-    final hourly = _weatherData!['hourly'];
+  Widget _buildHourlyForecast(WeatherViewModel viewModel) {
+    final hourly = viewModel.weatherData!['hourly'];
     final times = hourly['time'] as List;
     final temps = hourly['temperature_2m'] as List;
     final codes = hourly['weather_code'] as List;
     final probs = hourly['precipitation_probability'] as List;
-    
+
     // Get next 24 hours starting from current hour
     final now = DateTime.now();
     final currentHour = now.hour;
-    
+
     // Find index of current hour (simplified)
     int startIndex = 0;
-    for(int i=0; i<times.length; i++) {
-      if(DateTime.parse(times[i]).hour == currentHour) {
+    for (int i = 0; i < times.length; i++) {
+      if (DateTime.parse(times[i]).hour == currentHour) {
         startIndex = i;
         break;
       }
@@ -479,13 +459,13 @@ class _WeatherScreenState extends State<WeatherScreen> {
       separatorBuilder: (_, __) => const SizedBox(width: 12),
       itemBuilder: (context, index) {
         final i = startIndex + index;
-        if(i >= times.length) return const SizedBox();
-        
+        if (i >= times.length) return const SizedBox();
+
         final time = DateTime.parse(times[i]);
         final temp = temps[i];
         final code = codes[i];
         final prob = probs[i];
-        final weatherInfo = _weatherService.getWeatherInfo(code);
+        final weatherInfo = viewModel.getWeatherInfo(code);
 
         return Container(
           width: 80,
@@ -499,12 +479,14 @@ class _WeatherScreenState extends State<WeatherScreen> {
             children: [
               Text(
                 '${time.hour}:00',
-                style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
+                style:
+                    const TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
               ),
               _getWeatherIcon(weatherInfo['icon'], 32),
               Text(
                 '$temp°',
-                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                style:
+                    const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -522,9 +504,9 @@ class _WeatherScreenState extends State<WeatherScreen> {
       },
     );
   }
-  
-  Widget _buildDailyForecast() {
-    final daily = _weatherData!['daily'];
+
+  Widget _buildDailyForecast(WeatherViewModel viewModel) {
+    final daily = viewModel.weatherData!['daily'];
     final times = daily['time'] as List;
     final maxTemps = daily['temperature_2m_max'] as List;
     final minTemps = daily['temperature_2m_min'] as List;
@@ -541,9 +523,10 @@ class _WeatherScreenState extends State<WeatherScreen> {
         final minTemp = minTemps[index];
         final code = codes[index];
         final prob = probs[index];
-        final weatherInfo = _weatherService.getWeatherInfo(code);
-        
-        final dayName = index == 0 ? 'Hôm nay' : DateFormat('E', 'vi').format(time);
+        final weatherInfo = viewModel.getWeatherInfo(code);
+
+        final dayName =
+            index == 0 ? 'Hôm nay' : DateFormat('E', 'vi').format(time);
 
         return Container(
           width: 100,
@@ -557,12 +540,14 @@ class _WeatherScreenState extends State<WeatherScreen> {
             children: [
               Text(
                 dayName,
-                style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
+                style:
+                    const TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
               ),
               _getWeatherIcon(weatherInfo['icon'], 32),
               Text(
                 '$maxTemp° / $minTemp°',
-                style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                style:
+                    const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -581,13 +566,13 @@ class _WeatherScreenState extends State<WeatherScreen> {
     );
   }
 
-  Widget _buildMapSection() {
+  Widget _buildMapSection(WeatherViewModel viewModel) {
     return Container(
       height: 300,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
-           BoxShadow(
+          BoxShadow(
             color: Colors.black.withValues(alpha: 0.05),
             blurRadius: 10,
             offset: const Offset(0, 4),
@@ -598,7 +583,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
       child: FlutterMap(
         mapController: _mapController,
         options: MapOptions(
-          initialCenter: _currentLocation,
+          initialCenter: viewModel.currentLocation,
           initialZoom: 13.0,
         ),
         children: [
@@ -609,7 +594,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
           MarkerLayer(
             markers: [
               Marker(
-                point: _currentLocation,
+                point: viewModel.currentLocation,
                 width: 40,
                 height: 40,
                 child: const Icon(
@@ -644,7 +629,8 @@ class _WeatherScreenState extends State<WeatherScreen> {
               color: Colors.white,
               shape: BoxShape.circle,
             ),
-            child: const Icon(Icons.lightbulb, color: Color(0xFF0BDA50), size: 32),
+            child:
+                const Icon(Icons.lightbulb, color: Color(0xFF0BDA50), size: 32),
           ),
           const SizedBox(width: 16),
           const Expanded(
@@ -678,7 +664,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
   Widget _getWeatherIcon(String iconName, double size) {
     IconData iconData;
     Color color = Colors.orange;
-    
+
     switch (iconName) {
       case 'clear_day':
         iconData = Icons.wb_sunny;
@@ -712,8 +698,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
       default:
         iconData = Icons.wb_sunny;
     }
-    
+
     return Icon(iconData, size: size, color: color);
   }
 }
-

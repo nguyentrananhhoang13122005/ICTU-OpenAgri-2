@@ -1,8 +1,11 @@
-import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import '../models/dashboard_data.dart';
-import '../widgets/app_navigation_bar.dart';
+import 'package:provider/provider.dart';
+
+import '../viewmodels/dashboard_viewmodel.dart';
+import 'satellite_monitoring_screen.dart';
+import 'weather_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -16,16 +19,12 @@ class _DashboardScreenState extends State<DashboardScreen>
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
 
-  DashboardStats stats = DashboardStats.getMockData();
-  List<FieldStatus> fields = [];
-  List<ActivityLog> activities = [];
-  WeatherData weather = WeatherData.getMockData();
-
   @override
   void initState() {
     super.initState();
-    fields = FieldStatus.getMockList();
-    activities = ActivityLog.getMockList();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<DashboardViewModel>().initData();
+    });
 
     _animationController = AnimationController(
       vsync: this,
@@ -52,29 +51,49 @@ class _DashboardScreenState extends State<DashboardScreen>
 
     return Scaffold(
       backgroundColor: const Color(0xFFF5F8F6),
-      appBar: const AppNavigationBar(currentIndex: 0),
-      body: SafeArea(
-        child: FadeTransition(
-          opacity: _fadeAnimation,
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: isDesktop ? 40 : (isTablet ? 24 : 16),
-                vertical: isDesktop ? 32 : 24,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _buildHeader(),
-                  const SizedBox(height: 24),
-                  _buildStatsGrid(isDesktop, isTablet),
-                  const SizedBox(height: 24),
-                  _buildMainContent(isDesktop, isTablet),
-                ],
+      appBar: AppBar(
+        title: const Text('AgriSmart'),
+        automaticallyImplyLeading: false,
+        backgroundColor: Colors.white,
+        surfaceTintColor: Colors.transparent,
+      ),
+      body: Consumer<DashboardViewModel>(
+        builder: (context, viewModel, child) {
+          if (viewModel.isLoading) {
+            return const Center(
+              child: CircularProgressIndicator(color: Color(0xFF0BDA50)),
+            );
+          }
+
+          return SafeArea(
+            child: FadeTransition(
+              opacity: _fadeAnimation,
+              child: RefreshIndicator(
+                onRefresh: viewModel.refreshData,
+                color: const Color(0xFF0BDA50),
+                child: SingleChildScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: isDesktop ? 40 : (isTablet ? 24 : 16),
+                      vertical: isDesktop ? 32 : 24,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _buildHeader(),
+                        const SizedBox(height: 24),
+                        _buildStatsGrid(isDesktop, isTablet, viewModel),
+                        const SizedBox(height: 24),
+                        _buildMainContent(isDesktop, isTablet, viewModel),
+                      ],
+                    ),
+                  ),
+                ),
               ),
             ),
-          ),
-        ),
+          );
+        },
       ),
     );
   }
@@ -117,33 +136,42 @@ class _DashboardScreenState extends State<DashboardScreen>
     );
   }
 
-  Widget _buildStatsGrid(bool isDesktop, bool isTablet) {
+  Widget _buildStatsGrid(
+      bool isDesktop, bool isTablet, DashboardViewModel viewModel) {
     final stats = [
       _StatCardData(
         icon: Icons.agriculture,
         label: 'Tổng vùng trồng',
-        value: '${this.stats.totalFields}',
+        value: '${viewModel.stats.totalFields}',
         unit: 'vùng',
         color: const Color(0xFF0BDA50),
       ),
       _StatCardData(
         icon: Icons.terrain,
         label: 'Tổng diện tích',
-        value: '${this.stats.totalArea}',
+        value: '${viewModel.stats.totalArea}',
         unit: 'ha',
         color: const Color(0xFF3B82F6),
       ),
       _StatCardData(
         icon: Icons.eco,
         label: 'NDVI trung bình',
-        value: this.stats.averageNDVI.toStringAsFixed(2),
+        value: viewModel.stats.averageNDVI.toStringAsFixed(2),
         unit: '',
         color: const Color(0xFF10B981),
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const SatelliteMonitoringScreen(),
+            ),
+          );
+        },
       ),
       _StatCardData(
         icon: Icons.warning_amber_rounded,
         label: 'Cảnh báo',
-        value: '${this.stats.activeAlerts}',
+        value: '${viewModel.stats.activeAlerts}',
         unit: 'thông báo',
         color: const Color(0xFFFBBF24),
       ),
@@ -187,82 +215,86 @@ class _DashboardScreenState extends State<DashboardScreen>
   }
 
   Widget _buildStatCard(_StatCardData data) {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: const Color(0xFFF0F5F1)),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Row(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: data.color.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(12),
+    return GestureDetector(
+      onTap: data.onTap,
+      child: Container(
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: const Color(0xFFF0F5F1)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.04),
+              blurRadius: 8,
+              offset: const Offset(0, 2),
             ),
-            child: Icon(data.icon, color: data.color, size: 24),
-          ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  data.label,
-                  style: const TextStyle(
-                    fontSize: 13,
-                    color: Color(0xFF608a6e),
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Flexible(
-                      child: Text(
-                        data.value,
-                        style: const TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFF111813),
-                        ),
-                        overflow: TextOverflow.ellipsis,
-                      ),
+          ],
+        ),
+        child: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: data.color.withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Icon(data.icon, color: data.color, size: 24),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    data.label,
+                    style: const TextStyle(
+                      fontSize: 13,
+                      color: Color(0xFF608a6e),
                     ),
-                    if (data.unit.isNotEmpty) ...[
-                      const SizedBox(width: 4),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 2),
+                  ),
+                  const SizedBox(height: 4),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Flexible(
                         child: Text(
-                          data.unit,
+                          data.value,
                           style: const TextStyle(
-                            fontSize: 12,
-                            color: Color(0xFF608a6e),
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF111813),
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      if (data.unit.isNotEmpty) ...[
+                        const SizedBox(width: 4),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 2),
+                          child: Text(
+                            data.unit,
+                            style: const TextStyle(
+                              fontSize: 12,
+                              color: Color(0xFF608a6e),
+                            ),
                           ),
                         ),
-                      ),
+                      ],
                     ],
-                  ],
-                ),
-              ],
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 
-  Widget _buildMainContent(bool isDesktop, bool isTablet) {
+  Widget _buildMainContent(
+      bool isDesktop, bool isTablet, DashboardViewModel viewModel) {
     if (isDesktop) {
       return Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -271,9 +303,9 @@ class _DashboardScreenState extends State<DashboardScreen>
             flex: 2,
             child: Column(
               children: [
-                _buildFieldStatusList(),
+                _buildFieldStatusList(viewModel),
                 const SizedBox(height: 24),
-                _buildSoilMoistureChart(),
+                _buildSoilMoistureChart(viewModel),
               ],
             ),
           ),
@@ -282,9 +314,9 @@ class _DashboardScreenState extends State<DashboardScreen>
             flex: 1,
             child: Column(
               children: [
-                _buildWeatherCard(),
+                _buildWeatherCard(viewModel),
                 const SizedBox(height: 24),
-                _buildActivityFeed(),
+                _buildActivityFeed(viewModel),
               ],
             ),
           ),
@@ -293,109 +325,121 @@ class _DashboardScreenState extends State<DashboardScreen>
     } else {
       return Column(
         children: [
-          _buildWeatherCard(),
+          _buildWeatherCard(viewModel),
           const SizedBox(height: 24),
-          _buildFieldStatusList(),
+          _buildFieldStatusList(viewModel),
           const SizedBox(height: 24),
-          _buildSoilMoistureChart(),
+          _buildSoilMoistureChart(viewModel),
           const SizedBox(height: 24),
-          _buildActivityFeed(),
+          _buildActivityFeed(viewModel),
         ],
       );
     }
   }
 
-  Widget _buildWeatherCard() {
-    return TweenAnimationBuilder<double>(
-      tween: Tween(begin: 0, end: 1),
-      duration: const Duration(milliseconds: 800),
-      builder: (context, value, child) {
-        return Transform.translate(
-          offset: Offset(20 * (1 - value), 0),
-          child: Opacity(opacity: value, child: child),
+  Widget _buildWeatherCard(DashboardViewModel viewModel) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const WeatherScreen(),
+          ),
         );
       },
-      child: Container(
-        padding: const EdgeInsets.all(24),
-        decoration: BoxDecoration(
-          gradient: const LinearGradient(
-            colors: [Color(0xFF0BDA50), Color(0xFF059669)],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
+      child: TweenAnimationBuilder<double>(
+        tween: Tween(begin: 0, end: 1),
+        duration: const Duration(milliseconds: 800),
+        builder: (context, value, child) {
+          return Transform.translate(
+            offset: Offset(20 * (1 - value), 0),
+            child: Opacity(opacity: value, child: child),
+          );
+        },
+        child: Container(
+          padding: const EdgeInsets.all(24),
+          decoration: BoxDecoration(
+            gradient: const LinearGradient(
+              colors: [Color(0xFF0BDA50), Color(0xFF059669)],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderRadius: BorderRadius.circular(12),
+            boxShadow: [
+              BoxShadow(
+                color: const Color(0xFF0BDA50).withValues(alpha: 0.3),
+                blurRadius: 20,
+                offset: const Offset(0, 8),
+              ),
+            ],
           ),
-          borderRadius: BorderRadius.circular(12),
-          boxShadow: [
-            BoxShadow(
-              color: const Color(0xFF0BDA50).withValues(alpha: 0.3),
-              blurRadius: 20,
-              offset: const Offset(0, 8),
-            ),
-          ],
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Row(
-              children: [
-                Icon(Icons.wb_sunny, color: Colors.white, size: 20),
-                SizedBox(width: 8),
-                Text(
-                  'Thời tiết hiện tại',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Row(
+                children: [
+                  Icon(Icons.wb_sunny, color: Colors.white, size: 20),
+                  SizedBox(width: 8),
+                  Text(
+                    'Thời tiết hiện tại',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white,
+                    ),
                   ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      '${weather.temperature.toStringAsFixed(1)}°C',
-                      style: const TextStyle(
-                        fontSize: 48,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                ],
+              ),
+              const SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '${viewModel.weather.temperature.toStringAsFixed(1)}°C',
+                        style: const TextStyle(
+                          fontSize: 48,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      weather.condition,
-                      style: const TextStyle(fontSize: 16, color: Colors.white),
-                    ),
-                  ],
-                ),
-                Text(weather.icon, style: const TextStyle(fontSize: 64)),
-              ],
-            ),
-            const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                _buildWeatherDetail(
-                  Icons.water_drop,
-                  'Độ ẩm',
-                  '${weather.humidity}%',
-                ),
-                _buildWeatherDetail(
-                  Icons.umbrella,
-                  'Mưa',
-                  '${weather.rainfall}mm',
-                ),
-                _buildWeatherDetail(
-                  Icons.opacity,
-                  'Ẩm đất',
-                  '${stats.soilMoisture}%',
-                ),
-              ],
-            ),
-          ],
+                      const SizedBox(height: 4),
+                      Text(
+                        viewModel.weather.condition,
+                        style:
+                            const TextStyle(fontSize: 16, color: Colors.white),
+                      ),
+                    ],
+                  ),
+                  Text(viewModel.weather.icon,
+                      style: const TextStyle(fontSize: 64)),
+                ],
+              ),
+              const SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  _buildWeatherDetail(
+                    Icons.water_drop,
+                    'Độ ẩm',
+                    '${viewModel.weather.humidity}%',
+                  ),
+                  _buildWeatherDetail(
+                    Icons.umbrella,
+                    'Mưa',
+                    '${viewModel.weather.rainfall}mm',
+                  ),
+                  _buildWeatherDetail(
+                    Icons.opacity,
+                    'Ẩm đất',
+                    '${viewModel.stats.soilMoisture}%',
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -426,7 +470,7 @@ class _DashboardScreenState extends State<DashboardScreen>
     );
   }
 
-  Widget _buildFieldStatusList() {
+  Widget _buildFieldStatusList(DashboardViewModel viewModel) {
     return TweenAnimationBuilder<double>(
       tween: Tween(begin: 0, end: 1),
       duration: const Duration(milliseconds: 1000),
@@ -478,10 +522,10 @@ class _DashboardScreenState extends State<DashboardScreen>
             ListView.separated(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
-              itemCount: fields.length,
+              itemCount: viewModel.fields.length,
               separatorBuilder: (context, index) => const Divider(height: 24),
               itemBuilder: (context, index) {
-                final field = fields[index];
+                final field = viewModel.fields[index];
                 return Row(
                   children: [
                     Container(
@@ -544,7 +588,7 @@ class _DashboardScreenState extends State<DashboardScreen>
     );
   }
 
-  Widget _buildSoilMoistureChart() {
+  Widget _buildSoilMoistureChart(DashboardViewModel viewModel) {
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
@@ -622,22 +666,20 @@ class _DashboardScreenState extends State<DashboardScreen>
                   drawVerticalLine: false,
                   horizontalInterval: 20,
                   getDrawingHorizontalLine: (value) {
-                    return FlLine(
-                      color: const Color(0xFFF0F5F1),
+                    return const FlLine(
+                      color: Color(0xFFF0F5F1),
                       strokeWidth: 1,
                     );
                   },
                 ),
                 borderData: FlBorderData(show: false),
-                barGroups: [
-                  _createBarGroup(0, 65),
-                  _createBarGroup(1, 70),
-                  _createBarGroup(2, 55),
-                  _createBarGroup(3, 75),
-                  _createBarGroup(4, 68),
-                  _createBarGroup(5, 72),
-                  _createBarGroup(6, 68),
-                ],
+                barGroups: List.generate(7, (index) {
+                  double value = 0;
+                  if (index < viewModel.stats.soilMoistureHistory.length) {
+                    value = viewModel.stats.soilMoistureHistory[index];
+                  }
+                  return _createBarGroup(index, value);
+                }),
               ),
             ),
           ),
@@ -660,7 +702,7 @@ class _DashboardScreenState extends State<DashboardScreen>
     );
   }
 
-  Widget _buildActivityFeed() {
+  Widget _buildActivityFeed(DashboardViewModel viewModel) {
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
@@ -690,10 +732,10 @@ class _DashboardScreenState extends State<DashboardScreen>
           ListView.separated(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
-            itemCount: activities.length,
+            itemCount: viewModel.activities.length,
             separatorBuilder: (context, index) => const SizedBox(height: 16),
             itemBuilder: (context, index) {
-              final activity = activities[index];
+              final activity = viewModel.activities[index];
               return Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -784,6 +826,7 @@ class _StatCardData {
   final String value;
   final String unit;
   final Color color;
+  final VoidCallback? onTap;
 
   _StatCardData({
     required this.icon,
@@ -791,5 +834,6 @@ class _StatCardData {
     required this.value,
     required this.unit,
     required this.color,
+    this.onTap,
   });
 }

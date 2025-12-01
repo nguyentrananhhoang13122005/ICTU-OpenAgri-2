@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/admin_user.dart';
+import '../models/api_models.dart';
 import '../services/admin_service.dart';
 
 class AdminViewModel extends ChangeNotifier {
@@ -157,7 +158,50 @@ class AdminViewModel extends ChangeNotifier {
     await Future.wait([
       loadUsers(),
       loadStats(),
+      loadFarms(),
     ]);
+  }
+
+  // --- Farms Logic ---
+  List<AdminFarmAreaResponseDTO> _farms = [];
+  bool _isLoadingFarms = false;
+  int _farmsPage = 1;
+  bool _hasMoreFarms = true;
+
+  List<AdminFarmAreaResponseDTO> get farms => _farms;
+  bool get isLoadingFarms => _isLoadingFarms;
+  bool get hasMoreFarms => _hasMoreFarms;
+
+  Future<void> loadFarms({bool refresh = false}) async {
+    if (refresh) {
+      _farmsPage = 1;
+      _farms = [];
+      _hasMoreFarms = true;
+    }
+
+    if (!_hasMoreFarms) return;
+
+    _isLoadingFarms = true;
+    notifyListeners();
+
+    try {
+      final newFarms = await _adminService.getAllFarms(
+        page: _farmsPage,
+        pageSize: 10,
+      );
+
+      if (newFarms.isEmpty) {
+        _hasMoreFarms = false;
+      } else {
+        _farms.addAll(newFarms);
+        _farmsPage++;
+      }
+    } catch (e) {
+      _errorMessage = 'Không thể tải danh sách vùng trồng: ${e.toString()}';
+    } finally {
+      _isLoadingFarms = false;
+      notifyListeners();
+    }
   }
 
   /// Set authentication token

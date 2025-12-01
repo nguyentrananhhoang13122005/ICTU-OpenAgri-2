@@ -4,13 +4,18 @@ from app.domain.entities.farm import FarmArea
 
 class FarmRepository(ABC):
     @abstractmethod
-    def create(self, farm: FarmArea) -> FarmArea:
+    async def save(self, farm: FarmArea) -> FarmArea:
         pass
 
     @abstractmethod
-    def get_by_user_id(self, user_id: int) -> List[FarmArea]:
+    async def get_by_user_id(self, user_id: int) -> List[FarmArea]:
         pass
 
     @abstractmethod
-    def get_by_id(self, farm_id: int) -> Optional[FarmArea]:
+    async def get_by_id(self, farm_id: int) -> Optional[FarmArea]:
+        pass
+
+    @abstractmethod
+    async def get_all_with_user(self, skip: int = 0, limit: int = 100) -> List[tuple[FarmArea, dict]]:
+        """Get all farms with user details."""
         pass

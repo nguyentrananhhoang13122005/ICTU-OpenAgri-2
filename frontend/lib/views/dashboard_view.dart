@@ -1,44 +1,67 @@
 import 'package:flutter/material.dart';
-import '../services/auth_service.dart';
+import 'package:provider/provider.dart';
 
-class DashboardView extends StatelessWidget {
+import '../services/auth_service.dart';
+import '../viewmodels/dashboard_viewmodel.dart';
+
+class DashboardView extends StatefulWidget {
   const DashboardView({super.key});
+
+  @override
+  State<DashboardView> createState() => _DashboardViewState();
+}
+
+class _DashboardViewState extends State<DashboardView> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<DashboardViewModel>().initData();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF8F9FA),
       body: SafeArea(
-        child: Column(
-          children: [
-            // Top Bar
-            _buildTopBar(),
+        child: Consumer<DashboardViewModel>(
+          builder: (context, viewModel, child) {
+            return Column(
+              children: [
+                // Top Bar
+                _buildTopBar(),
 
-            // Page Title
-            _buildPageTitle(),
+                // Page Title
+                _buildPageTitle(),
 
-            // Farm Select
-            _buildFarmSelect(),
+                // Farm Select
+                _buildFarmSelect(viewModel),
 
-            // Content
-            Expanded(
-              child: ListView(
-                padding: const EdgeInsets.all(20),
-                children: [
-                  _buildWeatherSection(),
-                  const SizedBox(height: 20),
-                  _buildAlertsSection(),
-                  const SizedBox(height: 20),
-                  _buildTasksSection(),
-                  const SizedBox(height: 20),
-                  _buildHealthSection(),
-                  const SizedBox(height: 20),
-                  _buildPricesSection(),
-                  const SizedBox(height: 80),
-                ],
-              ),
-            ),
-          ],
+                // Content
+                Expanded(
+                  child: RefreshIndicator(
+                    onRefresh: () => viewModel.initData(),
+                    child: ListView(
+                      padding: const EdgeInsets.all(20),
+                      children: [
+                        _buildWeatherSection(viewModel),
+                        const SizedBox(height: 20),
+                        _buildAlertsSection(),
+                        const SizedBox(height: 20),
+                        _buildTasksSection(),
+                        const SizedBox(height: 20),
+                        _buildHealthSection(),
+                        const SizedBox(height: 20),
+                        _buildPricesSection(),
+                        const SizedBox(height: 80),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            );
+          },
         ),
       ),
       bottomNavigationBar: _buildBottomNav(),
@@ -51,7 +74,8 @@ class DashboardView extends StatelessWidget {
       builder: (context) {
         final authService = AuthService();
         final currentUser = authService.currentUser;
-        final displayName = currentUser?.displayName ?? currentUser?.email ?? 'Người dùng';
+        final displayName =
+            currentUser?.displayName ?? currentUser?.email ?? 'Người dùng';
 
         return Container(
           padding: const EdgeInsets.all(16),
@@ -139,7 +163,11 @@ class DashboardView extends StatelessWidget {
   }
 
   // Farm Select
-  Widget _buildFarmSelect() {
+  Widget _buildFarmSelect(DashboardViewModel viewModel) {
+    if (viewModel.fields.isEmpty) {
+      return const SizedBox.shrink();
+    }
+
     return Container(
       padding: const EdgeInsets.fromLTRB(20, 0, 20, 16),
       decoration: BoxDecoration(
@@ -155,27 +183,28 @@ class DashboardView extends StatelessWidget {
           borderRadius: BorderRadius.circular(10),
         ),
         child: DropdownButton<String>(
-          value: 'Trang trại An Giang',
+          value: viewModel.selectedFarmId,
           isExpanded: true,
           underline: const SizedBox(),
-          items: const [
-            DropdownMenuItem(
-              value: 'Trang trại An Giang',
-              child: Text('Trang trại An Giang'),
-            ),
-            DropdownMenuItem(
-              value: 'Vườn cây Bắc Giang',
-              child: Text('Vườn cây Bắc Giang'),
-            ),
-          ],
-          onChanged: (value) {},
+          items: viewModel.fields.map((field) {
+            return DropdownMenuItem(
+              value: field.id,
+              child: Text(field.name),
+            );
+          }).toList(),
+          onChanged: (value) {
+            if (value != null) {
+              viewModel.selectFarm(value);
+            }
+          },
         ),
       ),
     );
   }
 
   // Weather Section
-  Widget _buildWeatherSection() {
+  Widget _buildWeatherSection(DashboardViewModel viewModel) {
+    final weather = viewModel.weather;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -200,25 +229,25 @@ class DashboardView extends StatelessWidget {
           ),
           child: Column(
             children: [
-              const Row(
+              Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        '32°C',
-                        style: TextStyle(
+                        '${weather.temperature.toStringAsFixed(1)}°C',
+                        style: const TextStyle(
                           fontSize: 48,
                           fontWeight: FontWeight.w700,
                           color: Colors.white,
                           height: 1,
                         ),
                       ),
-                      SizedBox(height: 8),
+                      const SizedBox(height: 8),
                       Text(
-                        'Nắng, có mây',
-                        style: TextStyle(
+                        weather.condition,
+                        style: const TextStyle(
                           fontSize: 15,
                           color: Colors.white,
                         ),
@@ -226,8 +255,8 @@ class DashboardView extends StatelessWidget {
                     ],
                   ),
                   Text(
-                    '☀️',
-                    style: TextStyle(fontSize: 64),
+                    weather.icon,
+                    style: const TextStyle(fontSize: 64),
                   ),
                 ],
               ),
@@ -840,7 +869,8 @@ class DashboardView extends StatelessWidget {
     );
   }
 
-  Widget _buildNavItem(BuildContext context, String icon, String label, bool isActive, String? route) {
+  Widget _buildNavItem(BuildContext context, String icon, String label,
+      bool isActive, String? route) {
     return InkWell(
       onTap: route != null ? () => Navigator.pushNamed(context, route) : null,
       child: Column(
@@ -856,7 +886,8 @@ class DashboardView extends StatelessWidget {
             style: TextStyle(
               fontSize: 11,
               fontWeight: FontWeight.w500,
-              color: isActive ? const Color(0xFF13EC5B) : const Color(0xFF9CA3AF),
+              color:
+                  isActive ? const Color(0xFF13EC5B) : const Color(0xFF9CA3AF),
             ),
           ),
         ],

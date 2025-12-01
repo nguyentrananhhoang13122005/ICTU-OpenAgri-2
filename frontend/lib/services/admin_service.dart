@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import '../config/api_config.dart';
 import '../models/admin_user.dart';
+import '../models/api_models.dart';
 
 class AdminService {
   static final AdminService _instance = AdminService._internal();
@@ -97,6 +98,28 @@ class AdminService {
       return AdminUser.fromJson(response.data);
     } catch (e) {
       throw Exception('Failed to update user status: $e');
+    }
+  }
+
+  /// Get list of farms with pagination
+  Future<List<AdminFarmAreaResponseDTO>> getAllFarms({
+    int page = 1,
+    int pageSize = 10,
+  }) async {
+    try {
+      final response = await _dio.get(
+        '/admin/farms',
+        queryParameters: {
+          'page': page,
+          'page_size': pageSize,
+        },
+      );
+
+      return (response.data as List)
+          .map((e) => AdminFarmAreaResponseDTO.fromJson(e))
+          .toList();
+    } catch (e) {
+      throw Exception('Failed to load farms: $e');
     }
   }
 }

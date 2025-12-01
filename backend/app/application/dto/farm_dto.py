@@ -18,3 +18,8 @@ class FarmAreaResponseDTO(FarmAreaCreateDTO):
     
     class Config:
         from_attributes = True
+
+class AdminFarmAreaResponseDTO(FarmAreaResponseDTO):
+    user_email: str
+    user_full_name: Optional[str] = None
+    username: str

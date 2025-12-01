@@ -2,7 +2,9 @@ import os
 import rasterio
 import numpy as np
 from rasterio.enums import Resampling
-from typing import Tuple
+from rasterio.warp import transform_bounds
+from rasterio.windows import from_bounds
+from typing import Tuple, List
 
 def find_s1_band_path(safe_path: str, polarization: str = 'vv') -> str:
     """
@@ -17,7 +19,7 @@ def find_s1_band_path(safe_path: str, polarization: str = 'vv') -> str:
     
     raise FileNotFoundError(f'Could not find {polarization} band in SAFE product')
 
-def compute_soil_moisture_proxy(vv_path: str, out_path: str) -> str:
+def compute_soil_moisture_proxy(vv_path: str, out_path: str, bbox: List[float] = None) -> Tuple[str, float]:
     """
     Compute a simple Soil Moisture proxy from Sentinel-1 VV band.
     We convert the raw DN to dB (Backscatter) which correlates with moisture.
@@ -25,13 +27,32 @@ def compute_soil_moisture_proxy(vv_path: str, out_path: str) -> str:
     Note: Real calibration requires the calibration vector from XML, but for visualization
     of relative moisture, this is a starting point.
     """
+    mean_val = 0.0
     with rasterio.open(vv_path) as src:
-        # Read the first band
-        # S1 images can be large, we might want to downsample for web display
-        # For now, read as is or with a small decimation if needed
+        # Calculate window if bbox is provided
+        window = None
+        transform = src.transform
         
-        # Read data
-        dn = src.read(1).astype('float32')
+        if bbox:
+            try:
+                # Transform bbox (WGS84) to source CRS
+                # bbox is [min_lon, min_lat, max_lon, max_lat]
+                left, bottom, right, top = bbox
+                
+                if src.crs and src.crs.to_epsg() != 4326:
+                    left, bottom, right, top = transform_bounds(4326, src.crs, left, bottom, right, top)
+                
+                window = from_bounds(left, bottom, right, top, src.transform)
+                transform = src.window_transform(window)
+            except Exception as e:
+                print(f"Error calculating window from bbox: {e}. Reading full image.")
+                window = None
+
+        # Read data (only the window if specified)
+        if window:
+            dn = src.read(1, window=window).astype('float32')
+        else:
+            dn = src.read(1).astype('float32')
         
         # Avoid log of zero
         dn[dn == 0] = np.nan
@@ -49,10 +70,16 @@ def compute_soil_moisture_proxy(vv_path: str, out_path: str) -> str:
         soil_moisture_index = (db - min_db) / (max_db - min_db)
         soil_moisture_index = np.clip(soil_moisture_index, 0, 1)
         
+        # Calculate mean (ignoring NaNs)
+        mean_val = float(np.nanmean(soil_moisture_index))
+
         # Write output
         profile = src.meta.copy()
         profile.update(
             driver='GTiff',
+            height=dn.shape[0],
+            width=dn.shape[1],
+            transform=transform,
             count=1,
             dtype=rasterio.float32,
             compress='lzw'
@@ -61,4 +88,4 @@ def compute_soil_moisture_proxy(vv_path: str, out_path: str) -> str:
         with rasterio.open(out_path, 'w', **profile) as dst:
             dst.write(soil_moisture_index, 1)
             
-    return out_path
+    return out_path, mean_val

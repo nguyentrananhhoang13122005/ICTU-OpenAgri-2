@@ -8,6 +8,7 @@ class DashboardStats {
   final double soilMoisture;
   final String weatherCondition;
   final double temperature;
+  final List<double> soilMoistureHistory;
 
   DashboardStats({
     required this.totalFields,
@@ -17,7 +18,21 @@ class DashboardStats {
     required this.soilMoisture,
     required this.weatherCondition,
     required this.temperature,
+    this.soilMoistureHistory = const [],
   });
+
+  static DashboardStats empty() {
+    return DashboardStats(
+      totalFields: 0,
+      totalArea: 0.0,
+      averageNDVI: 0.0,
+      activeAlerts: 0,
+      soilMoisture: 0.0,
+      weatherCondition: '--',
+      temperature: 0.0,
+      soilMoistureHistory: [],
+    );
+  }
 
   static DashboardStats getMockData() {
     return DashboardStats(
@@ -28,6 +43,7 @@ class DashboardStats {
       soilMoisture: 68.0,
       weatherCondition: 'Nắng',
       temperature: 28.5,
+      soilMoistureHistory: [65, 70, 55, 75, 68, 72, 68],
     );
   }
 }

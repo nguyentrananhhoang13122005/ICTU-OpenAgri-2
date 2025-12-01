@@ -5,10 +5,31 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.2.0] - 2025-11-28
 
 ### Added
 
+- **CI/CD**: Configured GitHub Actions workflow for automated Android release builds.
+  - Automatically builds APK on tag push (`v*`).
+  - Creates GitHub Release and uploads APK artifact.
+- **Backend**: Implemented **Soil Moisture** calculation from Sentinel-1 satellite data.
+  - Added logic to calculate mean soil moisture value (0-100%) for a specific area.
+  - Updated API to return both visual map and numeric value.
+- **Frontend**: Integrated real **Soil Moisture** data into Satellite Monitoring screen.
+  - Replaced weather-based mock data with actual Sentinel-1 analysis.
+  - Added soil moisture status indicators (Thiếu nước, Đủ ẩm, Dư nước).
+- **Frontend**: Integrated real soil moisture data into Dashboard charts.
+- **Frontend**: Integrated **Real Farm Data** into Dashboard.
+  - Replaced mock farm data with real data fetched from the backend.
+  - Implemented farm selection logic in DashboardViewModel.
+- **Frontend**: Implemented **Commodity Prices** feature.
+  - Added `CommodityPriceService` and `CommodityPriceViewModel`.
+  - Integrated with backend API to fetch real market data.
+  - Updated UI to display price trends and details.
+- **Frontend**: Implemented **Authentication** flow.
+  - Integrated `AuthService` with backend API for Login and Sign Up.
+  - Added `User` model and token management.
+  - Added `/me` endpoint integration to retrieve current user profile.
 - **Frontend**: Implemented **Plant Health Monitoring** feature.
   - Added disease detection and analysis screen.
   - Integrated into app navigation.
@@ -43,6 +64,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- **Backend**: **Performance Optimization** - Optimized satellite image processing.
+  - Now reads only the specific bounding box (window) of the user's farm instead of the entire satellite image.
+  - Significantly reduced processing time and memory usage for Soil Moisture analysis.
+- **Frontend**: Improved UI visibility for Map controls.
+  - Increased size and contrast of Zoom In/Out buttons on Satellite and Farm Map screens.
 - **Frontend**: **Major Refactor** - Migrated frontend from React.js to **Flutter**.
   - Updated Dockerfile for Flutter Web.
   - Updated `docker-compose.yml` to support Flutter container.
@@ -52,6 +78,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Refactored Home screen layout.
   - Updated Satellite Monitoring layout.
 - **Backend**: Replaced `sentinelsat` dependency with custom OData client using `requests` to support the new Copernicus Data Space Ecosystem.
+- **Backend**: Added `/me` endpoint to retrieve current user information.
+- **Backend**: Updated CORS configuration to allow all origins for development flexibility.
 - **DevOps**: Simplified Docker setup to use a single `docker-compose.yml` file.
 - **DevOps**: Updated `lint-staged` to use `npx` for better compatibility.
 - **Chore**: Updated `.gitignore` to exclude large AI models (`*.gguf`) and output data.
@@ -59,7 +87,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- **Android**: Fixed connectivity issues in Release builds.
+  - Added `INTERNET` permission to AndroidManifest.
+  - Enabled `usesCleartextTraffic` to allow HTTP connections to the backend.
+- **Frontend**: Fixed API configuration for Production environment.
+  - Updated Base URL to point to the correct server IP.
+  - Increased API timeout to 300 seconds to accommodate long-running satellite data processing.
 - **Frontend**: Fixed deprecated `withOpacity` usage by replacing with `withValues`.
+- **Frontend**: Optimized Dashboard loading performance.
+  - Fetches weather data in the background to prevent UI blocking.
+  - Uses last known location to speed up initial weather fetch.
 - **Frontend**: Resolved syntax errors and updated `fl_chart` API usage.
 - **Backend**: Fixed Sentinel-2 API connection issues (403 Forbidden) by migrating to CDSE OData API.
 - **Backend**: Fixed missing dependencies for NDVI module (`sentinelsat`, `rasterio`, etc.).

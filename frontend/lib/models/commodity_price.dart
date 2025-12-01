@@ -98,9 +98,8 @@ class ChartDataPoint {
       high: (json['high'] as num).toDouble(),
       low: (json['low'] as num).toDouble(),
       close: (json['close'] as num).toDouble(),
-      volume: json['volume'] != null
-          ? (json['volume'] as num).toDouble()
-          : null,
+      volume:
+          json['volume'] != null ? (json['volume'] as num).toDouble() : null,
     );
   }
 }
@@ -118,8 +117,8 @@ class CommodityPriceDetail {
 
   factory CommodityPriceDetail.fromJson(Map<String, dynamic> json) {
     return CommodityPriceDetail(
-      commodity: CommodityPrice.fromJson(
-          json['commodity'] as Map<String, dynamic>),
+      commodity:
+          CommodityPrice.fromJson(json['commodity'] as Map<String, dynamic>),
       chartData: (json['chart_data'] as List)
           .map((c) => ChartDataPoint.fromJson(c as Map<String, dynamic>))
           .toList(),
@@ -151,4 +150,3 @@ class CommodityPriceListResponse {
     );
   }
 }
-

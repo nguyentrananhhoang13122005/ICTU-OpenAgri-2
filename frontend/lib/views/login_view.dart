@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 import '../viewmodels/login_viewmodel.dart';
-import 'dashboard_view.dart';
 
 class LoginView extends StatelessWidget {
   const LoginView({super.key});
@@ -296,16 +296,8 @@ class LoginView extends StatelessWidget {
         return SizedBox(
           height: 56,
           child: ElevatedButton(
-            onPressed: viewModel.isLoading
-                ? null
-                : () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const DashboardView(),
-                      ),
-                    );
-                  },
+            onPressed:
+                viewModel.isLoading ? null : () => viewModel.login(context),
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFF00C853),
               foregroundColor: Colors.white,

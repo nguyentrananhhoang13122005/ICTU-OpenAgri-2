@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 import '../viewmodels/admin_viewmodel.dart';
 import '../models/admin_user.dart';
+import '../models/api_models.dart';
 
 class AdminPanelScreen extends StatefulWidget {
   const AdminPanelScreen({super.key});
@@ -34,50 +35,70 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
     final isDesktop = width > 1024;
     final isTablet = width > 768;
 
-    return Scaffold(
-      backgroundColor: const Color(0xFFF5F8F6),
-      appBar: AppBar(
-        title: const Text(
-          'Quản Lý Người Dùng',
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-        backgroundColor: Colors.white,
-        elevation: 0,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.refresh),
-            onPressed: () {
-              context.read<AdminViewModel>().refresh();
-            },
-            tooltip: 'Làm mới',
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        backgroundColor: const Color(0xFFF5F8F6),
+        appBar: AppBar(
+          title: const Text(
+            'Quản Trị Hệ Thống',
+            style: TextStyle(fontWeight: FontWeight.bold),
           ),
-          const SizedBox(width: 8),
-        ],
-      ),
-      body: RefreshIndicator(
-        onRefresh: () => context.read<AdminViewModel>().refresh(),
-        child: SingleChildScrollView(
-          physics: const AlwaysScrollableScrollPhysics(),
-          padding: EdgeInsets.all(isDesktop ? 32 : 16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Statistics Cards
-              _buildStatsSection(isDesktop, isTablet),
-              const SizedBox(height: 24),
-
-              // Search Bar
-              _buildSearchBar(),
-              const SizedBox(height: 24),
-
-              // Users Table
-              _buildUsersTable(isDesktop, isTablet),
-              const SizedBox(height: 24),
-
-              // Pagination
-              _buildPagination(),
+          backgroundColor: Colors.white,
+          elevation: 0,
+          bottom: const TabBar(
+            labelColor: Color(0xFF0BDA50),
+            unselectedLabelColor: Color(0xFF608a6e),
+            indicatorColor: Color(0xFF0BDA50),
+            tabs: [
+              Tab(text: 'Người Dùng'),
+              Tab(text: 'Vùng Trồng'),
             ],
           ),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.refresh),
+              onPressed: () {
+                context.read<AdminViewModel>().refresh();
+              },
+              tooltip: 'Làm mới',
+            ),
+            const SizedBox(width: 8),
+          ],
+        ),
+        body: TabBarView(
+          children: [
+            // Users Tab
+            RefreshIndicator(
+              onRefresh: () => context.read<AdminViewModel>().refresh(),
+              child: SingleChildScrollView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                padding: EdgeInsets.all(isDesktop ? 32 : 16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Statistics Cards
+                    _buildStatsSection(isDesktop, isTablet),
+                    const SizedBox(height: 24),
+
+                    // Search Bar
+                    _buildSearchBar(),
+                    const SizedBox(height: 24),
+
+                    // Users Table
+                    _buildUsersTable(isDesktop, isTablet),
+                    const SizedBox(height: 24),
+
+                    // Pagination
+                    _buildPagination(),
+                  ],
+                ),
+              ),
+            ),
+            
+            // Farms Tab
+            _buildFarmsTab(isDesktop, isTablet),
+          ],
         ),
       ),
     );
@@ -761,6 +782,159 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
               foregroundColor: const Color(0xFF111813),
             ),
             child: const Text('Xác nhận'),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+  Widget _buildFarmsTab(bool isDesktop, bool isTablet) {
+    return Consumer<AdminViewModel>(
+      builder: (context, viewModel, child) {
+        if (viewModel.isLoadingFarms && viewModel.farms.isEmpty) {
+          return const Center(child: CircularProgressIndicator());
+        }
+
+        if (viewModel.farms.isEmpty) {
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(Icons.landscape, size: 64, color: Color(0xFF9ca3af)),
+                const SizedBox(height: 16),
+                const Text(
+                  'Chưa có vùng trồng nào',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                    color: Color(0xFF4B5563),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                ElevatedButton(
+                  onPressed: () => viewModel.loadFarms(refresh: true),
+                  child: const Text('Tải lại'),
+                ),
+              ],
+            ),
+          );
+        }
+
+        return RefreshIndicator(
+          onRefresh: () => viewModel.loadFarms(refresh: true),
+          child: ListView.builder(
+            padding: EdgeInsets.all(isDesktop ? 32 : 16),
+            itemCount: viewModel.farms.length + (viewModel.hasMoreFarms ? 1 : 0),
+            itemBuilder: (context, index) {
+              if (index == viewModel.farms.length) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  child: Center(
+                    child: viewModel.isLoadingFarms
+                        ? const CircularProgressIndicator()
+                        : TextButton(
+                            onPressed: () => viewModel.loadFarms(),
+                            child: const Text('Tải thêm'),
+                          ),
+                  ),
+                );
+              }
+
+              final farm = viewModel.farms[index];
+              return _buildFarmCard(farm);
+            },
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildFarmCard(AdminFarmAreaResponseDTO farm) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 16),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: const Color(0xFFF0F5F1)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: Text(
+                  farm.name,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                    color: Color(0xFF111813),
+                  ),
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF0BDA50).withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Text(
+                  farm.cropType ?? 'Chưa xác định',
+                  style: const TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF0BDA50),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          if (farm.description != null && farm.description!.isNotEmpty) ...[
+            Text(
+              farm.description!,
+              style: const TextStyle(color: Color(0xFF4B5563)),
+            ),
+            const SizedBox(height: 12),
+          ],
+          const Divider(),
+          const SizedBox(height: 8),
+          Row(
+            children: [
+              const Icon(Icons.person, size: 16, color: Color(0xFF608a6e)),
+              const SizedBox(width: 8),
+              Text(
+                'Chủ sở hữu: ',
+                style: const TextStyle(color: Color(0xFF608a6e)),
+              ),
+              Text(
+                farm.userFullName ?? farm.username,
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(width: 8),
+              Text(
+                '(${farm.userEmail})',
+                style: const TextStyle(color: Color(0xFF9ca3af), fontSize: 12),
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Row(
+            children: [
+              const Icon(Icons.straighten, size: 16, color: Color(0xFF608a6e)),
+              const SizedBox(width: 8),
+              Text(
+                'Diện tích: ',
+                style: const TextStyle(color: Color(0xFF608a6e)),
+              ),
+              Text(
+                farm.areaSize != null ? '${farm.areaSize} m²' : 'Chưa xác định',
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ],
           ),
         ],
       ),

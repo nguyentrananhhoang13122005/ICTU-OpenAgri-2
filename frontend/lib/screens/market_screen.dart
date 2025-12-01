@@ -2,19 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-import '../models/commodity_price.dart';
+import '../models/api_models.dart';
 import '../viewmodels/commodity_price_viewmodel.dart';
-import 'commodity_price_detail_view.dart';
+import '../views/commodity_price_detail_view.dart';
 
-class CommodityPricesListView extends StatefulWidget {
-  const CommodityPricesListView({super.key});
+class MarketScreen extends StatefulWidget {
+  const MarketScreen({super.key});
 
   @override
-  State<CommodityPricesListView> createState() =>
-      _CommodityPricesListViewState();
+  State<MarketScreen> createState() => _MarketScreenState();
 }
 
-class _CommodityPricesListViewState extends State<CommodityPricesListView> {
+class _MarketScreenState extends State<MarketScreen> {
   @override
   void initState() {
     super.initState();
@@ -33,8 +32,9 @@ class _CommodityPricesListViewState extends State<CommodityPricesListView> {
       appBar: AppBar(
         title: const Text('Thị Trường Nông Sản',
             style: TextStyle(fontWeight: FontWeight.w600)),
-        backgroundColor: const Color(0xFF00C853),
-        foregroundColor: Colors.white,
+        backgroundColor: Colors.white,
+        surfaceTintColor: Colors.transparent,
+        automaticallyImplyLeading: false,
         elevation: 0,
       ),
       body: Consumer<CommodityPriceViewModel>(
@@ -215,7 +215,7 @@ class _CommodityPricesListViewState extends State<CommodityPricesListView> {
 }
 
 class _CommodityRow extends StatelessWidget {
-  final CommodityPrice commodity;
+  final CommodityPriceDTO commodity;
 
   const _CommodityRow({required this.commodity});
 

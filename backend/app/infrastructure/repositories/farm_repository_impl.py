@@ -66,3 +66,34 @@ class SQLAlchemyFarmRepository(FarmRepository):
                 user_id=farm.user_id
             )
         return None
+
+    async def get_all_with_user(self, skip: int = 0, limit: int = 100) -> List[tuple[FarmArea, dict]]:
+        from app.infrastructure.database.models.user_model import UserModel
+        
+        result = await self.db.execute(
+            select(FarmModel, UserModel)
+            .join(UserModel, FarmModel.user_id == UserModel.id)
+            .offset(skip)
+            .limit(limit)
+        )
+        rows = result.all()
+        
+        return [
+            (
+                FarmArea(
+                    id=farm.id,
+                    name=farm.name,
+                    description=farm.description,
+                    coordinates=[Coordinate(**c) for c in farm.coordinates],
+                    area_size=farm.area_size,
+                    crop_type=farm.crop_type,
+                    user_id=farm.user_id
+                ),
+                {
+                    "email": user.email,
+                    "username": user.username,
+                    "full_name": user.full_name
+                }
+            )
+            for farm, user in rows
+        ]
