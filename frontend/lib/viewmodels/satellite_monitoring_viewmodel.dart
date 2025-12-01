@@ -1,3 +1,6 @@
+// Copyright (c) 2025 CuongKenn and ICTU-OpenAgri Contributors
+// Licensed under the MIT License. See LICENSE file in the project root for full license information.
+
 import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
 import '../models/api_models.dart';
@@ -94,11 +97,12 @@ class SatelliteMonitoringViewModel extends ChangeNotifier {
           bbox: bbox,
           date: _selectedDate.toIso8601String(),
         );
-        final smResponse = await _analysisService.calculateSoilMoisture(smRequest);
-        
+        final smResponse =
+            await _analysisService.calculateSoilMoisture(smRequest);
+
         // Convert 0-1 index to percentage
         soilMoisture = smResponse.meanValue * 100;
-        
+
         if (soilMoisture < 30) {
           soilMoistureStatus = 'Thiếu nước';
         } else if (soilMoisture < 70) {
