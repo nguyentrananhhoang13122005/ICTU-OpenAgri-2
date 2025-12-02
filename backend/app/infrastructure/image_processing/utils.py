@@ -1,10 +1,13 @@
+# Copyright (c) 2025 CuongKenn and ICTU-OpenAgri Contributors
+# Licensed under the MIT License. See LICENSE file in the project root for full license information.
+
 import base64
 import io
 import rasterio
 import numpy as np
-import matplotlib
-matplotlib.use('Agg') # Use non-interactive backend
-import matplotlib.pyplot as plt
+# import matplotlib
+# matplotlib.use('Agg') # Use non-interactive backend
+# import matplotlib.pyplot as plt
 
 def convert_tiff_to_base64_png(tiff_path: str, colormap: str = 'viridis', vmin: float = None, vmax: float = None) -> str:
     """
@@ -22,7 +25,8 @@ def convert_tiff_to_base64_png(tiff_path: str, colormap: str = 'viridis', vmin: 
         
         # Save with colormap
         # origin='upper' is default for images, but rasterio reads top-down usually.
-        plt.imsave(buf, data, cmap=colormap, vmin=vmin, vmax=vmax, format='png')
+        # plt.imsave(buf, data, cmap=colormap, vmin=vmin, vmax=vmax, format='png')
+        raise NotImplementedError("Image processing temporarily disabled")
         
         buf.seek(0)
         img_str = base64.b64encode(buf.read()).decode('utf-8')
