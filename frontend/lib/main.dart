@@ -1,22 +1,20 @@
+// Copyright (c) 2025 CuongKenn and ICTU-OpenAgri Contributors
+// Licensed under the MIT License. See LICENSE file in the project root for full license information.
+
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:openagri_app/screens/admin_panel_screen.dart';
+import 'package:openagri_app/viewmodels/admin_viewmodel.dart';
 import 'package:openagri_app/viewmodels/commodity_price_viewmodel.dart';
 import 'package:openagri_app/viewmodels/dashboard_viewmodel.dart';
 import 'package:openagri_app/viewmodels/disease_scan_viewmodel.dart';
 import 'package:openagri_app/viewmodels/farm_map_viewmodel.dart';
 import 'package:openagri_app/viewmodels/login_viewmodel.dart';
-<<<<<<< HEAD
-import 'package:openagri_app/viewmodels/admin_viewmodel.dart';
-import 'package:openagri_app/views/commodity_prices_list_view.dart';
-import 'package:openagri_app/views/dashboard_view.dart';
-import 'package:openagri_app/views/login_view.dart';
-import 'package:openagri_app/views/settings_view.dart';
-import 'package:openagri_app/screens/admin_panel_screen.dart';
-=======
 import 'package:openagri_app/viewmodels/satellite_monitoring_viewmodel.dart';
 import 'package:openagri_app/viewmodels/weather_viewmodel.dart';
+import 'package:openagri_app/views/dashboard_view.dart';
 import 'package:openagri_app/views/login_view.dart';
->>>>>>> 6a01ceb8d86c0236245408ded038a1598b8ac667
+import 'package:openagri_app/views/splash_view.dart';
 import 'package:provider/provider.dart';
 
 import 'screens/main_layout.dart';
@@ -40,11 +38,8 @@ class AgriTechApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => DiseaseScanViewModel()),
         ChangeNotifierProvider(create: (_) => SatelliteMonitoringViewModel()),
         ChangeNotifierProvider(create: (_) => CommodityPriceViewModel()),
-<<<<<<< HEAD
         ChangeNotifierProvider(create: (_) => AdminViewModel()),
-=======
         ChangeNotifierProvider(create: (_) => WeatherViewModel()),
->>>>>>> 6a01ceb8d86c0236245408ded038a1598b8ac667
       ],
       child: MaterialApp(
         title: 'AgriSmart - Nông Nghiệp Thông Minh',
@@ -52,17 +47,12 @@ class AgriTechApp extends StatelessWidget {
         theme: _buildLightTheme(),
         darkTheme: _buildDarkTheme(),
         themeMode: ThemeMode.light,
-        home: const LoginView(),
+        home: const SplashView(),
         routes: {
           '/login': (context) => const LoginView(),
-<<<<<<< HEAD
-          '/commodity-prices': (context) => const CommodityPricesListView(),
           '/dashboard': (context) => const DashboardView(),
-          '/settings': (context) => const SettingsView(),
           '/admin': (context) => const AdminPanelScreen(),
-=======
           '/home': (context) => const MainLayout(),
->>>>>>> 6a01ceb8d86c0236245408ded038a1598b8ac667
         },
       ),
     );
