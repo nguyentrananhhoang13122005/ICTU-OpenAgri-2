@@ -12,13 +12,13 @@ class AdminViewModel extends ChangeNotifier {
   bool _isLoading = false;
   bool _isLoadingStats = false;
   String? _errorMessage;
-  
+
   // Pagination
   int _currentPage = 1;
   int _pageSize = 10;
   int _totalPages = 0;
   int _total = 0;
-  
+
   // Search
   String _searchQuery = '';
 
@@ -38,16 +38,16 @@ class AdminViewModel extends ChangeNotifier {
   Future<void> loadUsers({int? page, String? search}) async {
     _isLoading = true;
     _errorMessage = null;
-    
+
     if (page != null) {
       _currentPage = page;
     }
-    
+
     if (search != null) {
       _searchQuery = search;
       _currentPage = 1; // Reset to first page on new search
     }
-    
+
     notifyListeners();
 
     try {
@@ -91,11 +91,11 @@ class AdminViewModel extends ChangeNotifier {
   Future<bool> deleteUser(int userId) async {
     try {
       await _adminService.deleteUser(userId);
-      
+
       // Reload users after deletion
       await loadUsers();
       await loadStats(); // Update stats
-      
+
       return true;
     } catch (e) {
       _errorMessage = 'Không thể xóa người dùng: ${e.toString()}';
@@ -108,11 +108,11 @@ class AdminViewModel extends ChangeNotifier {
   Future<bool> updateUserStatus(int userId, bool isActive) async {
     try {
       await _adminService.updateUserStatus(userId, isActive);
-      
+
       // Reload users after status update
       await loadUsers();
       await loadStats(); // Update stats
-      
+
       return true;
     } catch (e) {
       _errorMessage = 'Không thể cập nhật trạng thái: ${e.toString()}';
@@ -158,7 +158,9 @@ class AdminViewModel extends ChangeNotifier {
     await Future.wait([
       loadUsers(),
       loadStats(),
-      loadFarms(),
+      loadFarms(refresh: true),
+      loadCropStats(),
+      loadFarmLocations(),
     ]);
   }
 
@@ -168,9 +170,19 @@ class AdminViewModel extends ChangeNotifier {
   int _farmsPage = 1;
   bool _hasMoreFarms = true;
 
+  // Stats & Map
+  List<CropDistributionDTO> _cropStats = [];
+  List<FarmLocationDTO> _farmLocations = [];
+  bool _isLoadingCropStats = false;
+  bool _isLoadingFarmLocations = false;
+
   List<AdminFarmAreaResponseDTO> get farms => _farms;
   bool get isLoadingFarms => _isLoadingFarms;
   bool get hasMoreFarms => _hasMoreFarms;
+  List<CropDistributionDTO> get cropStats => _cropStats;
+  List<FarmLocationDTO> get farmLocations => _farmLocations;
+  bool get isLoadingCropStats => _isLoadingCropStats;
+  bool get isLoadingFarmLocations => _isLoadingFarmLocations;
 
   Future<void> loadFarms({bool refresh = false}) async {
     if (refresh) {
@@ -200,6 +212,32 @@ class AdminViewModel extends ChangeNotifier {
       _errorMessage = 'Không thể tải danh sách vùng trồng: ${e.toString()}';
     } finally {
       _isLoadingFarms = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> loadCropStats() async {
+    _isLoadingCropStats = true;
+    notifyListeners();
+    try {
+      _cropStats = await _adminService.getCropDistribution();
+    } catch (e) {
+      debugPrint('Error loading crop stats: $e');
+    } finally {
+      _isLoadingCropStats = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> loadFarmLocations() async {
+    _isLoadingFarmLocations = true;
+    notifyListeners();
+    try {
+      _farmLocations = await _adminService.getFarmLocations();
+    } catch (e) {
+      debugPrint('Error loading farm locations: $e');
+    } finally {
+      _isLoadingFarmLocations = false;
       notifyListeners();
     }
   }

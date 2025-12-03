@@ -1,5 +1,8 @@
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_map/flutter_map.dart';
 import 'package:intl/intl.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
 import '../models/admin_user.dart';
 import '../models/api_models.dart';
@@ -45,6 +48,39 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
     final isTablet = width > 768;
 
     final List<Widget> screens = [
+      // Dashboard Tab (New)
+      RefreshIndicator(
+        onRefresh: () => context.read<AdminViewModel>().refresh(),
+        child: SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          padding: EdgeInsets.all(isDesktop ? 32 : 16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildStatsSection(isDesktop, isTablet),
+              const SizedBox(height: 24),
+              if (isDesktop)
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(child: _buildCropDistributionChart()),
+                    const SizedBox(width: 24),
+                    Expanded(child: _buildFarmHeatmap()),
+                  ],
+                )
+              else
+                Column(
+                  children: [
+                    _buildCropDistributionChart(),
+                    const SizedBox(height: 24),
+                    _buildFarmHeatmap(),
+                  ],
+                ),
+            ],
+          ),
+        ),
+      ),
+
       // Users Tab
       RefreshIndicator(
         onRefresh: () => context.read<AdminViewModel>().refresh(),
@@ -54,10 +90,6 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Statistics Cards
-              _buildStatsSection(isDesktop, isTablet),
-              const SizedBox(height: 24),
-
               // Search Bar
               _buildSearchBar(),
               const SizedBox(height: 24),
@@ -145,6 +177,11 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
           });
         },
         destinations: const [
+          NavigationDestination(
+            icon: Icon(Icons.dashboard_outlined),
+            selectedIcon: Icon(Icons.dashboard),
+            label: 'Tổng quan',
+          ),
           NavigationDestination(
             icon: Icon(Icons.people_outline),
             selectedIcon: Icon(Icons.people),
@@ -1018,6 +1055,232 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildCropDistributionChart() {
+    return Consumer<AdminViewModel>(
+      builder: (context, viewModel, child) {
+        if (viewModel.isLoadingCropStats) {
+          return const SizedBox(
+            height: 300,
+            child: Center(child: CircularProgressIndicator()),
+          );
+        }
+
+        if (viewModel.cropStats.isEmpty) {
+          return const SizedBox.shrink();
+        }
+
+        final total =
+            viewModel.cropStats.fold<int>(0, (sum, item) => sum + item.count);
+
+        return Container(
+          height: 350,
+          padding: const EdgeInsets.all(24),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: const Color(0xFFF0F5F1)),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'Phân Bố Loại Cây Trồng',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF111813),
+                ),
+              ),
+              const SizedBox(height: 24),
+              Expanded(
+                child: Row(
+                  children: [
+                    Expanded(
+                      flex: 3,
+                      child: PieChart(
+                        PieChartData(
+                          sectionsSpace: 2,
+                          centerSpaceRadius: 40,
+                          sections:
+                              viewModel.cropStats.asMap().entries.map((entry) {
+                            final index = entry.key;
+                            final data = entry.value;
+                            final percentage = (data.count / total * 100);
+                            final colors = [
+                              const Color(0xFF0BDA50),
+                              const Color(0xFF10B981),
+                              const Color(0xFF3B82F6),
+                              const Color(0xFFF59E0B),
+                              const Color(0xFFEF4444),
+                              const Color(0xFF8B5CF6),
+                            ];
+                            final color = colors[index % colors.length];
+
+                            return PieChartSectionData(
+                              color: color,
+                              value: data.count.toDouble(),
+                              title: '${percentage.toStringAsFixed(1)}%',
+                              radius: 50,
+                              titleStyle: const TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            );
+                          }).toList(),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 24),
+                    Expanded(
+                      flex: 2,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children:
+                            viewModel.cropStats.asMap().entries.map((entry) {
+                          final index = entry.key;
+                          final data = entry.value;
+                          final colors = [
+                            const Color(0xFF0BDA50),
+                            const Color(0xFF10B981),
+                            const Color(0xFF3B82F6),
+                            const Color(0xFFF59E0B),
+                            const Color(0xFFEF4444),
+                            const Color(0xFF8B5CF6),
+                          ];
+                          final color = colors[index % colors.length];
+
+                          return Padding(
+                            padding: const EdgeInsets.only(bottom: 8),
+                            child: Row(
+                              children: [
+                                Container(
+                                  width: 12,
+                                  height: 12,
+                                  decoration: BoxDecoration(
+                                    color: color,
+                                    shape: BoxShape.circle,
+                                  ),
+                                ),
+                                const SizedBox(width: 8),
+                                Expanded(
+                                  child: Text(
+                                    data.cropType,
+                                    style: const TextStyle(fontSize: 14),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                                Text(
+                                  '(${data.count})',
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Color(0xFF608a6e),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildFarmHeatmap() {
+    return Consumer<AdminViewModel>(
+      builder: (context, viewModel, child) {
+        if (viewModel.isLoadingFarmLocations) {
+          return const SizedBox(
+            height: 300,
+            child: Center(child: CircularProgressIndicator()),
+          );
+        }
+
+        return Container(
+          height: 350,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: const Color(0xFFF0F5F1)),
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(12),
+            child: Stack(
+              children: [
+                FlutterMap(
+                  options: const MapOptions(
+                    initialCenter:
+                        LatLng(10.020905, 105.776513), // Can Tho default
+                    initialZoom: 10,
+                  ),
+                  children: [
+                    TileLayer(
+                      urlTemplate:
+                          'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                      userAgentPackageName: 'com.ictu.openagri',
+                    ),
+                    MarkerLayer(
+                      markers: viewModel.farmLocations.expand((farm) {
+                        // Use the first coordinate as the marker position
+                        if (farm.coordinates.isEmpty) return <Marker>[];
+                        return [
+                          Marker(
+                            point: farm.coordinates.first,
+                            width: 40,
+                            height: 40,
+                            child: const Icon(
+                              Icons.location_on,
+                              color: Color(0xFFEF4444),
+                              size: 40,
+                            ),
+                          ),
+                        ];
+                      }).toList(),
+                    ),
+                  ],
+                ),
+                Positioned(
+                  top: 16,
+                  left: 16,
+                  child: Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(8),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withValues(alpha: 0.1),
+                          blurRadius: 4,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
+                    ),
+                    child: const Text(
+                      'Bản Đồ Vùng Trồng',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }

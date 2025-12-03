@@ -103,6 +103,45 @@ class AdminFarmAreaResponseDTO extends FarmAreaResponseDTO {
   }
 }
 
+class CropDistributionDTO {
+  final String cropType;
+  final int count;
+
+  CropDistributionDTO({required this.cropType, required this.count});
+
+  factory CropDistributionDTO.fromJson(Map<String, dynamic> json) {
+    return CropDistributionDTO(
+      cropType: json['crop_type'],
+      count: json['count'],
+    );
+  }
+}
+
+class FarmLocationDTO {
+  final int id;
+  final String name;
+  final List<LatLng> coordinates;
+  final String? cropType;
+
+  FarmLocationDTO({
+    required this.id,
+    required this.name,
+    required this.coordinates,
+    this.cropType,
+  });
+
+  factory FarmLocationDTO.fromJson(Map<String, dynamic> json) {
+    return FarmLocationDTO(
+      id: json['id'],
+      name: json['name'],
+      coordinates: (json['coordinates'] as List)
+          .map((c) => LatLng(c['lat'], c['lng']))
+          .toList(),
+      cropType: json['crop_type'],
+    );
+  }
+}
+
 // --- NDVI Models ---
 
 class NDVIRequest {

@@ -43,7 +43,7 @@ class AdminService {
         'page': page,
         'page_size': pageSize,
       };
-      
+
       if (search != null && search.isNotEmpty) {
         queryParams['search'] = search;
       }
@@ -120,6 +120,30 @@ class AdminService {
           .toList();
     } catch (e) {
       throw Exception('Failed to load farms: $e');
+    }
+  }
+
+  /// Get crop distribution statistics
+  Future<List<CropDistributionDTO>> getCropDistribution() async {
+    try {
+      final response = await _dio.get('/admin/farms/stats/crops');
+      return (response.data as List)
+          .map((json) => CropDistributionDTO.fromJson(json))
+          .toList();
+    } catch (e) {
+      throw Exception('Failed to load crop stats: $e');
+    }
+  }
+
+  /// Get all farm locations
+  Future<List<FarmLocationDTO>> getFarmLocations() async {
+    try {
+      final response = await _dio.get('/admin/farms/locations');
+      return (response.data as List)
+          .map((json) => FarmLocationDTO.fromJson(json))
+          .toList();
+    } catch (e) {
+      throw Exception('Failed to load farm locations: $e');
     }
   }
 }
