@@ -1,13 +1,12 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_map/flutter_map.dart';
 import 'package:intl/intl.dart';
-import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
 import '../models/admin_user.dart';
 import '../models/api_models.dart';
 import '../services/auth_service.dart';
 import '../viewmodels/admin_viewmodel.dart';
+import '../widgets/farm_map_widget.dart';
 
 class AdminPanelScreen extends StatefulWidget {
   const AdminPanelScreen({super.key});
@@ -1216,68 +1215,7 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
           ),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(12),
-            child: Stack(
-              children: [
-                FlutterMap(
-                  options: const MapOptions(
-                    initialCenter:
-                        LatLng(10.020905, 105.776513), // Can Tho default
-                    initialZoom: 10,
-                  ),
-                  children: [
-                    TileLayer(
-                      urlTemplate:
-                          'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-                      userAgentPackageName: 'com.ictu.openagri',
-                    ),
-                    MarkerLayer(
-                      markers: viewModel.farmLocations.expand((farm) {
-                        // Use the first coordinate as the marker position
-                        if (farm.coordinates.isEmpty) return <Marker>[];
-                        return [
-                          Marker(
-                            point: farm.coordinates.first,
-                            width: 40,
-                            height: 40,
-                            child: const Icon(
-                              Icons.location_on,
-                              color: Color(0xFFEF4444),
-                              size: 40,
-                            ),
-                          ),
-                        ];
-                      }).toList(),
-                    ),
-                  ],
-                ),
-                Positioned(
-                  top: 16,
-                  left: 16,
-                  child: Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(8),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withValues(alpha: 0.1),
-                          blurRadius: 4,
-                          offset: const Offset(0, 2),
-                        ),
-                      ],
-                    ),
-                    child: const Text(
-                      'Bản Đồ Vùng Trồng',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
+            child: FarmMapWidget(locations: viewModel.farmLocations),
           ),
         );
       },
