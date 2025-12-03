@@ -108,6 +108,10 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
       _buildFarmsTab(isDesktop, isTablet),
     ];
 
+    if (_currentIndex >= screens.length) {
+      _currentIndex = 0;
+    }
+
     return Scaffold(
       backgroundColor: const Color(0xFFF5F8F6),
       appBar: AppBar(
@@ -957,7 +961,7 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
               }
 
               final farm = viewModel.farms[index];
-              return _buildFarmCard(farm);
+              return _buildFarmCard(farm, index);
             },
           ),
         );
@@ -965,7 +969,7 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
     );
   }
 
-  Widget _buildFarmCard(AdminFarmAreaResponseDTO farm) {
+  Widget _buildFarmCard(AdminFarmAreaResponseDTO farm, int index) {
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
       padding: const EdgeInsets.all(16),
@@ -1051,6 +1055,51 @@ class _AdminPanelScreenState extends State<AdminPanelScreen> {
                 style: const TextStyle(fontWeight: FontWeight.bold),
               ),
             ],
+          ),
+          const SizedBox(height: 16),
+          SizedBox(
+            width: double.infinity,
+            child: OutlinedButton.icon(
+              onPressed: () {
+                // Navigate to map view focused on this farm
+                // We need to find the index of this farm in the farmLocations list
+                // Or pass the farm details directly if FarmMapWidget supports it
+                // For now, we'll use the index assuming the lists are synced or we can find it
+                final viewModel = context.read<AdminViewModel>();
+                final locationIndex = viewModel.farmLocations
+                    .indexWhere((loc) => loc.id == farm.id);
+
+                if (locationIndex != -1) {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => Scaffold(
+                        appBar: AppBar(
+                          title: Text(farm.name),
+                          backgroundColor: Colors.white,
+                          foregroundColor: Colors.black,
+                        ),
+                        body: FarmMapWidget(
+                          locations: viewModel.farmLocations,
+                          initialIndex: locationIndex,
+                        ),
+                      ),
+                    ),
+                  );
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                        content: Text('Không tìm thấy vị trí vùng trồng này')),
+                  );
+                }
+              },
+              icon: const Icon(Icons.map_outlined),
+              label: const Text('Xem chi tiết trên bản đồ'),
+              style: OutlinedButton.styleFrom(
+                foregroundColor: const Color(0xFF0BDA50),
+                side: const BorderSide(color: Color(0xFF0BDA50)),
+                padding: const EdgeInsets.symmetric(vertical: 12),
+              ),
+            ),
           ),
         ],
       ),
