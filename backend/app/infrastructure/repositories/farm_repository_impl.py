@@ -100,3 +100,25 @@ class SQLAlchemyFarmRepository(FarmRepository):
             )
             for farm, user in rows
         ]
+
+    async def get_crop_distribution(self) -> List[dict]:
+        from sqlalchemy import func
+        result = await self.db.execute(
+            select(FarmModel.crop_type, func.count(FarmModel.id))
+            .group_by(FarmModel.crop_type)
+        )
+        return [{"crop_type": row[0] or "Chưa xác định", "count": row[1]} for row in result.all()]
+
+    async def get_all_locations(self) -> List[dict]:
+        result = await self.db.execute(
+            select(FarmModel.id, FarmModel.name, FarmModel.coordinates, FarmModel.crop_type)
+        )
+        return [
+            {
+                "id": row.id,
+                "name": row.name,
+                "coordinates": row.coordinates,
+                "crop_type": row.crop_type
+            }
+            for row in result.scalars().all()
+        ]

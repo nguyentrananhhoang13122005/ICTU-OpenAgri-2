@@ -3,7 +3,7 @@ Admin farm management endpoints.
 """
 from typing import List
 from fastapi import APIRouter, Depends, HTTPException, status, Query
-from app.application.dto.farm_dto import AdminFarmAreaResponseDTO, CoordinateDTO
+from app.application.dto.farm_dto import AdminFarmAreaResponseDTO, CoordinateDTO, CropDistributionDTO, FarmLocationDTO
 from app.infrastructure.repositories.farm_repository_impl import SQLAlchemyFarmRepository
 from app.presentation.deps import get_farm_repository, get_current_superuser
 from app.domain.entities.user import User
@@ -45,4 +45,48 @@ async def list_all_farms(
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Failed to retrieve farms: {str(e)}"
+        )
+
+@router.get("/farms/stats/crops", response_model=List[CropDistributionDTO])
+async def get_crop_distribution(
+    repository: SQLAlchemyFarmRepository = Depends(get_farm_repository),
+    current_user: User = Depends(get_current_superuser)
+):
+    """
+    Get crop distribution statistics.
+    """
+    try:
+        return await repository.get_crop_distribution()
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to retrieve crop stats: {str(e)}"
+        )
+
+@router.get("/farms/locations", response_model=List[FarmLocationDTO])
+async def get_farm_locations(
+    repository: SQLAlchemyFarmRepository = Depends(get_farm_repository),
+    current_user: User = Depends(get_current_superuser)
+):
+    """
+    Get all farm locations for map visualization.
+    """
+    try:
+        # Note: This method needs to be implemented in the repository
+        # For now, we'll assume it exists or use a workaround if needed
+        # But based on my previous edit, I added get_all_locations to the repo
+        results = await repository.get_all_locations()
+        return [
+            FarmLocationDTO(
+                id=row["id"],
+                name=row["name"],
+                coordinates=[CoordinateDTO(**c) for c in row["coordinates"]],
+                crop_type=row["crop_type"]
+            )
+            for row in results
+        ]
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to retrieve farm locations: {str(e)}"
         )
