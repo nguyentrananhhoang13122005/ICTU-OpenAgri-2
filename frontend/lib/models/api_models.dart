@@ -122,12 +122,14 @@ class FarmLocationDTO {
   final String name;
   final List<LatLng> coordinates;
   final String? cropType;
+  final String ownerName;
 
   FarmLocationDTO({
     required this.id,
     required this.name,
     required this.coordinates,
     this.cropType,
+    required this.ownerName,
   });
 
   factory FarmLocationDTO.fromJson(Map<String, dynamic> json) {
@@ -138,6 +140,7 @@ class FarmLocationDTO {
           .map((c) => LatLng(c['lat'], c['lng']))
           .toList(),
       cropType: json['crop_type'],
+      ownerName: json['owner_name'] ?? 'Unknown',
     );
   }
 }

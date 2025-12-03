@@ -153,17 +153,29 @@ class _FarmMapWidgetState extends State<FarmMapWidget> {
                         textAlign: TextAlign.center,
                         overflow: TextOverflow.ellipsis,
                       ),
-                      if (_currentIndex >= 0 &&
-                          widget.locations[_currentIndex].cropType != null)
+                      if (_currentIndex >= 0) ...[
+                        if (widget.locations[_currentIndex].cropType != null)
+                          Text(
+                            widget.locations[_currentIndex].cropType!,
+                            style: const TextStyle(
+                              fontSize: 12,
+                              color: Color(0xFF608a6e),
+                            ),
+                            textAlign: TextAlign.center,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        const SizedBox(height: 2),
                         Text(
-                          widget.locations[_currentIndex].cropType!,
+                          'Chủ sở hữu: ${widget.locations[_currentIndex].ownerName}',
                           style: const TextStyle(
                             fontSize: 12,
-                            color: Color(0xFF608a6e),
+                            fontWeight: FontWeight.w500,
+                            color: Color(0xFF111813),
                           ),
                           textAlign: TextAlign.center,
                           overflow: TextOverflow.ellipsis,
                         ),
+                      ],
                     ],
                   ),
                 ),
@@ -181,34 +193,73 @@ class _FarmMapWidgetState extends State<FarmMapWidget> {
         Positioned(
           top: 16,
           left: 16,
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-            decoration: BoxDecoration(
-              color: Colors.white.withValues(alpha: 0.9),
-              borderRadius: BorderRadius.circular(8),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.1),
-                  blurRadius: 4,
-                  offset: const Offset(0, 2),
+          right: 16,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                decoration: BoxDecoration(
+                  color: Colors.white.withValues(alpha: 0.9),
+                  borderRadius: BorderRadius.circular(8),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.1),
+                      blurRadius: 4,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-            child: const Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(Icons.satellite_alt, size: 16, color: Color(0xFF608a6e)),
-                SizedBox(width: 8),
-                Text(
-                  'Bản Đồ Vệ Tinh',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 14,
-                    color: Color(0xFF111813),
-                  ),
+                child: const Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(Icons.satellite_alt,
+                        size: 16, color: Color(0xFF608a6e)),
+                    SizedBox(width: 8),
+                    Text(
+                      'Bản Đồ Vệ Tinh',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                        color: Color(0xFF111813),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.white.withValues(alpha: 0.9),
+                  borderRadius: BorderRadius.circular(8),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.1),
+                      blurRadius: 4,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
+                ),
+                child: IconButton(
+                  icon: const Icon(Icons.fullscreen),
+                  tooltip: 'Toàn màn hình',
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => Scaffold(
+                          appBar: AppBar(
+                            title: const Text('Bản Đồ Vùng Trồng'),
+                            backgroundColor: Colors.white,
+                            foregroundColor: Colors.black,
+                          ),
+                          body: FarmMapWidget(locations: widget.locations),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
           ),
         ),
       ],
