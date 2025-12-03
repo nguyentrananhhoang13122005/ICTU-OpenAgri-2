@@ -120,5 +120,5 @@ class SQLAlchemyFarmRepository(FarmRepository):
                 "coordinates": row.coordinates,
                 "crop_type": row.crop_type
             }
-            for row in result.scalars().all()
+            for row in result.all()
         ]
