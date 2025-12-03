@@ -5,8 +5,13 @@ import '../models/api_models.dart';
 
 class FarmMapWidget extends StatefulWidget {
   final List<FarmLocationDTO> locations;
+  final int? initialIndex;
 
-  const FarmMapWidget({super.key, required this.locations});
+  const FarmMapWidget({
+    super.key,
+    required this.locations,
+    this.initialIndex,
+  });
 
   @override
   State<FarmMapWidget> createState() => _FarmMapWidgetState();
@@ -15,6 +20,19 @@ class FarmMapWidget extends StatefulWidget {
 class _FarmMapWidgetState extends State<FarmMapWidget> {
   final MapController _mapController = MapController();
   int _currentIndex = -1; // -1 means no specific farm selected
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.initialIndex != null &&
+        widget.initialIndex! >= 0 &&
+        widget.initialIndex! < widget.locations.length) {
+      _currentIndex = widget.initialIndex!;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _focusFarm(_currentIndex);
+      });
+    }
+  }
 
   void _focusFarm(int index) {
     if (widget.locations.isEmpty) return;
@@ -175,6 +193,36 @@ class _FarmMapWidgetState extends State<FarmMapWidget> {
                           textAlign: TextAlign.center,
                           overflow: TextOverflow.ellipsis,
                         ),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => Scaffold(
+                                  appBar: AppBar(
+                                    title: Text(
+                                        widget.locations[_currentIndex].name),
+                                    backgroundColor: Colors.white,
+                                    foregroundColor: Colors.black,
+                                  ),
+                                  body: FarmMapWidget(
+                                    locations: widget.locations,
+                                    initialIndex: _currentIndex,
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                          style: TextButton.styleFrom(
+                            padding: EdgeInsets.zero,
+                            minimumSize: const Size(0, 30),
+                            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                          ),
+                          child: const Text(
+                            'Xem chi tiết',
+                            style: TextStyle(
+                                fontSize: 12, color: Color(0xFF0BDA50)),
+                          ),
+                        ),
                       ],
                     ],
                   ),
@@ -252,7 +300,11 @@ class _FarmMapWidgetState extends State<FarmMapWidget> {
                             backgroundColor: Colors.white,
                             foregroundColor: Colors.black,
                           ),
-                          body: FarmMapWidget(locations: widget.locations),
+                          body: FarmMapWidget(
+                            locations: widget.locations,
+                            initialIndex:
+                                _currentIndex >= 0 ? _currentIndex : null,
+                          ),
                         ),
                       ),
                     );
