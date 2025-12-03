@@ -21,3 +21,19 @@ class FarmAreaResponseDTO(FarmAreaCreateDTO):
     
     class Config:
         from_attributes = True
+
+class AdminFarmAreaResponseDTO(FarmAreaResponseDTO):
+    user_email: str
+    user_full_name: Optional[str] = None
+    username: str
+
+class CropDistributionDTO(BaseModel):
+    crop_type: str
+    count: int
+
+class FarmLocationDTO(BaseModel):
+    id: int
+    name: str
+    coordinates: List[CoordinateDTO]
+    crop_type: Optional[str] = None
+    owner_name: str

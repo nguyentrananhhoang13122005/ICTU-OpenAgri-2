@@ -9,9 +9,14 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.infrastructure.config.settings import get_settings
 from app.presentation.api.v1.router import api_router
-from app.infrastructure.database.database import init_db
+from app.infrastructure.database.database import init_db, AsyncSessionLocal
 # Import models to register them with Base
 from app.infrastructure.database import models
+
+from app.infrastructure.database.models.user_model import UserModel
+from app.infrastructure.security.jwt import get_password_hash
+from sqlalchemy.future import select
+
 
 settings = get_settings()
 
@@ -20,8 +25,31 @@ async def lifespan(app: FastAPI):
     """Lifecycle events."""
     # Startup: Initialize database
     await init_db()
+    
+    # Create admin user if not exists
+    async with AsyncSessionLocal() as session:
+        try:
+            result = await session.execute(select(UserModel).where(UserModel.email == settings.ADMIN_EMAIL))
+            admin_user = result.scalars().first()
+            if not admin_user:
+                new_admin = UserModel(
+                    email=settings.ADMIN_EMAIL,
+                    username="admin",
+                    full_name="System Administrator",
+                    hashed_password=get_password_hash(settings.ADMIN_PASSWORD),
+                    is_active=True,
+                    is_superuser=True
+                )
+                session.add(new_admin)
+                await session.commit()
+                print(f"Admin user created with email: {settings.ADMIN_EMAIL}")
+            else:
+                print("Admin user already exists.")
+        except Exception as e:
+            print(f"Error creating admin user: {e}")
+            
     yield
-    # Shutdown: Clean up resources if needed
+    # Shutdown:
 
 app = FastAPI(
     title=settings.PROJECT_NAME,

@@ -3,6 +3,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:openagri_app/screens/admin_panel_screen.dart';
+import 'package:openagri_app/viewmodels/admin_viewmodel.dart';
 import 'package:openagri_app/viewmodels/commodity_price_viewmodel.dart';
 import 'package:openagri_app/viewmodels/dashboard_viewmodel.dart';
 import 'package:openagri_app/viewmodels/disease_scan_viewmodel.dart';
@@ -10,6 +12,7 @@ import 'package:openagri_app/viewmodels/farm_map_viewmodel.dart';
 import 'package:openagri_app/viewmodels/login_viewmodel.dart';
 import 'package:openagri_app/viewmodels/satellite_monitoring_viewmodel.dart';
 import 'package:openagri_app/viewmodels/weather_viewmodel.dart';
+import 'package:openagri_app/views/dashboard_view.dart';
 import 'package:openagri_app/views/login_view.dart';
 import 'package:openagri_app/views/splash_view.dart';
 import 'package:provider/provider.dart';
@@ -35,6 +38,7 @@ class AgriTechApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => DiseaseScanViewModel()),
         ChangeNotifierProvider(create: (_) => SatelliteMonitoringViewModel()),
         ChangeNotifierProvider(create: (_) => CommodityPriceViewModel()),
+        ChangeNotifierProvider(create: (_) => AdminViewModel()),
         ChangeNotifierProvider(create: (_) => WeatherViewModel()),
       ],
       child: MaterialApp(
@@ -46,6 +50,8 @@ class AgriTechApp extends StatelessWidget {
         home: const SplashView(),
         routes: {
           '/login': (context) => const LoginView(),
+          '/dashboard': (context) => const DashboardView(),
+          '/admin': (context) => const AdminPanelScreen(),
           '/home': (context) => const MainLayout(),
         },
       ),

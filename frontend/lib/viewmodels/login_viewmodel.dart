@@ -67,7 +67,7 @@ class LoginViewModel extends ChangeNotifier {
     notifyListeners();
 
     try {
-      await AuthService().login(emailController.text, passwordController.text);
+      final user = await AuthService().login(emailController.text, passwordController.text);
 
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -78,13 +78,19 @@ class LoginViewModel extends ChangeNotifier {
           ),
         );
 
-        // Navigate to HomeScreen after successful login
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const MainLayout(),
-          ),
-        );
+        // Navigate based on user role
+        if (user.isSuperuser) {
+          // Admin user - navigate to Admin Panel
+          Navigator.pushReplacementNamed(context, '/admin');
+        } else {
+          // Regular user - navigate to Main Layout
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const MainLayout(),
+            ),
+          );
+        }
       }
     } catch (e) {
       _errorMessage = e.toString().replaceAll('Exception: ', '');

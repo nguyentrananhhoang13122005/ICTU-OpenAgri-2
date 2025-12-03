@@ -67,6 +67,84 @@ class FarmAreaResponseDTO {
   }
 }
 
+class AdminFarmAreaResponseDTO extends FarmAreaResponseDTO {
+  final String userEmail;
+  final String? userFullName;
+  final String username;
+
+  AdminFarmAreaResponseDTO({
+    required super.id,
+    required super.userId,
+    required super.name,
+    super.description,
+    required super.coordinates,
+    super.areaSize,
+    super.cropType,
+    required this.userEmail,
+    this.userFullName,
+    required this.username,
+  });
+
+  factory AdminFarmAreaResponseDTO.fromJson(Map<String, dynamic> json) {
+    return AdminFarmAreaResponseDTO(
+      id: json['id'],
+      userId: json['user_id'],
+      name: json['name'],
+      description: json['description'],
+      coordinates: (json['coordinates'] as List)
+          .map((c) => LatLng(c['lat'], c['lng']))
+          .toList(),
+      areaSize: json['area_size'],
+      cropType: json['crop_type'],
+      userEmail: json['user_email'],
+      userFullName: json['user_full_name'],
+      username: json['username'],
+    );
+  }
+}
+
+class CropDistributionDTO {
+  final String cropType;
+  final int count;
+
+  CropDistributionDTO({required this.cropType, required this.count});
+
+  factory CropDistributionDTO.fromJson(Map<String, dynamic> json) {
+    return CropDistributionDTO(
+      cropType: json['crop_type'],
+      count: json['count'],
+    );
+  }
+}
+
+class FarmLocationDTO {
+  final int id;
+  final String name;
+  final List<LatLng> coordinates;
+  final String? cropType;
+  final String ownerName;
+
+  FarmLocationDTO({
+    required this.id,
+    required this.name,
+    required this.coordinates,
+    this.cropType,
+    required this.ownerName,
+  });
+
+  factory FarmLocationDTO.fromJson(Map<String, dynamic> json) {
+    return FarmLocationDTO(
+      id: json['id'],
+      name: json['name'],
+      coordinates: (json['coordinates'] as List)
+          .map((c) => LatLng(c['lat'], c['lng']))
+          .toList(),
+      cropType: json['crop_type'],
+      ownerName: json['owner_name'] ?? 'Unknown',
+    );
+  }
+}
+
 // --- NDVI Models ---
 
 class NDVIRequest {
@@ -319,7 +397,7 @@ class DiseasePredictionDTO {
 
   factory DiseasePredictionDTO.fromJson(Map<String, dynamic> json) {
     return DiseasePredictionDTO(
-      className: json['class_name'],
+      className: json['vietnamese_name'] ?? json['class'] ?? 'Unknown',
       confidence: (json['confidence'] as num).toDouble(),
       description: json['description'],
       symptoms:

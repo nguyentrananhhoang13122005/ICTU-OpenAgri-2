@@ -130,8 +130,8 @@ class DiseaseDetectionService:
             disease_info = DISEASE_INFO.get(class_name, {})
             
             result = {
-                "class_name": vietnamese_name,
-                "original_name": class_name,
+                "vietnamese_name": vietnamese_name,
+                "class": class_name,
                 "confidence": confidence,
                 "description": disease_info.get("description", ""),
                 "symptoms": disease_info.get("symptoms", []),

@@ -17,3 +17,8 @@ class FarmRepository(ABC):
     @abstractmethod
     async def get_by_id(self, farm_id: int) -> Optional[FarmArea]:
         pass
+
+    @abstractmethod
+    async def get_all_with_user(self, skip: int = 0, limit: int = 100) -> List[tuple[FarmArea, dict]]:
+        """Get all farms with user details."""
+        pass
