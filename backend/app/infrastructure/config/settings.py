@@ -42,7 +42,7 @@ class Settings(BaseSettings):
     # Environment
     ENVIRONMENT: str = "development"
 
-    # Admin
+    # Admin (Sẽ bị ghi đè bởi biến môi trường trong production)
     ADMIN_EMAIL: str = ""
     ADMIN_PASSWORD: str = ""
 
