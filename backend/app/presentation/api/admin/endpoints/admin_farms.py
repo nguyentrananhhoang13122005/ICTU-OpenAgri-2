@@ -81,7 +81,8 @@ async def get_farm_locations(
                 id=row["id"],
                 name=row["name"],
                 coordinates=[CoordinateDTO(**c) for c in row["coordinates"]],
-                crop_type=row["crop_type"]
+                crop_type=row["crop_type"],
+                owner_name=row["owner_name"]
             )
             for row in results
         ]

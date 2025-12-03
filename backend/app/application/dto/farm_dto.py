@@ -36,3 +36,4 @@ class FarmLocationDTO(BaseModel):
     name: str
     coordinates: List[CoordinateDTO]
     crop_type: Optional[str] = None
+    owner_name: str

@@ -7,6 +7,7 @@ from sqlalchemy import select
 from app.domain.repositories.farm_repository import FarmRepository
 from app.domain.entities.farm import FarmArea, Coordinate
 from app.infrastructure.database.models.farm_model import FarmModel
+from app.infrastructure.database.models.user_model import UserModel
 
 class SQLAlchemyFarmRepository(FarmRepository):
     def __init__(self, db: AsyncSession):
@@ -111,14 +112,22 @@ class SQLAlchemyFarmRepository(FarmRepository):
 
     async def get_all_locations(self) -> List[dict]:
         result = await self.db.execute(
-            select(FarmModel.id, FarmModel.name, FarmModel.coordinates, FarmModel.crop_type)
+            select(
+                FarmModel.id, 
+                FarmModel.name, 
+                FarmModel.coordinates, 
+                FarmModel.crop_type,
+                UserModel.full_name,
+                UserModel.username
+            ).join(UserModel, FarmModel.user_id == UserModel.id)
         )
         return [
             {
                 "id": row.id,
                 "name": row.name,
                 "coordinates": row.coordinates,
-                "crop_type": row.crop_type
+                "crop_type": row.crop_type,
+                "owner_name": row.full_name or row.username
             }
             for row in result.all()
         ]
