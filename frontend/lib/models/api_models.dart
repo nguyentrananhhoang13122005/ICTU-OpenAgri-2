@@ -239,6 +239,7 @@ class PestRiskForecastResponseDTO {
 
 class PestSummaryDTO {
   final String pestName;
+  final String? vietnameseName;
   final int? speciesKey;
   final Map<String, int> yearlyOccurrences;
   final int totalOccurrences;
@@ -246,6 +247,7 @@ class PestSummaryDTO {
 
   PestSummaryDTO({
     required this.pestName,
+    this.vietnameseName,
     this.speciesKey,
     required this.yearlyOccurrences,
     required this.totalOccurrences,
@@ -255,6 +257,7 @@ class PestSummaryDTO {
   factory PestSummaryDTO.fromJson(Map<String, dynamic> json) {
     return PestSummaryDTO(
       pestName: json['pest_name'],
+      vietnameseName: json['vietnamese_name'],
       speciesKey: json['species_key'],
       yearlyOccurrences: Map<String, int>.from(json['yearly_occurrences']),
       totalOccurrences: json['total_occurrences'],
@@ -265,6 +268,7 @@ class PestSummaryDTO {
 
 class PestWarningDTO {
   final String pestName;
+  final String? vietnameseName;
   final String riskLevel;
   final String message;
   final int? lastSeenYear;
@@ -272,6 +276,7 @@ class PestWarningDTO {
 
   PestWarningDTO({
     required this.pestName,
+    this.vietnameseName,
     required this.riskLevel,
     required this.message,
     this.lastSeenYear,
@@ -281,6 +286,7 @@ class PestWarningDTO {
   factory PestWarningDTO.fromJson(Map<String, dynamic> json) {
     return PestWarningDTO(
       pestName: json['pest_name'],
+      vietnameseName: json['vietnamese_name'],
       riskLevel: json['risk_level'],
       message: json['message'],
       lastSeenYear: json['last_seen_year'],

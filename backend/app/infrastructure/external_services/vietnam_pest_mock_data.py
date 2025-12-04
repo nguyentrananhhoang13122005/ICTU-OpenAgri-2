@@ -172,6 +172,7 @@ def get_mock_pest_data_for_vietnam(latitude: float, longitude: float, years_back
         if yearly_data:
             pest_summary[pest_name] = {
                 "species_key": None,  # Mock data doesn't have real GBIF key
+                "vietnamese_name": pest_info["common_name_vi"],
                 "yearly_occurrences": yearly_data,
                 "total_occurrences": sum(yearly_data.values()),
                 "most_recent_year": max(yearly_data.keys())
@@ -189,6 +190,7 @@ def get_mock_pest_data_for_vietnam(latitude: float, longitude: float, years_back
             risk_level = "high" if pest_info["severity"] == "high" else "medium"
             warnings.append({
                 "pest_name": pest_name,
+                "vietnamese_name": pest_info["common_name_vi"],
                 "risk_level": risk_level,
                 "message": f"{pest_info['common_name_vi']} ({pest_name}) xuất hiện {sum(yearly[y] for y in recent_years)} lần trong 2 năm gần đây. {pest_info['damage_level']}.",
                 "last_seen_year": max(recent_years),

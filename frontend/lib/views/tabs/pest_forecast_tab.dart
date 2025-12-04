@@ -677,7 +677,7 @@ class _PestForecastTabState extends State<PestForecastTab> {
                     const SizedBox(width: 12),
                     Expanded(
                       child: Text(
-                        entry.key,
+                        entry.value.vietnameseName ?? entry.key,
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w600,

@@ -261,6 +261,7 @@ class GBIFService:
                         "pest_name": pest_name,
                         "data": {
                             "species_key": species_key,
+                            "vietnamese_name": None,  # Will be populated below
                             "yearly_occurrences": yearly_occurrences,
                             "total_occurrences": sum(yearly_occurrences.values()),
                             "most_recent_year": max(yearly_occurrences.keys()) if yearly_occurrences else None
@@ -279,9 +280,13 @@ class GBIFService:
         pest_tasks = [process_pest(pest) for pest in default_pests]
         pest_results = await asyncio.gather(*pest_tasks)
         
+        from .pest_names import get_vietnamese_name
+        
         for result in pest_results:
             if result:
                 pest_name = result["pest_name"]
+                # Populate Vietnamese name
+                result["data"]["vietnamese_name"] = get_vietnamese_name(pest_name)
                 pest_summary[pest_name] = result["data"]
                 all_occurrences.extend(result["occurrences"])
         
@@ -295,11 +300,14 @@ class GBIFService:
             # Check if pest appeared in recent years
             recent_years = [y for y in yearly.keys() if y >= current_year - 2]
             if recent_years:
+                vietnamese_name = data.get("vietnamese_name", pest_name)
+                display_name = vietnamese_name if vietnamese_name else pest_name
                 # Generate warning based on historical patterns
                 warnings.append({
                     "pest_name": pest_name,
+                    "vietnamese_name": vietnamese_name,
                     "risk_level": "medium" if len(recent_years) >= 2 else "low",
-                    "message": f"Khu vực của bạn có lịch sử xuất hiện {pest_name} trong các năm {', '.join(map(str, recent_years))}. Hãy kiểm tra đồng ruộng.",
+                    "message": f"Khu vực của bạn có lịch sử xuất hiện {display_name} trong các năm {', '.join(map(str, recent_years))}. Hãy kiểm tra đồng ruộng.",
                     "last_seen_year": max(recent_years),
                     "occurrence_count": yearly[max(recent_years)]
                 })
