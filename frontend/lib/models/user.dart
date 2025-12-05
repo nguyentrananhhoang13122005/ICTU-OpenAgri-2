@@ -39,8 +39,12 @@ class User {
           : json['created_at'] != null
               ? DateTime.parse(json['created_at'])
               : null,
-      isSuperuser: json['is_superuser'] ?? false,
-      isActive: json['is_active'] ?? true,
+      isSuperuser: json['is_superuser'] == true ||
+          json['is_superuser'] == 1 ||
+          json['is_superuser'].toString().toLowerCase() == 'true',
+      isActive: json['is_active'] == true ||
+          json['is_active'] == 1 ||
+          json['is_active'].toString().toLowerCase() == 'true',
     );
   }
 
