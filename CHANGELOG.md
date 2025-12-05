@@ -5,6 +5,32 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.2] - 2025-12-05
+
+### Added
+
+- **Backend**:
+  - Implemented **Background Scheduler** (using `APScheduler`) to automatically sync NDVI data for farms daily.
+  - Added `sync_latest_data_for_farm` use case to fetch and store the top 10 most recent Sentinel-2 images for each farm.
+  - Added automatic cleanup logic to remove temporary files (`.zip`, `.SAFE`, `.tif`) after processing to save disk space.
+  - Added caching for Commodity Price mock data to improve performance.
+  - Added `VietnamPestService` to load pest data from external JSON files instead of hardcoded Python dictionaries.
+
+### Changed
+
+- **Backend**:
+  - **Performance Optimization**: Converted `SentinelClient` to fully **Async/Await** using `httpx` and `ThreadPoolExecutor` for non-blocking I/O and CPU-bound tasks (unzipping).
+  - Refactored `NDVIUseCase`, `SoilMoistureUseCase`, and `DiseaseDetectionService` to be fully asynchronous.
+  - Moved hardcoded pest mock data to `backend/data/mock_pest_data.json`.
+  - Updated `DiseaseDetectionService` to run TensorFlow predictions in a thread pool to prevent blocking the event loop.
+
+### Fixed
+
+- **Backend**:
+  - Restored missing Vietnamese disease names (`_vietnamese_names`) in `DiseaseDetectionService` that were accidentally removed during refactoring.
+  - Fixed variable name error (`max_value` -> `max_val`) in `NDVIUseCase`.
+  - Fixed import issues in `VietnamPestService`.
+
 ## [0.2.1] - 2025-12-03
 
 ### Added
