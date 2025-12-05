@@ -10,6 +10,9 @@ from typing import List, Dict, Any
 import io
 from .disease_info import DISEASE_INFO
 
+import asyncio
+from concurrent.futures import ThreadPoolExecutor
+
 class DiseaseDetectionService:
     _instance = None
     _model = None
@@ -93,15 +96,17 @@ class DiseaseDetectionService:
             # For now, we'll let it fail if called later if resources aren't loaded
             pass
 
-    def predict(self, image_bytes: bytes) -> Dict[str, Any]:
+    async def predict(self, image_bytes: bytes) -> Dict[str, Any]:
         """
-        Predict disease from an image.
-        
-        Args:
-            image_bytes: The image data in bytes.
-            
-        Returns:
-            A dictionary containing the top class name and confidence score.
+        Predict disease from an image (Async wrapper).
+        Runs the CPU-bound prediction in a thread pool.
+        """
+        loop = asyncio.get_event_loop()
+        return await loop.run_in_executor(None, self._predict_sync, image_bytes)
+
+    def _predict_sync(self, image_bytes: bytes) -> Dict[str, Any]:
+        """
+        Synchronous prediction logic.
         """
         if self._model is None or self._class_names is None:
             self._load_resources()
