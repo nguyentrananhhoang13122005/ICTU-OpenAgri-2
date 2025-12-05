@@ -10,6 +10,7 @@ import 'package:openagri_app/viewmodels/dashboard_viewmodel.dart';
 import 'package:openagri_app/viewmodels/disease_scan_viewmodel.dart';
 import 'package:openagri_app/viewmodels/farm_map_viewmodel.dart';
 import 'package:openagri_app/viewmodels/login_viewmodel.dart';
+import 'package:openagri_app/viewmodels/pest_forecast_viewmodel.dart';
 import 'package:openagri_app/viewmodels/satellite_monitoring_viewmodel.dart';
 import 'package:openagri_app/viewmodels/weather_viewmodel.dart';
 import 'package:openagri_app/views/dashboard_view.dart';
@@ -40,6 +41,7 @@ class AgriTechApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => CommodityPriceViewModel()),
         ChangeNotifierProvider(create: (_) => AdminViewModel()),
         ChangeNotifierProvider(create: (_) => WeatherViewModel()),
+        ChangeNotifierProvider(create: (_) => PestForecastViewModel()),
       ],
       child: MaterialApp(
         title: 'AgriSmart - Nông Nghiệp Thông Minh',
