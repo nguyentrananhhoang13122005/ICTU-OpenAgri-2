@@ -56,7 +56,7 @@ async def get_pest_risk_forecast(
         if 8.0 <= latitude <= 24.0 and 102.0 <= longitude <= 110.0:
             logger.info(f"Vietnam coordinates detected ({latitude}, {longitude}), using realistic mock data")
             try:
-                from app.infrastructure.external_services.vietnam_pest_mock_data import get_mock_pest_data_for_vietnam
+                from app.infrastructure.external_services.vietnam_pest_service import get_mock_pest_data_for_vietnam
                 mock_result = get_mock_pest_data_for_vietnam(latitude, longitude, years_back)
                 if mock_result:
                     return PestRiskForecastResponseDTO(**mock_result)
