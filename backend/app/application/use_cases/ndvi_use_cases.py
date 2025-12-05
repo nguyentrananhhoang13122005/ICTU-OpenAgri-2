@@ -4,6 +4,7 @@
 import random
 import datetime
 import os
+import shutil
 import uuid
 from fastapi import HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -86,8 +87,25 @@ class CalculateNDVIUseCase:
                 await repo.save_data(new_record)
                 print(f"Saved NDVI data for farm {farm_id} on {acquisition_date}")
                 
-                # Clean up (Optional: remove tif file if not needed for immediate display)
-                # os.remove(out_tif) 
+                # Clean up downloaded files to save space
+                try:
+                    # 1. Remove the extracted .SAFE directory
+                    if os.path.exists(out) and os.path.isdir(out):
+                        shutil.rmtree(out)
+                        # print(f"Deleted temp folder: {out}")
+
+                    # 2. Remove the original .zip file
+                    zip_path = os.path.join(settings.OUTPUT_DIR, f"{product_info['title']}.zip")
+                    if os.path.exists(zip_path):
+                        os.remove(zip_path)
+                        # print(f"Deleted temp zip: {zip_path}")
+                        
+                    # 3. Remove the generated .tif file
+                    if os.path.exists(out_tif):
+                        os.remove(out_tif)
+                        # print(f"Deleted temp result: {out_tif}")
+                except Exception as cleanup_error:
+                    print(f"Error cleaning up files for farm {farm_id}: {cleanup_error}") 
 
         except Exception as e:
             print(f"Error syncing farm {farm_id}: {e}")
