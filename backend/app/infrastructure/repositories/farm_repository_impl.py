@@ -15,7 +15,8 @@ class SQLAlchemyFarmRepository(FarmRepository):
 
     async def save(self, farm: FarmArea) -> FarmArea:
         # Convert domain entity to SQLAlchemy model
-        coordinates_json = [coord.dict() for coord in farm.coordinates]
+        # Manually convert coordinates to list of dicts to avoid Pydantic version issues
+        coordinates_json = [{"lat": coord.lat, "lng": coord.lng} for coord in farm.coordinates]
         
         db_farm = FarmModel(
             name=farm.name,
