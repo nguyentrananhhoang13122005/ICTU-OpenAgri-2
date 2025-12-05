@@ -28,7 +28,12 @@ class _SplashViewState extends State<SplashView> {
     if (!mounted) return;
 
     if (isLoggedIn) {
-      Navigator.of(context).pushReplacementNamed('/home');
+      final user = authService.currentUser;
+      if (user != null && user.isSuperuser) {
+        Navigator.of(context).pushReplacementNamed('/admin');
+      } else {
+        Navigator.of(context).pushReplacementNamed('/home');
+      }
     } else {
       Navigator.of(context).pushReplacementNamed('/login');
     }
