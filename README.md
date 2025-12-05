@@ -335,59 +335,101 @@ graph TD
     ExtServices -.->|Implements| Entities
 ```
 
-### Level 4: Code (Chi tiết thực thi - Pest Risk Forecast Module)
+### Level 4: Code (Chi tiết thực thi toàn hệ thống)
 
-Biểu đồ lớp (Class Diagram) dưới đây mô tả chi tiết cấu trúc code của tính năng **Dự báo dịch hại (Pest Risk Forecast)**, minh họa việc áp dụng **Clean Architecture** với sự phân tách rõ ràng giữa các tầng: Presentation, Application, và Infrastructure.
+Biểu đồ lớp (Class Diagram) dưới đây cung cấp cái nhìn tổng quan về cấu trúc mã nguồn của toàn bộ hệ thống Backend, minh họa mối quan hệ giữa các **Entities** (Domain), **Use Cases** (Application), và **Services** (Infrastructure).
 
 ```mermaid
 classDiagram
-    %% Presentation Layer (API)
-    class PestRouter {
-        +get_pest_risk_forecast(lat, lon, radius, ...)
+    %% --- Domain Layer (Core Entities) ---
+    namespace Domain {
+        class User {
+            +int id
+            +str email
+            +str username
+            +bool is_active
+        }
+        class FarmArea {
+            +int id
+            +str name
+            +List~Coordinate~ coordinates
+            +str crop_type
+            +int user_id
+        }
+        class Coordinate {
+            +float lat
+            +float lng
+        }
     }
 
-    %% Application Layer (Business Logic)
-    class GetPestRiskForecastUseCase {
-        -gbif_service: GBIFService
-        +execute(lat, lon, radius, ...): PestRiskForecastResponseDTO
+    %% --- Application Layer (Business Logic) ---
+    namespace Application {
+        class UserUseCase {
+            +register_user()
+            +authenticate_user()
+            +get_current_user()
+        }
+        class FarmUseCase {
+            +create_farm()
+            +get_user_farms()
+            +update_farm_info()
+        }
+        class PestRiskForecastUseCase {
+            +execute(lat, lon, radius)
+        }
+        class DiseaseDetectionService {
+            +predict(image_bytes)
+        }
+        class SatelliteUseCase {
+            +analyze_ndvi(farm_id, date)
+            +analyze_soil_moisture(farm_id)
+        }
     }
 
-    %% Infrastructure Layer (External Services)
-    class GBIFService {
-        +BASE_URL: str
-        +get_pest_risk_forecast(lat, lon, ...): Dict
-        +search_species(query): Dict
-        +search_occurrences(lat, lon, species_key, ...): Dict
-        -process_pest(pest_name): Coroutine
+    %% --- Infrastructure Layer (External & Data) ---
+    namespace Infrastructure {
+        class UserRepository {
+            +get_by_email()
+            +create()
+        }
+        class FarmRepository {
+            +get_by_user()
+            +create()
+        }
+        class GBIFService {
+            +search_occurrences()
+        }
+        class CopernicusService {
+            +download_sentinel_image()
+        }
+        class AIModelLoader {
+            +load_keras_model()
+        }
     }
 
-    %% Domain/DTOs (Data Transfer Objects)
-    class PestRiskForecastResponseDTO {
-        +location: LocationDTO
-        +pest_summary: Dict
-        +warnings: List[PestWarningDTO]
-    }
+    %% --- Relationships ---
+    %% User Management
+    UserUseCase ..> User : Manages
+    UserUseCase --> UserRepository : Uses
 
-    class PestWarningDTO {
-        +pest_name: str
-        +risk_level: str
-        +message: str
-    }
+    %% Farm Management
+    FarmUseCase ..> FarmArea : Manages
+    FarmArea *-- Coordinate : Contains
+    FarmUseCase --> FarmRepository : Uses
+    FarmArea --> User : Belongs to
 
-    %% Relationships
-    PestRouter ..> GetPestRiskForecastUseCase : Uses (Dependency Injection)
-    GetPestRiskForecastUseCase --> GBIFService : Injects
-    GetPestRiskForecastUseCase ..> PestRiskForecastResponseDTO : Returns
-    PestRiskForecastResponseDTO *-- PestWarningDTO : Contains
-    GBIFService ..> "GBIF API (External)" : HTTP Requests
+    %% Features
+    PestRiskForecastUseCase --> GBIFService : Uses
+    DiseaseDetectionService --> AIModelLoader : Uses
+    SatelliteUseCase --> CopernicusService : Uses
+    SatelliteUseCase ..> FarmArea : Analyzes
 ```
 
 **Giải thích:**
 
-- **PestRouter**: Endpoint API nhận request từ client.
-- **GetPestRiskForecastUseCase**: Chứa logic nghiệp vụ, điều phối việc lấy dữ liệu.
-- **GBIFService**: Service giao tiếp với API bên ngoài (GBIF) để lấy dữ liệu sinh học.
-- **DTOs**: Các đối tượng chuyển tải dữ liệu giữa các lớp, đảm bảo tính độc lập.
+- **Domain**: Chứa các thực thể cốt lõi (`User`, `FarmArea`) đại diện cho dữ liệu nghiệp vụ.
+- **Application**: Chứa các logic nghiệp vụ (`UseCases`), điều phối luồng dữ liệu giữa UI và Infrastructure.
+- **Infrastructure**: Chứa các lớp thực thi cụ thể như truy cập Database (`Repository`) hoặc gọi API bên ngoài (`Service`).
 
 ---
 
@@ -395,28 +437,38 @@ classDiagram
 
 ```
 ICTU-OpenAgri/
-├── backend/                # Mã nguồn Server (FastAPI)
-│   ├── app/
-│   │   ├── application/    # Business Logic (Use Cases, DTOs)
-│   │   ├── domain/         # Entities, Interfaces (Core)
-│   │   ├── infrastructure/ # Database, External Services
-│   │   ├── presentation/   # API Endpoints
-│   │   └── main.py         # Entry point
-│   ├── data/               # Dữ liệu mẫu
-│   └── output/             # Kết quả xử lý ảnh vệ tinh
+├── backend/                 # Backend Server (FastAPI)
+│   ├── app/                 # Source code chính
+│   │   ├── application/     # Business Logic (Use Cases, DTOs)
+│   │   ├── domain/          # Entities & Interfaces (Core)
+│   │   ├── infrastructure/  # Database, External Services, AI Impl
+│   │   ├── presentation/    # API Endpoints & Dependencies
+│   │   └── main.py          # Entry point
+│   ├── data/                # Dữ liệu mẫu (Mock data)
+│   ├── ml_models/           # Mô hình AI (Keras/TensorFlow)
+│   ├── output/              # Dữ liệu đầu ra (Ảnh vệ tinh đã xử lý)
+│   ├── tests/               # Unit Tests
+│   ├── Dockerfile           # Cấu hình Docker cho Backend
+│   └── requirements.txt     # Danh sách thư viện Python
 │
-├── frontend/               # Mã nguồn Mobile App (Flutter)
-│   ├── lib/
-│   │   ├── config/         # Cấu hình (Theme, Routes)
-│   │   ├── models/         # Data Models
-│   │   ├── screens/        # Màn hình UI (Home, Map, Dashboard)
-│   │   ├── services/       # API Services
-│   │   ├── viewmodels/     # Logic xử lý trạng thái (Provider)
-│   │   ├── views/          # Widgets tái sử dụng
-│   │   └── main.dart       # Entry point
-│   └── pubspec.yaml        # Quản lý dependencies
+├── frontend/                # Mobile App (Flutter)
+│   ├── android/             # Cấu hình Android Native
+│   ├── ios/                 # Cấu hình iOS Native
+│   ├── lib/                 # Source code Dart
+│   │   ├── config/          # Cấu hình App (Theme, Routes)
+│   │   ├── models/          # Data Models
+│   │   ├── screens/         # Màn hình UI chính
+│   │   ├── services/        # API Services (Retrofit/Dio)
+│   │   ├── viewmodels/      # State Management (Provider)
+│   │   ├── views/           # Các thành phần UI nhỏ (Partial Views)
+│   │   ├── widgets/         # Widgets tái sử dụng (Common Widgets)
+│   │   └── main.dart        # Entry point
+│   ├── assets/              # Tài nguyên (Hình ảnh, Icons)
+│   └── pubspec.yaml         # Quản lý thư viện Flutter
 │
-└── README.md               # Tài liệu dự án
+├── docker-compose.yml       # Cấu hình chạy toàn bộ hệ thống (Docker)
+├── Makefile                 # Các lệnh tiện ích (Build, Run)
+└── README.md                # Tài liệu dự án
 ```
 
 ## 🤝 Đóng Góp (Contributing)
