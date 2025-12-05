@@ -30,6 +30,7 @@ class YearlyOccurrenceDTO(BaseModel):
 class PestSummaryDTO(BaseModel):
     """Summary of pest occurrences."""
     pest_name: str
+    vietnamese_name: Optional[str] = None
     species_key: Optional[int] = None
     yearly_occurrences: Dict[int, int] = Field(default_factory=dict)
     total_occurrences: int = 0
@@ -42,6 +43,7 @@ class PestSummaryDTO(BaseModel):
 class PestWarningDTO(BaseModel):
     """Pest risk warning."""
     pest_name: str
+    vietnamese_name: Optional[str] = None
     risk_level: str = Field(description="Risk level: low, medium, high")
     message: str
     last_seen_year: Optional[int] = None
