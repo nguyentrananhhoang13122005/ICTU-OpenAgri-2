@@ -3,9 +3,16 @@
 
 import os
 import datetime
-import requests
 import zipfile
+import asyncio
 from typing import List, Optional, Tuple, Dict, Any
+from concurrent.futures import ThreadPoolExecutor
+
+try:
+    import httpx
+except ImportError:
+    import requests as httpx  # Fallback, though we should ensure httpx is installed
+
 from app.infrastructure.config.settings import get_settings
 
 settings = get_settings()
@@ -19,7 +26,7 @@ def bbox_to_wkt(bbox: List[float]) -> str:
     # OData geography literal
     return f"geography'SRID=4326;POLYGON(({minx} {miny}, {minx} {maxy}, {maxx} {maxy}, {maxx} {miny}, {minx} {miny}))'"
 
-def get_access_token() -> str:
+async def get_access_token() -> str:
     """Get Access Token from CDSE Identity Provider"""
     token_url = "https://identity.dataspace.copernicus.eu/auth/realms/CDSE/protocol/openid-connect/token"
     data = {
@@ -28,19 +35,21 @@ def get_access_token() -> str:
         'password': settings.COPERNICUS_PASSWORD,
         'grant_type': 'password'
     }
-    try:
-        response = requests.post(token_url, data=data)
-        response.raise_for_status()
-        return response.json()['access_token']
-    except requests.exceptions.RequestException as e:
-        raise RuntimeError(f"Authentication failed: {str(e)}. Check your COPERNICUS_USERNAME and COPERNICUS_PASSWORD.")
+    
+    async with httpx.AsyncClient() as client:
+        try:
+            response = await client.post(token_url, data=data)
+            response.raise_for_status()
+            return response.json()['access_token']
+        except httpx.HTTPError as e:
+            raise RuntimeError(f"Authentication failed: {str(e)}. Check your COPERNICUS_USERNAME and COPERNICUS_PASSWORD.")
 
-def search_sentinel_products(bbox: List[float], date_start: str, date_end: str, platformname='SENTINEL-2', processinglevel='Level-2A') -> Tuple[Any, Dict[str, Any]]:
+async def search_sentinel_products(bbox: List[float], date_start: str, date_end: str, platformname='SENTINEL-2', processinglevel='Level-2A') -> Tuple[Any, Dict[str, Any]]:
     """Search Copernicus Data Space Ecosystem (CDSE) via OData API."""
     if not settings.COPERNICUS_USERNAME or not settings.COPERNICUS_PASSWORD:
         raise RuntimeError('COPERNICUS_USERNAME/PASSWORD not set')
 
-    token = get_access_token()
+    token = await get_access_token()
     headers = {'Authorization': f'Bearer {token}'}
     
     try:
@@ -76,12 +85,15 @@ def search_sentinel_products(bbox: List[float], date_start: str, date_end: str, 
     }
     
     print(f"Searching CDSE: {url} with params {params}")
-    response = requests.get(url, params=params, headers=headers)
     
-    if response.status_code != 200:
-        raise RuntimeError(f"Search failed: {response.status_code} {response.text}")
+    async with httpx.AsyncClient() as client:
+        response = await client.get(url, params=params, headers=headers, timeout=30.0)
         
-    results = response.json()
+        if response.status_code != 200:
+            raise RuntimeError(f"Search failed: {response.status_code} {response.text}")
+            
+        results = response.json()
+        
     products = {}
     for item in results.get('value', []):
         cloud_cover = 0.0
@@ -101,14 +113,20 @@ def search_sentinel_products(bbox: List[float], date_start: str, date_end: str, 
         
     return None, products
 
-def download_product(api: Any, product_info: dict, out_dir: Optional[str]=None) -> str:
+def _unzip_file(zip_path: str, extract_to: str):
+    """Helper function to unzip file in a thread."""
+    print(f"Extracting {zip_path}...")
+    with zipfile.ZipFile(zip_path, 'r') as zip_ref:
+        zip_ref.extractall(extract_to)
+
+async def download_product(api: Any, product_info: dict, out_dir: Optional[str]=None) -> str:
     """Download product from CDSE and unzip it."""
     out_dir = out_dir or settings.OUTPUT_DIR
     uuid = product_info['uuid']
     title = product_info['title']
     print(f"Downloading {title} ({uuid}) ...")
     
-    token = get_access_token()
+    token = await get_access_token()
     headers = {'Authorization': f'Bearer {token}'}
     
     # Download URL
@@ -123,15 +141,16 @@ def download_product(api: Any, product_info: dict, out_dir: Optional[str]=None) 
 
     if not os.path.exists(local_zip):
         print(f"Downloading to {local_zip}...")
-        with requests.get(url, headers=headers, stream=True) as r:
-            r.raise_for_status()
-            with open(local_zip, 'wb') as f:
-                for chunk in r.iter_content(chunk_size=8192): 
-                    f.write(chunk)
+        async with httpx.AsyncClient() as client:
+            async with client.stream('GET', url, headers=headers, timeout=None) as response:
+                response.raise_for_status()
+                with open(local_zip, 'wb') as f:
+                    async for chunk in response.aiter_bytes(chunk_size=8192):
+                        f.write(chunk)
     
-    print(f"Extracting {local_zip}...")
-    with zipfile.ZipFile(local_zip, 'r') as zip_ref:
-        zip_ref.extractall(out_dir)
+    # Run unzip in a thread pool to avoid blocking the event loop
+    loop = asyncio.get_event_loop()
+    await loop.run_in_executor(None, _unzip_file, local_zip, out_dir)
         
     possible_path = os.path.join(out_dir, title + ".SAFE")
     if os.path.exists(possible_path):
