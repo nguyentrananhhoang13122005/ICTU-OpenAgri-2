@@ -23,7 +23,7 @@ async def predict_disease(
 
     try:
         contents = await file.read()
-        prediction = disease_detection_service.predict(contents)
+        prediction = await disease_detection_service.predict(contents)
         return prediction
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Prediction failed: {str(e)}")
