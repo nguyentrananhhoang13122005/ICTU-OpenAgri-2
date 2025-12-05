@@ -15,7 +15,7 @@ from app.infrastructure.database import models
 from app.infrastructure.database.models.user_model import UserModel
 from app.infrastructure.security.jwt import get_password_hash
 from sqlalchemy.future import select
-
+from app.scheduler import start_scheduler
 
 settings = get_settings()
 
@@ -33,6 +33,9 @@ async def startup_event():
     """Initialize database and create admin user on startup."""
     # Startup: Initialize database
     await init_db()
+    
+    # Start Scheduler
+    start_scheduler()
     
     # Create admin user if not exists
     async with AsyncSessionLocal() as session:
