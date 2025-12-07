@@ -50,7 +50,7 @@ class Settings(BaseSettings):
     COPERNICUS_USERNAME: str = ""
     COPERNICUS_PASSWORD: str = ""
     OUTPUT_DIR: str = "./output"
-    MAX_PRODUCTS: int = 2
+    MAX_PRODUCTS: int = 20
 
 
 @lru_cache()
