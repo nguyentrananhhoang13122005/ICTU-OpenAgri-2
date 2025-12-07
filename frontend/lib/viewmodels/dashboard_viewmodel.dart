@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 import '../models/api_models.dart';
 import '../models/dashboard_data.dart';
+import '../services/analysis_service.dart';
 import '../services/farm_service.dart';
 import '../services/weather_service.dart';
 
@@ -28,6 +29,7 @@ class DashboardViewModel extends ChangeNotifier {
 
   final WeatherService _weatherService = WeatherService();
   final FarmService _farmService = FarmService();
+  final AnalysisService _analysisService = AnalysisService();
 
   // Initialize data
   Future<void> initData() async {
@@ -62,10 +64,72 @@ class DashboardViewModel extends ChangeNotifier {
         _selectedFarmId = _fields.first.id;
       }
       _updateStats();
+
+      // Fetch NDVI for each farm in background
+      _fetchNdviForFarms(farmDtos);
     } catch (e) {
       _fields = []; // No mock data on error
       _updateStats();
     }
+  }
+
+  Future<void> _fetchNdviForFarms(List<FarmAreaResponseDTO> farmDtos) async {
+    try {
+      final now = DateTime.now();
+      final startDate = now.subtract(const Duration(days: 60));
+
+      for (int i = 0; i < farmDtos.length; i++) {
+        final dto = farmDtos[i];
+        if (dto.coordinates.isEmpty) continue;
+
+        try {
+          // Calculate bbox from coordinates
+          double minLat = double.infinity, maxLat = -double.infinity;
+          double minLng = double.infinity, maxLng = -double.infinity;
+          for (var coord in dto.coordinates) {
+            if (coord.latitude < minLat) minLat = coord.latitude;
+            if (coord.latitude > maxLat) maxLat = coord.latitude;
+            if (coord.longitude < minLng) minLng = coord.longitude;
+            if (coord.longitude > maxLng) maxLng = coord.longitude;
+          }
+
+          final request = NDVIRequest(
+            bbox: [minLng, minLat, maxLng, maxLat],
+            startDate: startDate.toIso8601String(),
+            endDate: now.toIso8601String(),
+            farmId: dto.id,
+          );
+
+          final response = await _analysisService.calculateNDVI(request);
+
+          // Update the field with real NDVI
+          if (i < _fields.length) {
+            _fields[i] = FieldStatus(
+              id: _fields[i].id,
+              name: _fields[i].name,
+              status: _getNdviStatus(response.meanNdvi),
+              ndvi: response.meanNdvi,
+              area: _fields[i].area,
+              lastUpdate: _fields[i].lastUpdate,
+            );
+          }
+        } catch (e) {
+          // Keep default NDVI if fetch fails for this farm
+        }
+      }
+
+      _updateStats();
+      notifyListeners();
+    } catch (e) {
+      // Silent fail
+    }
+  }
+
+  String _getNdviStatus(double ndvi) {
+    if (ndvi >= 0.6) return 'excellent';
+    if (ndvi >= 0.4) return 'healthy';
+    if (ndvi >= 0.2) return 'moderate';
+    return 'warning';
   }
 
   void _updateStats() {
