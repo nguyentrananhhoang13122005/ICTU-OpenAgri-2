@@ -18,7 +18,7 @@ def find_band_paths(safe_path: str) -> Tuple[str, str]:
     for root, dirs, files in os.walk(safe_path):
         for f in files:
             if f.endswith('.jp2'):
-                if '_B04' in f or 'B04' in f and 'TCI' not in f:
+                if ('_B04' in f or 'B04' in f) and 'TCI' not in f:
                     red = os.path.join(root, f)
                 if '_B08' in f or 'B08' in f:
                     nir = os.path.join(root, f)
