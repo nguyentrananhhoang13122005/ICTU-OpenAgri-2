@@ -62,11 +62,9 @@ class SatelliteMonitoringViewModel extends ChangeNotifier {
         await _fetchSatelliteData(_selectedField!);
       }
     } catch (e) {
-      // Fallback to mock data if fetch fails
-      _fields = CropField.getMockFields();
-      if (_fields.isNotEmpty) {
-        _selectedField = _fields.first;
-      }
+      // API failed - keep empty list, don't use mock data
+      _fields = [];
+      _selectedField = null;
     } finally {
       _isLoading = false;
       notifyListeners();
