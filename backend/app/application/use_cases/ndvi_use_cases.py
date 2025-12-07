@@ -48,8 +48,15 @@ class CalculateNDVIUseCase:
                 reverse=True
             )
             
-            # Take top 10
-            recent_products = sorted_products[:10]
+            # Filter by cloud cover < 30% to get usable images
+            low_cloud_products = [p for p in sorted_products if p.get('cloud_cover', 100) < 30]
+            
+            if not low_cloud_products:
+                logger.info(f"No low-cloud products found for farm {farm_id} (all have > 30% cloud)")
+                return
+            
+            # Take top 10 low-cloud images
+            recent_products = low_cloud_products[:10]
 
             for product_info in recent_products:
                 acquisition_date_str = product_info['ingestiondate'].split('T')[0]
@@ -119,8 +126,48 @@ class CalculateNDVIUseCase:
             raise HTTPException(status_code=400, detail='bbox must be [minx,miny,maxx,maxy]')
         
         try:
+            # Parse dates - handle ISO format with time (e.g., 2025-12-07T22:25:30.988)
+            start_date_str = req.start_date.split('T')[0]
+            end_date_str = req.end_date.split('T')[0]
+            start_d = datetime.datetime.strptime(start_date_str, '%Y-%m-%d').date()
+            end_d = datetime.datetime.strptime(end_date_str, '%Y-%m-%d').date()
+            
+            repo = SatelliteRepositoryImpl(db)
+            
+            # --- CHECK DB FIRST ---
+            if req.farm_id:
+                history = await repo.get_data_by_farm(req.farm_id, 'NDVI', start_d, end_d)
+                if history:
+                    # Found data in DB - return without downloading
+                    chart_data = []
+                    latest_record = None
+                    
+                    for record in history:
+                        chart_data.append({
+                            'date': record.acquisition_date.strftime('%Y-%m-%d'),
+                            'value': round(record.mean_value, 2)
+                        })
+                        if latest_record is None or record.acquisition_date > latest_record.acquisition_date:
+                            latest_record = record
+                    
+                    chart_data.sort(key=lambda x: x['date'])
+                    
+                    logger.info(f"Returning {len(history)} NDVI records from DB for farm {req.farm_id}")
+                    
+                    return NDVIResponse(
+                        status="success",
+                        ndvi_geotiff="",
+                        image_base64="",
+                        mean_ndvi=round(latest_record.mean_value, 2),
+                        min_ndvi=round(latest_record.min_value, 2) if latest_record.min_value else 0.0,
+                        max_ndvi=round(latest_record.max_value, 2) if latest_record.max_value else 0.0,
+                        acquisition_date=latest_record.acquisition_date.strftime('%Y-%m-%d'),
+                        chart_data=chart_data
+                    )
+            
+            # --- NO DATA IN DB - DOWNLOAD FROM SENTINEL ---
             # search products
-            api, products = await search_sentinel_products(req.bbox, req.start_date, req.end_date)
+            api, products = await search_sentinel_products(req.bbox, start_date_str, end_date_str)
             if not products:
                 raise HTTPException(status_code=404, detail='No Sentinel-2 product found for this bbox/date range')
             
@@ -160,7 +207,6 @@ class CalculateNDVIUseCase:
             acquisition_date = datetime.datetime.strptime(acquisition_date_str, '%Y-%m-%d').date()
 
             # --- SAVE TO DB ---
-            repo = SatelliteRepositoryImpl(db)
             if req.farm_id:
                 # Check if exists
                 existing = await repo.get_existing_record(req.farm_id, 'NDVI', acquisition_date)
@@ -181,9 +227,7 @@ class CalculateNDVIUseCase:
             chart_data = []
             
             if req.farm_id:
-                # Fetch real history from DB
-                start_d = datetime.datetime.strptime(req.start_date, '%Y-%m-%d').date()
-                end_d = datetime.datetime.strptime(req.end_date, '%Y-%m-%d').date()
+                # Fetch real history from DB (use already parsed dates)
                 history = await repo.get_data_by_farm(req.farm_id, 'NDVI', start_d, end_d)
                 
                 for record in history:
