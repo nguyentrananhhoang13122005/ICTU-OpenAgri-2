@@ -40,7 +40,6 @@ class DiseaseScanViewModel extends ChangeNotifier {
         notifyListeners();
       }
     } catch (e) {
-      debugPrint('Error picking image: $e');
       _error = 'Không thể chọn ảnh: $e';
       notifyListeners();
     }
@@ -68,7 +67,6 @@ class DiseaseScanViewModel extends ChangeNotifier {
       _hasResult = true;
     } catch (e) {
       _error = e.toString();
-      debugPrint('Error analyzing image: $e');
     } finally {
       _isAnalyzing = false;
       notifyListeners();

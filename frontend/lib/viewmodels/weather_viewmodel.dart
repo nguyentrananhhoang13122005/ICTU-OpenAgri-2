@@ -86,8 +86,7 @@ class WeatherViewModel extends ChangeNotifier {
       _showSearchResults = true;
       notifyListeners();
     } catch (e) {
-      // Handle search error silently or show message
-      debugPrint('Search error: $e');
+      // Handle search error silently
     }
   }
 

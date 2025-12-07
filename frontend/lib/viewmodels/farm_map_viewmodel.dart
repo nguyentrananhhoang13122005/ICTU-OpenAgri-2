@@ -47,7 +47,6 @@ class FarmMapViewModel extends ChangeNotifier {
       final farmDtos = await _farmService.getMyFarms();
       _fields = farmDtos.map((dto) => _mapDtoToCropField(dto)).toList();
     } catch (e) {
-      debugPrint('Error fetching farms: $e');
       // Fallback to mock data if fetch fails? Or empty?
       // _fields = CropField.getMockFields();
     }
@@ -143,7 +142,6 @@ class FarmMapViewModel extends ChangeNotifier {
       _newFieldPoints = [];
       _isDrawingComplete = false;
     } catch (e) {
-      debugPrint('Error creating farm: $e');
       // Handle error (show toast/snackbar via UI)
     } finally {
       _isLoading = false;

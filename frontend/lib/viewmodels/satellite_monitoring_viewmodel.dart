@@ -62,7 +62,6 @@ class SatelliteMonitoringViewModel extends ChangeNotifier {
         await _fetchSatelliteData(_selectedField!);
       }
     } catch (e) {
-      debugPrint('Error initializing satellite monitoring: $e');
       // Fallback to mock data if fetch fails
       _fields = CropField.getMockFields();
       if (_fields.isNotEmpty) {
@@ -111,7 +110,7 @@ class SatelliteMonitoringViewModel extends ChangeNotifier {
           soilMoistureStatus = 'Dư nước';
         }
       } catch (e) {
-        debugPrint('Error fetching soil moisture: $e');
+        // Soil moisture fetch failed silently
       }
 
       // Update field with new data
@@ -141,7 +140,7 @@ class SatelliteMonitoringViewModel extends ChangeNotifier {
       _updateFieldInList(updatedField);
       _selectedField = updatedField;
     } catch (e) {
-      debugPrint('Error fetching satellite data: $e');
+      // Satellite data fetch failed silently
     }
   }
 

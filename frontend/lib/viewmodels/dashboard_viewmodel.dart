@@ -48,7 +48,6 @@ class DashboardViewModel extends ChangeNotifier {
       // Fetch real weather data in background
       await _fetchWeatherData();
     } catch (e) {
-      debugPrint('Error initializing dashboard: $e');
       _isLoading = false;
       notifyListeners();
     }
@@ -64,7 +63,6 @@ class DashboardViewModel extends ChangeNotifier {
       }
       _updateStats();
     } catch (e) {
-      debugPrint('Error fetching farms: $e');
       _fields = []; // No mock data on error
       _updateStats();
     }
@@ -152,7 +150,6 @@ class DashboardViewModel extends ChangeNotifier {
       _updateStats();
       notifyListeners();
     } catch (e) {
-      debugPrint('Error fetching weather: $e');
       // Keep using mock data if fetch fails
     }
   }

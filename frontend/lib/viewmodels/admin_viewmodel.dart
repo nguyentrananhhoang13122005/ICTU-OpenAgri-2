@@ -222,7 +222,7 @@ class AdminViewModel extends ChangeNotifier {
     try {
       _cropStats = await _adminService.getCropDistribution();
     } catch (e) {
-      debugPrint('Error loading crop stats: $e');
+      // Error loading crop stats silently
     } finally {
       _isLoadingCropStats = false;
       notifyListeners();
@@ -235,7 +235,7 @@ class AdminViewModel extends ChangeNotifier {
     try {
       _farmLocations = await _adminService.getFarmLocations();
     } catch (e) {
-      debugPrint('Error loading farm locations: $e');
+      // Error loading farm locations silently
     } finally {
       _isLoadingFarmLocations = false;
       notifyListeners();

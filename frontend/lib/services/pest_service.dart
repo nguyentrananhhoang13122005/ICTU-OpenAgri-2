@@ -2,7 +2,6 @@
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 import '../models/api_models.dart';
 import 'api_service.dart';
 import 'auth_service.dart';
@@ -20,8 +19,6 @@ class PestService {
   }) async {
     try {
       final token = await _authService.getToken();
-      debugPrint(
-          '🌐 Calling /pest/forecast with params: lat=$latitude, lon=$longitude, years=$yearsBack');
       final response = await _apiService.client.get(
         '/pest/forecast',
         queryParameters: {
@@ -36,14 +33,8 @@ class PestService {
         ),
       );
 
-      debugPrint('📥 Response status: ${response.statusCode}');
-      // debugPrint('📦 Response data keys: ${response.data?.keys?.toList()}');
-      debugPrint(
-          '📊 Pest summary: ${response.data?['pest_summary']?.keys?.toList()}');
-
       return PestRiskForecastResponseDTO.fromJson(response.data);
     } catch (e) {
-      debugPrint('❌ PestService error: $e');
       throw Exception('Failed to get pest forecast: $e');
     }
   }
