@@ -125,8 +125,9 @@ def _unzip_file(zip_path: str, extract_to: str):
 
 
 # Download retry configuration
-DOWNLOAD_MAX_RETRIES = 3
-DOWNLOAD_RETRY_DELAY = 10  # seconds
+DOWNLOAD_MAX_RETRIES = 5
+DOWNLOAD_BASE_DELAY = 30  # Base delay in seconds for exponential backoff
+DOWNLOAD_RATE_LIMIT_DELAY = 60  # Extra delay when hitting 429 rate limit
 
 
 async def download_product(api: Any, product_info: dict, out_dir: Optional[str]=None) -> str:
@@ -146,7 +147,7 @@ async def download_product(api: Any, product_info: dict, out_dir: Optional[str]=
         logger.info(f"Product already exists at {extract_path}")
         return extract_path
 
-    # Download with retry
+    # Download with retry and exponential backoff
     for attempt in range(1, DOWNLOAD_MAX_RETRIES + 1):
         try:
             # Get fresh token for each attempt
@@ -198,6 +199,30 @@ async def download_product(api: Any, product_info: dict, out_dir: Optional[str]=
                     logger.info(f"Download complete: {downloaded} bytes")
                     break  # Success, exit retry loop
                     
+        except httpx.HTTPStatusError as e:
+            logger.warning(f"Download attempt {attempt} failed: {e}")
+            # Clean up partial file
+            if os.path.exists(local_zip):
+                try:
+                    os.remove(local_zip)
+                except Exception:
+                    pass
+            
+            if attempt < DOWNLOAD_MAX_RETRIES:
+                # Check for rate limiting (429 Too Many Requests)
+                if e.response.status_code == 429:
+                    # Get retry-after header if available, otherwise use default
+                    retry_after = int(e.response.headers.get('Retry-After', DOWNLOAD_RATE_LIMIT_DELAY))
+                    delay = max(retry_after, DOWNLOAD_RATE_LIMIT_DELAY)
+                    logger.info(f"Rate limited (429). Waiting {delay} seconds before retry...")
+                else:
+                    # Exponential backoff: 30s, 60s, 120s, 240s
+                    delay = DOWNLOAD_BASE_DELAY * (2 ** (attempt - 1))
+                    logger.info(f"Retrying in {delay} seconds...")
+                await asyncio.sleep(delay)
+            else:
+                raise RuntimeError(f"Failed to download after {DOWNLOAD_MAX_RETRIES} attempts: {e}")
+                
         except Exception as e:
             logger.warning(f"Download attempt {attempt} failed: {e}")
             # Clean up partial file
@@ -208,8 +233,10 @@ async def download_product(api: Any, product_info: dict, out_dir: Optional[str]=
                     pass
             
             if attempt < DOWNLOAD_MAX_RETRIES:
-                logger.info(f"Retrying in {DOWNLOAD_RETRY_DELAY} seconds...")
-                await asyncio.sleep(DOWNLOAD_RETRY_DELAY)
+                # Exponential backoff: 30s, 60s, 120s, 240s
+                delay = DOWNLOAD_BASE_DELAY * (2 ** (attempt - 1))
+                logger.info(f"Retrying in {delay} seconds...")
+                await asyncio.sleep(delay)
             else:
                 raise RuntimeError(f"Failed to download after {DOWNLOAD_MAX_RETRIES} attempts: {e}")
     
