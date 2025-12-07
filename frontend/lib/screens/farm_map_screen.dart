@@ -681,6 +681,47 @@ class _FarmMapScreenState extends State<FarmMapScreen> {
                             ],
                           ),
                         ),
+                        // Edit and Delete buttons
+                        PopupMenuButton<String>(
+                          icon: const Icon(
+                            Icons.more_vert,
+                            color: Color(0xFF6B7280),
+                          ),
+                          onSelected: (value) {
+                            if (value == 'edit') {
+                              _showEditFieldDialog(context, viewModel, field);
+                            } else if (value == 'delete') {
+                              _showDeleteConfirmDialog(
+                                  context, viewModel, field);
+                            }
+                          },
+                          itemBuilder: (context) => [
+                            const PopupMenuItem<String>(
+                              value: 'edit',
+                              child: Row(
+                                children: [
+                                  Icon(Icons.edit,
+                                      color: Color(0xFF3B82F6), size: 20),
+                                  SizedBox(width: 8),
+                                  Text('Chỉnh sửa'),
+                                ],
+                              ),
+                            ),
+                            const PopupMenuItem<String>(
+                              value: 'delete',
+                              child: Row(
+                                children: [
+                                  Icon(Icons.delete,
+                                      color: Color(0xFFEF4444), size: 20),
+                                  SizedBox(width: 8),
+                                  Text('Xóa',
+                                      style:
+                                          TextStyle(color: Color(0xFFEF4444))),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                         if (isSelected)
                           const Icon(
                             Icons.check_circle,
@@ -822,6 +863,180 @@ class _FarmMapScreenState extends State<FarmMapScreen> {
               foregroundColor: Colors.white,
             ),
             child: const Text('Lưu'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showEditFieldDialog(
+      BuildContext context, FarmMapViewModel viewModel, dynamic field) {
+    final nameController = TextEditingController(text: field.name);
+    String editCropType = field.cropType;
+
+    showDialog(
+      context: context,
+      builder: (context) => StatefulBuilder(
+        builder: (context, setDialogState) => AlertDialog(
+          title: const Text('Chỉnh sửa Vùng trồng'),
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                TextField(
+                  controller: nameController,
+                  decoration: const InputDecoration(
+                    labelText: 'Tên vùng trồng',
+                    border: OutlineInputBorder(),
+                    prefixIcon: Icon(Icons.edit_location_alt),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                DropdownButtonFormField<String>(
+                  initialValue: editCropType,
+                  decoration: const InputDecoration(
+                    labelText: 'Loại cây trồng',
+                    border: OutlineInputBorder(),
+                    prefixIcon: Icon(Icons.agriculture),
+                  ),
+                  items: const [
+                    DropdownMenuItem(value: 'Lúa', child: Text('Lúa')),
+                    DropdownMenuItem(
+                      value: 'Cây ăn trái',
+                      child: Text('Cây ăn trái'),
+                    ),
+                    DropdownMenuItem(
+                      value: 'Cây công nghiệp',
+                      child: Text('Cây công nghiệp'),
+                    ),
+                    DropdownMenuItem(value: 'Rau màu', child: Text('Rau màu')),
+                    DropdownMenuItem(value: 'Khác', child: Text('Khác')),
+                  ],
+                  onChanged: (v) =>
+                      setDialogState(() => editCropType = v ?? editCropType),
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Hủy'),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                if (nameController.text.isEmpty) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Vui lòng nhập tên vùng trồng!'),
+                    ),
+                  );
+                  return;
+                }
+
+                Navigator.pop(context);
+
+                final success = await viewModel.updateField(
+                  field.id,
+                  name: nameController.text,
+                  cropType: editCropType,
+                );
+
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        success
+                            ? '✅ Đã cập nhật vùng trồng!'
+                            : '❌ Không thể cập nhật vùng trồng',
+                      ),
+                      backgroundColor: success
+                          ? const Color(0xFF0BDA50)
+                          : const Color(0xFFEF4444),
+                    ),
+                  );
+                }
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF3B82F6),
+                foregroundColor: Colors.white,
+              ),
+              child: const Text('Lưu'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _showDeleteConfirmDialog(
+      BuildContext context, FarmMapViewModel viewModel, dynamic field) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Xác nhận xóa'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('Bạn có chắc chắn muốn xóa vùng trồng "${field.name}"?'),
+            const SizedBox(height: 12),
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: const Color(0xFFFEE2E2),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: const Row(
+                children: [
+                  Icon(Icons.warning_amber, color: Color(0xFFEF4444)),
+                  SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      'Hành động này không thể hoàn tác. Tất cả dữ liệu liên quan đến vùng trồng sẽ bị xóa.',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Color(0xFFEF4444),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Hủy'),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              Navigator.pop(context);
+
+              final success = await viewModel.deleteField(field.id);
+
+              if (context.mounted) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      success
+                          ? '✅ Đã xóa vùng trồng!'
+                          : '❌ Không thể xóa vùng trồng',
+                    ),
+                    backgroundColor: success
+                        ? const Color(0xFF0BDA50)
+                        : const Color(0xFFEF4444),
+                  ),
+                );
+              }
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFFEF4444),
+              foregroundColor: Colors.white,
+            ),
+            child: const Text('Xóa'),
           ),
         ],
       ),
