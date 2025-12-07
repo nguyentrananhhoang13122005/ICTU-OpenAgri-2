@@ -462,7 +462,7 @@ class CommodityPriceDetailView extends StatelessWidget {
           handleBuiltInTouches: true,
           touchTooltipData: LineTouchTooltipData(
             getTooltipColor: (touchedSpot) => Colors.blueGrey.shade800,
-            tooltipRoundedRadius: 8,
+            tooltipBorderRadius: BorderRadius.circular(8),
             getTooltipItems: (List<LineBarSpot> touchedSpots) {
               return touchedSpots.map((LineBarSpot touchedSpot) {
                 final index = touchedSpot.x.toInt();
