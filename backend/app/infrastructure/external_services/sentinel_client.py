@@ -84,7 +84,8 @@ async def search_sentinel_products(bbox: List[float], date_start: str, date_end:
     params = {
         '$filter': filter_query,
         '$top': settings.MAX_PRODUCTS,
-        '$orderby': 'ContentDate/Start desc'
+        '$orderby': 'ContentDate/Start desc',
+        '$expand': 'Attributes'
     }
     
     logger.info(f"Searching CDSE: {url} with params {params}")
