@@ -80,8 +80,8 @@ class CalculateNDVIUseCase:
                 # Generate output path
                 out_tif = os.path.join(settings.OUTPUT_DIR, f'ndvi_{uuid.uuid4().hex}.tif')
                 
-                # Compute
-                out_tif, mean_val, min_val, max_val = compute_ndvi(red_path, nir_path, out_tif)
+                # Compute (with bbox crop)
+                out_tif, mean_val, min_val, max_val = compute_ndvi(red_path, nir_path, out_tif, bbox=bbox)
                 
                 # Save to DB
                 new_record = SatelliteDataModel(
@@ -197,8 +197,8 @@ class CalculateNDVIUseCase:
             # Generate output path
             out_tif = os.path.join(settings.OUTPUT_DIR, f'ndvi_{uuid.uuid4().hex}.tif')
             
-            # Compute
-            out_tif, mean_val, min_val, max_val = compute_ndvi(red_path, nir_path, out_tif)
+            # Compute (with bbox crop)
+            out_tif, mean_val, min_val, max_val = compute_ndvi(red_path, nir_path, out_tif, bbox=req.bbox)
 
             # Convert to Base64 PNG
             img_base64 = convert_tiff_to_base64_png(out_tif, colormap='RdYlGn', vmin=-1, vmax=1)
