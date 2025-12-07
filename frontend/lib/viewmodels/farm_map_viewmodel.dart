@@ -149,6 +149,61 @@ class FarmMapViewModel extends ChangeNotifier {
     }
   }
 
+  // Update existing field
+  Future<bool> updateField(String fieldId,
+      {String? name, String? cropType, double? areaSize}) async {
+    _isLoading = true;
+    notifyListeners();
+
+    try {
+      final updateDto = FarmAreaUpdateDTO(
+        name: name,
+        cropType: cropType,
+        areaSize: areaSize,
+      );
+
+      final updatedFarm =
+          await _farmService.updateFarm(int.parse(fieldId), updateDto);
+
+      // Update in local list
+      final index = _fields.indexWhere((f) => f.id == fieldId);
+      if (index != -1) {
+        _fields[index] = _mapDtoToCropField(updatedFarm);
+        if (_selectedField?.id == fieldId) {
+          _selectedField = _fields[index];
+        }
+      }
+      return true;
+    } catch (e) {
+      return false;
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  // Delete field
+  Future<bool> deleteField(String fieldId) async {
+    _isLoading = true;
+    notifyListeners();
+
+    try {
+      await _farmService.deleteFarm(int.parse(fieldId));
+
+      // Remove from local list
+      _fields.removeWhere((f) => f.id == fieldId);
+      if (_selectedField?.id == fieldId) {
+        _selectedField = null;
+      }
+      return true;
+    } catch (e) {
+      return false;
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
   // Helpers
   double calculateArea(List<LatLng> points) {
     if (points.length < 3) return 0.0;
