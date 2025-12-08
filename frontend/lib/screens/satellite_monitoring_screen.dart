@@ -524,45 +524,44 @@ class _SatelliteMonitoringScreenState
               ),
             ],
           ),
-          child: SingleChildScrollView(
+          child: ListView(
             controller: scrollController,
-            child: Column(
-              children: [
-                // Drag Handle
-                _buildDragHandle(),
+            padding: EdgeInsets.zero,
+            children: [
+              // Drag Handle
+              _buildDragHandle(),
 
-                // Quick Stats Row
-                _buildQuickStats(viewModel),
+              // Quick Stats Row
+              _buildQuickStats(viewModel),
 
-                // Divider
-                Divider(color: Colors.grey[200], height: 1),
+              // Divider
+              Divider(color: Colors.grey[200], height: 1),
 
-                // Detailed Content
-                Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // NDVI Chart
-                      _buildNDVIChart(viewModel),
-                      const SizedBox(height: 24),
+              // Detailed Content
+              Padding(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // NDVI Chart
+                    _buildNDVIChart(viewModel),
+                    const SizedBox(height: 24),
 
-                      // Pest Warnings
-                      _buildPestWarnings(),
-                      const SizedBox(height: 24),
+                    // Pest Warnings
+                    _buildPestWarnings(),
+                    const SizedBox(height: 24),
 
-                      // Field Details
-                      _buildFieldDetails(viewModel),
-                      const SizedBox(height: 24),
+                    // Field Details
+                    _buildFieldDetails(viewModel),
+                    const SizedBox(height: 24),
 
-                      // Map Layer Selector
-                      _buildMapLayerSelector(viewModel),
-                      const SizedBox(height: 40),
-                    ],
-                  ),
+                    // Map Layer Selector
+                    _buildMapLayerSelector(viewModel),
+                    const SizedBox(height: 40),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         );
       },

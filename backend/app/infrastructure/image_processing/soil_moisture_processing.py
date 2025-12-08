@@ -28,10 +28,16 @@ def find_s1_band_path(safe_path: str, polarization: str = 'vv') -> str:
 def compute_soil_moisture_proxy(vv_path: str, out_path: str, bbox: List[float] = None) -> Tuple[str, float]:
     """
     Compute a simple Soil Moisture proxy from Sentinel-1 VV band.
-    We convert the raw DN to dB (Backscatter) which correlates with moisture.
-    Formula (Simplified): dB = 10 * log10(DN^2)
-    Note: Real calibration requires the calibration vector from XML, but for visualization
-    of relative moisture, this is a starting point.
+    
+    Sentinel-1 GRD values are Digital Numbers (DN) that need calibration.
+    For GRD products: sigma0 = DN^2 / A^2 where A is from calibration LUT.
+    Simplified approach: Convert to pseudo-dB for relative moisture visualization.
+    
+    Reference backscatter ranges (sigma0 in dB):
+    - Dry soil: -20 to -15 dB
+    - Moist soil: -15 to -10 dB
+    - Wet soil: -10 to -5 dB
+    - Water: -5 to 0 dB (or positive for specular reflection)
     """
     mean_val = 0.0
     with rasterio.open(vv_path) as src:
@@ -56,24 +62,30 @@ def compute_soil_moisture_proxy(vv_path: str, out_path: str, bbox: List[float] =
 
         # Read data (only the window if specified)
         if window:
-            dn = src.read(1, window=window).astype('float32')
+            dn = src.read(1, window=window).astype('float64')
         else:
-            dn = src.read(1).astype('float32')
+            dn = src.read(1).astype('float64')
         
-        # Avoid log of zero
-        dn[dn == 0] = np.nan
+        # Avoid log of zero and negative values
+        dn = np.where(dn > 0, dn, np.nan)
         
-        # Convert to dB (Simplified)
-        # In reality, sigma0 = DN^2 / A^2 (where A is calibration factor)
-        # Here we just visualize the log intensity
-        db = 10 * np.log10(dn**2 + 1e-6)
+        # Sentinel-1 GRD calibration (simplified)
+        # For Level-1 GRD raw products, DN values are typically 0-2000 range
+        # Calibration constant adjusted so typical land DN (~130) gives moderate moisture
+        # Reference: Land typically ranges from -25dB (very dry) to -5dB (very wet/water)
+        calibration_constant = 3e5  # Calibrated for raw GRD products
+        sigma0_linear = (dn ** 2) / calibration_constant
         
-        # Normalize for visualization (e.g., -25 dB to 0 dB)
-        # Wet soil ~ -5 to 0 dB, Dry soil ~ -15 to -20 dB
-        min_db = -25.0
-        max_db = 0.0
+        # Convert to dB: sigma0_dB = 10 * log10(sigma0_linear)
+        sigma0_db = 10 * np.log10(sigma0_linear + 1e-10)
         
-        soil_moisture_index = (db - min_db) / (max_db - min_db)
+        # Normalize for soil moisture visualization
+        # Wet soil has higher backscatter (closer to 0 dB or positive)
+        # Dry soil has lower backscatter (around -20 dB)
+        min_db = -20.0  # Very dry soil
+        max_db = -5.0   # Very wet soil / standing water
+        
+        soil_moisture_index = (sigma0_db - min_db) / (max_db - min_db)
         soil_moisture_index = np.clip(soil_moisture_index, 0, 1)
         
         # Calculate mean (ignoring NaNs)
