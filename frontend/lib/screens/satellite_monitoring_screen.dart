@@ -25,26 +25,31 @@ class _SatelliteMonitoringScreenState extends State<SatelliteMonitoringScreen> {
   final MapController _mapController = MapController();
 
   VoidCallback? _fieldListener;
+  SatelliteMonitoringViewModel? _satelliteVM;
+  PestForecastViewModel? _pestVM;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final satelliteVM = context.read<SatelliteMonitoringViewModel>();
-      satelliteVM.initData(initialFieldId: widget.initialFieldId);
+      if (!mounted) return;
+      _satelliteVM = context.read<SatelliteMonitoringViewModel>();
+      _pestVM = context.read<PestForecastViewModel>();
+      _satelliteVM!.initData(initialFieldId: widget.initialFieldId);
 
       _fieldListener = () {
-        if (satelliteVM.selectedField != null) {
-          context.read<PestForecastViewModel>().fetchPestRiskForecast(
-                latitude: satelliteVM.selectedField!.center.latitude,
-                longitude: satelliteVM.selectedField!.center.longitude,
-              );
+        if (!mounted) return;
+        if (_satelliteVM!.selectedField != null && _pestVM != null) {
+          _pestVM!.fetchPestRiskForecast(
+            latitude: _satelliteVM!.selectedField!.center.latitude,
+            longitude: _satelliteVM!.selectedField!.center.longitude,
+          );
         }
       };
-      satelliteVM.addListener(_fieldListener!);
+      _satelliteVM!.addListener(_fieldListener!);
 
       // Trigger initial fetch if field is already selected
-      if (satelliteVM.selectedField != null) {
+      if (_satelliteVM!.selectedField != null) {
         _fieldListener!();
       }
     });
@@ -52,10 +57,8 @@ class _SatelliteMonitoringScreenState extends State<SatelliteMonitoringScreen> {
 
   @override
   void dispose() {
-    if (_fieldListener != null) {
-      context
-          .read<SatelliteMonitoringViewModel>()
-          .removeListener(_fieldListener!);
+    if (_fieldListener != null && _satelliteVM != null) {
+      _satelliteVM!.removeListener(_fieldListener!);
     }
     super.dispose();
   }
