@@ -7,7 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../viewmodels/dashboard_viewmodel.dart';
-import 'satellite_monitoring_screen_v2.dart';
+import 'satellite_monitoring_screen.dart';
 import 'weather_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -166,7 +166,7 @@ class _DashboardScreenState extends State<DashboardScreen>
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const SatelliteMonitoringScreenV2(),
+              builder: (context) => const SatelliteMonitoringScreen(),
             ),
           );
         },
