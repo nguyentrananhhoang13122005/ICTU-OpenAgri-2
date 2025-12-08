@@ -76,16 +76,19 @@ class PestRiskCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
-                              warning.pestName,
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black87,
+                            Expanded(
+                              child: Text(
+                                warning.pestName,
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black87,
+                                ),
+                                overflow: TextOverflow.ellipsis,
                               ),
                             ),
+                            const SizedBox(width: 8),
                             Container(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 8, vertical: 4),
@@ -117,30 +120,41 @@ class PestRiskCard extends StatelessWidget {
                         ),
                         const SizedBox(height: 12),
                         if (warning.lastSeenYear != null)
-                          Row(
+                          Wrap(
+                            spacing: 16,
+                            runSpacing: 4,
                             children: [
-                              Icon(Icons.history,
-                                  size: 14, color: Colors.grey.shade500),
-                              const SizedBox(width: 4),
-                              Text(
-                                'Lần cuối: ${warning.lastSeenYear}',
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: Colors.grey.shade500,
-                                  fontWeight: FontWeight.w500,
-                                ),
+                              Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(Icons.history,
+                                      size: 14, color: Colors.grey.shade500),
+                                  const SizedBox(width: 4),
+                                  Text(
+                                    'Lần cuối: ${warning.lastSeenYear}',
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: Colors.grey.shade500,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ],
                               ),
-                              const SizedBox(width: 16),
-                              Icon(Icons.numbers,
-                                  size: 14, color: Colors.grey.shade500),
-                              const SizedBox(width: 4),
-                              Text(
-                                '${warning.occurrenceCount} lần',
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: Colors.grey.shade500,
-                                  fontWeight: FontWeight.w500,
-                                ),
+                              Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(Icons.numbers,
+                                      size: 14, color: Colors.grey.shade500),
+                                  const SizedBox(width: 4),
+                                  Text(
+                                    '${warning.occurrenceCount} lần',
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: Colors.grey.shade500,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ],
                           ),
