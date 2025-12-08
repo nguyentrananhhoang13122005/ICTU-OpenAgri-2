@@ -76,7 +76,7 @@ class SatelliteMonitoringViewModel extends ChangeNotifier {
       // Calculate bbox
       final bbox = _calculateBBox(field.polygonPoints);
 
-      // Fetch NDVI
+      // Fetch NDVI from DB (fast)
       final ndviRequest = NDVIRequest(
         farmId: int.tryParse(field.id),
         bbox: bbox,
@@ -86,26 +86,31 @@ class SatelliteMonitoringViewModel extends ChangeNotifier {
       );
       final ndviResponse = await _analysisService.calculateNDVI(ndviRequest);
 
-      // Fetch Soil Moisture
+      // Fetch Soil Moisture from DB (fast - cached from scheduler)
       double soilMoisture = 0.0;
       String soilMoistureStatus = 'Chưa có dữ liệu';
       try {
-        final smRequest = SoilMoistureRequest(
+        final smRequest = SoilMoistureQueryRequest(
+          farmId: int.tryParse(field.id),
           bbox: bbox,
-          date: _selectedDate.toIso8601String(),
+          startDate: _selectedDate
+              .subtract(const Duration(days: 30))
+              .toIso8601String(),
+          endDate: _selectedDate.toIso8601String(),
         );
-        final smResponse =
-            await _analysisService.calculateSoilMoisture(smRequest);
+        final smResponse = await _analysisService.getSoilMoisture(smRequest);
 
-        // Convert 0-1 index to percentage
-        soilMoisture = smResponse.meanValue * 100;
+        if (smResponse.status == 'success') {
+          // Convert 0-1 index to percentage
+          soilMoisture = smResponse.meanValue * 100;
 
-        if (soilMoisture < 30) {
-          soilMoistureStatus = 'Thiếu nước';
-        } else if (soilMoisture < 70) {
-          soilMoistureStatus = 'Đủ ẩm';
-        } else {
-          soilMoistureStatus = 'Dư nước';
+          if (soilMoisture < 30) {
+            soilMoistureStatus = 'Thiếu nước';
+          } else if (soilMoisture < 70) {
+            soilMoistureStatus = 'Đủ ẩm';
+          } else {
+            soilMoistureStatus = 'Dư nước';
+          }
         }
       } catch (e) {
         // Soil moisture fetch failed silently
