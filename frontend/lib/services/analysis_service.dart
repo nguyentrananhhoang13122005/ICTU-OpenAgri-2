@@ -30,7 +30,7 @@ class AnalysisService {
     }
   }
 
-  // Soil Moisture
+  // Soil Moisture (real-time - slow, use getSoilMoisture instead)
   Future<SoilMoistureResponse> calculateSoilMoisture(
       SoilMoistureRequest request) async {
     try {
@@ -46,6 +46,25 @@ class AnalysisService {
       return SoilMoistureResponse.fromJson(response.data);
     } catch (e) {
       throw Exception('Failed to calculate Soil Moisture: $e');
+    }
+  }
+
+  // Soil Moisture from DB (fast - cached from scheduler)
+  Future<SoilMoistureQueryResponse> getSoilMoisture(
+      SoilMoistureQueryRequest request) async {
+    try {
+      final token = await _authService.getToken();
+      final response = await _apiService.client.post(
+        '/soil-moisture/get',
+        data: request.toJson(),
+        options: Options(
+          headers: {'Authorization': 'Bearer $token'},
+        ),
+      );
+
+      return SoilMoistureQueryResponse.fromJson(response.data);
+    } catch (e) {
+      throw Exception('Failed to get Soil Moisture: $e');
     }
   }
 
