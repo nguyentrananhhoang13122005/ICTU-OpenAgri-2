@@ -7,7 +7,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
 
 import '../viewmodels/farm_map_viewmodel.dart';
-import 'satellite_monitoring_screen.dart';
+import 'satellite_monitoring_screen_v2.dart';
 
 class FarmMapScreen extends StatefulWidget {
   const FarmMapScreen({super.key});
@@ -284,7 +284,7 @@ class _FarmMapScreenState extends State<FarmMapScreen> {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) =>
-                                      SatelliteMonitoringScreen(
+                                      SatelliteMonitoringScreenV2(
                                     initialFieldId: field.id,
                                   ),
                                 ),
@@ -623,7 +623,7 @@ class _FarmMapScreenState extends State<FarmMapScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => SatelliteMonitoringScreen(
+                        builder: (context) => SatelliteMonitoringScreenV2(
                           initialFieldId: field.id,
                         ),
                       ),
