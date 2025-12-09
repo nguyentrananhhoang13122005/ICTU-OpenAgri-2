@@ -203,7 +203,54 @@ flutter run
 
 ---
 
-### 3️⃣ Chạy bằng Docker (Tùy chọn)
+### 3️⃣ Hướng Dẫn Build/Compile Ứng Dụng (Production)
+
+Để tạo ra file cài đặt (.apk, .ipa) cho thiết bị thật hoặc đưa lên kho ứng dụng, bạn cần thực hiện quy trình build.
+
+**Lưu ý quan trọng:**
+
+- Đảm bảo bạn đã cấu hình đúng `signing config` (chữ ký số) nếu muốn đưa lên Google Play hoặc App Store.
+- Đối với Android, file kết quả sẽ nằm trong thư mục `build/app/outputs/flutter-apk/`.
+
+#### 📱 Build cho Android
+
+**Tạo file APK (Cài đặt trực tiếp):**
+
+```bash
+flutter build apk --release
+```
+
+_Lệnh này tạo ra file APK tối ưu hiệu năng để cài đặt thủ công trên thiết bị Android._
+
+**Tạo Android App Bundle (Đăng tải Google Play):**
+
+```bash
+flutter build appbundle
+```
+
+_File `.aab` được Google Play yêu cầu để tối ưu hóa kích thước tải về cho từng thiết bị._
+
+#### 🍎 Build cho iOS (Yêu cầu macOS)
+
+Để build ứng dụng cho iPhone/iPad, bạn cần máy tính Mac có cài đặt Xcode.
+
+```bash
+flutter build ipa
+```
+
+_Sau khi build xong, mở Xcode để thực hiện Archive và Upload lên TestFlight hoặc App Store._
+
+#### 🌐 Build cho Web
+
+```bash
+flutter build web
+```
+
+_Kết quả sẽ nằm trong thư mục `build/web`. Bạn có thể deploy thư mục này lên bất kỳ web server nào._
+
+---
+
+### 4️⃣ Chạy bằng Docker (Tùy chọn)
 
 Nếu bạn muốn chạy nhanh toàn bộ hệ thống mà không cần cài đặt môi trường thủ công:
 
