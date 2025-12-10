@@ -31,77 +31,77 @@
       },
       "pH": {
         "type": "Property",
-        "value": 5.8,
+        "value": 5.6,
         "unitCode": "pH",
-        "observedAt": "2025-12-10T04:39:47.872538+00:00"
+        "observedAt": "2025-12-10T07:25:44.967111+00:00"
       },
       "nitrogen": {
         "type": "Property",
-        "value": 0.16,
+        "value": 0.13,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.872554+00:00"
+        "observedAt": "2025-12-10T07:25:44.967111+00:00"
       },
       "phosphorus": {
         "type": "Property",
-        "value": 0.08,
+        "value": 0.07,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.872555+00:00"
+        "observedAt": "2025-12-10T07:25:44.967111+00:00"
       },
       "potassium": {
         "type": "Property",
-        "value": 0.13,
+        "value": 0.14,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.872557+00:00"
+        "observedAt": "2025-12-10T07:25:44.967111+00:00"
       },
       "organicMatter": {
         "type": "Property",
-        "value": 2.6,
+        "value": 2.7,
         "unitCode": "%",
-        "observedAt": "2025-12-10T04:39:47.872559+00:00"
+        "observedAt": "2025-12-10T07:25:44.967111+00:00"
       },
       "soilType": {
         "type": "Property",
-        "value": "Feralit đỏ vàng"
+        "value": "Đất feralit đỏ vàng"
       },
       "moisture": {
         "type": "Property",
-        "value": 16.5,
+        "value": 17.4,
         "unitCode": "%",
-        "observedAt": "2025-12-10T04:39:47.872561+00:00"
+        "observedAt": "2025-12-10T07:25:44.967111+00:00"
       },
       "texture": {
         "type": "Property",
-        "value": "Cát pha thịt"
+        "value": "Cát pha"
       },
       "drainage": {
         "type": "Property",
-        "value": "Kém"
+        "value": "Tốt"
       },
       "recommendedCrops": {
         "type": "Property",
         "value": [
           "Cây ăn quả ôn đới",
-          "Lúa",
-          "Đậu tương",
-          "Rau màu"
+          "Chè",
+          "Ngô",
+          "Lúa"
         ]
       },
       "fertilizerRecommendation": {
         "type": "Property",
         "value": {
-          "N": "Bổ sung 100-120 kg/ha",
-          "P": "Bổ sung 65-85 kg/ha",
-          "K": "Bổ sung 75-95 kg/ha",
-          "organic": "Bón 11-18 tấn phân chuồng/ha"
+          "N": "90-120 kg/ha",
+          "P": "60-90 kg/ha",
+          "K": "60-100 kg/ha",
+          "organic": "10-18 tấn phân chuồng/ha"
         }
       },
       "dateCreated": {
         "type": "Property",
-        "value": "2025-12-10T04:39:47.872566+00:00"
+        "value": "2025-12-10T07:25:44.967111+00:00"
       },
       "dateModified": {
         "type": "Property",
-        "value": "2025-12-10T04:39:47.872567+00:00"
+        "value": "2025-12-10T07:25:44.967111+00:00"
       }
     },
     {
@@ -131,47 +131,47 @@
       },
       "pH": {
         "type": "Property",
-        "value": 6.6,
+        "value": 6.5,
         "unitCode": "pH",
-        "observedAt": "2025-12-10T04:39:47.872588+00:00"
+        "observedAt": "2025-12-10T07:25:44.967168+00:00"
       },
       "nitrogen": {
         "type": "Property",
         "value": 0.18,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.872590+00:00"
+        "observedAt": "2025-12-10T07:25:44.967168+00:00"
       },
       "phosphorus": {
         "type": "Property",
-        "value": 0.08,
+        "value": 0.11,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.872592+00:00"
+        "observedAt": "2025-12-10T07:25:44.967168+00:00"
       },
       "potassium": {
         "type": "Property",
-        "value": 0.13,
+        "value": 0.12,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.872593+00:00"
+        "observedAt": "2025-12-10T07:25:44.967168+00:00"
       },
       "organicMatter": {
         "type": "Property",
-        "value": 3.1,
+        "value": 3.5,
         "unitCode": "%",
-        "observedAt": "2025-12-10T04:39:47.872594+00:00"
+        "observedAt": "2025-12-10T07:25:44.967168+00:00"
       },
       "soilType": {
         "type": "Property",
-        "value": "Đất mặn"
+        "value": "Đất phù sa ngọt"
       },
       "moisture": {
         "type": "Property",
-        "value": 25.0,
+        "value": 25.3,
         "unitCode": "%",
-        "observedAt": "2025-12-10T04:39:47.872596+00:00"
+        "observedAt": "2025-12-10T07:25:44.967168+00:00"
       },
       "texture": {
         "type": "Property",
-        "value": "Thịt pha cát"
+        "value": "Thịt pha sét"
       },
       "drainage": {
         "type": "Property",
@@ -180,7 +180,7 @@
       "recommendedCrops": {
         "type": "Property",
         "value": [
-          "Lúa",
+          "Thanh long",
           "Lúa nước",
           "Cây ăn trái",
           "Rau màu"
@@ -189,19 +189,19 @@
       "fertilizerRecommendation": {
         "type": "Property",
         "value": {
-          "N": "Bổ sung 110-130 kg/ha",
-          "P": "Bổ sung 65-85 kg/ha",
-          "K": "Bổ sung 75-95 kg/ha",
-          "organic": "Bón 13-20 tấn phân chuồng/ha"
+          "N": "90-120 kg/ha",
+          "P": "60-90 kg/ha",
+          "K": "60-100 kg/ha",
+          "organic": "10-18 tấn phân chuồng/ha"
         }
       },
       "dateCreated": {
         "type": "Property",
-        "value": "2025-12-10T04:39:47.872598+00:00"
+        "value": "2025-12-10T07:25:44.967168+00:00"
       },
       "dateModified": {
         "type": "Property",
-        "value": "2025-12-10T04:39:47.872599+00:00"
+        "value": "2025-12-10T07:25:44.967168+00:00"
       }
     },
     {
@@ -233,41 +233,41 @@
         "type": "Property",
         "value": 6.1,
         "unitCode": "pH",
-        "observedAt": "2025-12-10T04:39:47.872614+00:00"
+        "observedAt": "2025-12-10T07:25:44.967184+00:00"
       },
       "nitrogen": {
         "type": "Property",
         "value": 0.16,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.872615+00:00"
+        "observedAt": "2025-12-10T07:25:44.967184+00:00"
       },
       "phosphorus": {
         "type": "Property",
-        "value": 0.09,
+        "value": 0.07,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.872617+00:00"
+        "observedAt": "2025-12-10T07:25:44.967184+00:00"
       },
       "potassium": {
         "type": "Property",
-        "value": 0.12,
+        "value": 0.11,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.872618+00:00"
+        "observedAt": "2025-12-10T07:25:44.967184+00:00"
       },
       "organicMatter": {
         "type": "Property",
-        "value": 2.1,
+        "value": 2.3,
         "unitCode": "%",
-        "observedAt": "2025-12-10T04:39:47.872619+00:00"
+        "observedAt": "2025-12-10T07:25:44.967184+00:00"
       },
       "soilType": {
         "type": "Property",
-        "value": "Đất phù sa cổ"
+        "value": "Đất glây"
       },
       "moisture": {
         "type": "Property",
-        "value": 21.5,
+        "value": 21.8,
         "unitCode": "%",
-        "observedAt": "2025-12-10T04:39:47.872623+00:00"
+        "observedAt": "2025-12-10T07:25:44.967184+00:00"
       },
       "texture": {
         "type": "Property",
@@ -280,28 +280,28 @@
       "recommendedCrops": {
         "type": "Property",
         "value": [
-          "Đậu tương",
           "Ngô",
           "Rau màu",
-          "Cây ăn quả ôn đới"
+          "Lúa",
+          "Chè"
         ]
       },
       "fertilizerRecommendation": {
         "type": "Property",
         "value": {
-          "N": "Bổ sung 100-120 kg/ha",
-          "P": "Bổ sung 70-90 kg/ha",
-          "K": "Bổ sung 70-90 kg/ha",
-          "organic": "Bón 8-15 tấn phân chuồng/ha"
+          "N": "90-120 kg/ha",
+          "P": "60-90 kg/ha",
+          "K": "60-100 kg/ha",
+          "organic": "10-18 tấn phân chuồng/ha"
         }
       },
       "dateCreated": {
         "type": "Property",
-        "value": "2025-12-10T04:39:47.872624+00:00"
+        "value": "2025-12-10T07:25:44.967184+00:00"
       },
       "dateModified": {
         "type": "Property",
-        "value": "2025-12-10T04:39:47.872626+00:00"
+        "value": "2025-12-10T07:25:44.967184+00:00"
       }
     },
     {
@@ -331,77 +331,77 @@
       },
       "pH": {
         "type": "Property",
-        "value": 5.1,
+        "value": 5.2,
         "unitCode": "pH",
-        "observedAt": "2025-12-10T04:39:47.872636+00:00"
+        "observedAt": "2025-12-10T07:25:44.967197+00:00"
       },
       "nitrogen": {
         "type": "Property",
-        "value": 0.11,
+        "value": 0.1,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.872638+00:00"
+        "observedAt": "2025-12-10T07:25:44.967197+00:00"
       },
       "phosphorus": {
         "type": "Property",
-        "value": 0.08,
+        "value": 0.06,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.872639+00:00"
+        "observedAt": "2025-12-10T07:25:44.967197+00:00"
       },
       "potassium": {
         "type": "Property",
-        "value": 0.08,
+        "value": 0.11,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.872641+00:00"
+        "observedAt": "2025-12-10T07:25:44.967197+00:00"
       },
       "organicMatter": {
         "type": "Property",
-        "value": 1.6,
+        "value": 2.5,
         "unitCode": "%",
-        "observedAt": "2025-12-10T04:39:47.872642+00:00"
+        "observedAt": "2025-12-10T07:25:44.967197+00:00"
       },
       "soilType": {
         "type": "Property",
-        "value": "Đất xám"
+        "value": "Đất xám bạc màu"
       },
       "moisture": {
         "type": "Property",
-        "value": 19.0,
+        "value": 18.3,
         "unitCode": "%",
-        "observedAt": "2025-12-10T04:39:47.872643+00:00"
+        "observedAt": "2025-12-10T07:25:44.967197+00:00"
       },
       "texture": {
         "type": "Property",
-        "value": "Thịt pha cát"
+        "value": "Sét"
       },
       "drainage": {
         "type": "Property",
-        "value": "Trung bình"
+        "value": "Tốt"
       },
       "recommendedCrops": {
         "type": "Property",
         "value": [
-          "Ngô",
-          "Lúa",
-          "Mía",
-          "Rau màu"
+          "Điều",
+          "Cây ăn quả nhiệt đới",
+          "Rau màu",
+          "Lúa"
         ]
       },
       "fertilizerRecommendation": {
         "type": "Property",
         "value": {
-          "N": "Bổ sung 75-95 kg/ha",
-          "P": "Bổ sung 65-85 kg/ha",
-          "K": "Bổ sung 50-70 kg/ha",
-          "organic": "Bón 6-13 tấn phân chuồng/ha"
+          "N": "90-120 kg/ha",
+          "P": "60-90 kg/ha",
+          "K": "60-100 kg/ha",
+          "organic": "10-18 tấn phân chuồng/ha"
         }
       },
       "dateCreated": {
         "type": "Property",
-        "value": "2025-12-10T04:39:47.872645+00:00"
+        "value": "2025-12-10T07:25:44.967197+00:00"
       },
       "dateModified": {
         "type": "Property",
-        "value": "2025-12-10T04:39:47.872646+00:00"
+        "value": "2025-12-10T07:25:44.967197+00:00"
       }
     },
     {
@@ -431,47 +431,47 @@
       },
       "pH": {
         "type": "Property",
-        "value": 6.3,
+        "value": 6.2,
         "unitCode": "pH",
-        "observedAt": "2025-12-10T04:39:47.872658+00:00"
+        "observedAt": "2025-12-10T07:25:44.967206+00:00"
       },
       "nitrogen": {
         "type": "Property",
-        "value": 0.18,
+        "value": 0.15,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.872659+00:00"
+        "observedAt": "2025-12-10T07:25:44.967206+00:00"
       },
       "phosphorus": {
         "type": "Property",
-        "value": 0.11,
+        "value": 0.09,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.872661+00:00"
+        "observedAt": "2025-12-10T07:25:44.967206+00:00"
       },
       "potassium": {
         "type": "Property",
-        "value": 0.12,
+        "value": 0.14,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.872662+00:00"
+        "observedAt": "2025-12-10T07:25:44.967206+00:00"
       },
       "organicMatter": {
         "type": "Property",
-        "value": 2.5,
+        "value": 3.9,
         "unitCode": "%",
-        "observedAt": "2025-12-10T04:39:47.872664+00:00"
+        "observedAt": "2025-12-10T07:25:44.967206+00:00"
       },
       "soilType": {
         "type": "Property",
-        "value": "Đất phèn"
+        "value": "Đất phù sa ngọt"
       },
       "moisture": {
         "type": "Property",
-        "value": 22.5,
+        "value": 25.8,
         "unitCode": "%",
-        "observedAt": "2025-12-10T04:39:47.872665+00:00"
+        "observedAt": "2025-12-10T07:25:44.967206+00:00"
       },
       "texture": {
         "type": "Property",
-        "value": "Thịt"
+        "value": "Thịt pha sét"
       },
       "drainage": {
         "type": "Property",
@@ -480,28 +480,28 @@
       "recommendedCrops": {
         "type": "Property",
         "value": [
-          "Lúa",
-          "Cây ăn trái",
-          "Cây công nghiệp",
-          "Rau màu"
+          "Rau màu",
+          "Lúa nước",
+          "Dừa",
+          "Cây ăn trái"
         ]
       },
       "fertilizerRecommendation": {
         "type": "Property",
         "value": {
-          "N": "Bổ sung 110-130 kg/ha",
-          "P": "Bổ sung 80-100 kg/ha",
-          "K": "Bổ sung 70-90 kg/ha",
-          "organic": "Bón 10-17 tấn phân chuồng/ha"
+          "N": "90-120 kg/ha",
+          "P": "60-90 kg/ha",
+          "K": "60-100 kg/ha",
+          "organic": "10-18 tấn phân chuồng/ha"
         }
       },
       "dateCreated": {
         "type": "Property",
-        "value": "2025-12-10T04:39:47.872667+00:00"
+        "value": "2025-12-10T07:25:44.967206+00:00"
       },
       "dateModified": {
         "type": "Property",
-        "value": "2025-12-10T04:39:47.872668+00:00"
+        "value": "2025-12-10T07:25:44.967206+00:00"
       }
     },
     {
@@ -531,47 +531,47 @@
       },
       "pH": {
         "type": "Property",
-        "value": 6.6,
+        "value": 5.9,
         "unitCode": "pH",
-        "observedAt": "2025-12-10T04:39:47.872677+00:00"
+        "observedAt": "2025-12-10T07:25:44.967216+00:00"
       },
       "nitrogen": {
         "type": "Property",
-        "value": 0.17,
+        "value": 0.19,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.872679+00:00"
+        "observedAt": "2025-12-10T07:25:44.967216+00:00"
       },
       "phosphorus": {
         "type": "Property",
-        "value": 0.1,
+        "value": 0.12,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.872680+00:00"
+        "observedAt": "2025-12-10T07:25:44.967216+00:00"
       },
       "potassium": {
         "type": "Property",
-        "value": 0.15,
+        "value": 0.12,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.872681+00:00"
+        "observedAt": "2025-12-10T07:25:44.967216+00:00"
       },
       "organicMatter": {
         "type": "Property",
-        "value": 3.4,
+        "value": 3.7,
         "unitCode": "%",
-        "observedAt": "2025-12-10T04:39:47.872683+00:00"
+        "observedAt": "2025-12-10T07:25:44.967216+00:00"
       },
       "soilType": {
         "type": "Property",
-        "value": "Đất phèn"
+        "value": "Đất mặn ven biển"
       },
       "moisture": {
         "type": "Property",
-        "value": 25.5,
+        "value": 28.1,
         "unitCode": "%",
-        "observedAt": "2025-12-10T04:39:47.872684+00:00"
+        "observedAt": "2025-12-10T07:25:44.967216+00:00"
       },
       "texture": {
         "type": "Property",
-        "value": "Thịt pha sét"
+        "value": "Thịt pha cát"
       },
       "drainage": {
         "type": "Property",
@@ -580,28 +580,28 @@
       "recommendedCrops": {
         "type": "Property",
         "value": [
-          "Cây ăn trái",
-          "Cây công nghiệp",
-          "Lúa",
-          "Lúa nước"
+          "Dừa",
+          "Rau màu",
+          "Lúa nước",
+          "Cây ăn trái"
         ]
       },
       "fertilizerRecommendation": {
         "type": "Property",
         "value": {
-          "N": "Bổ sung 105-125 kg/ha",
-          "P": "Bổ sung 75-95 kg/ha",
-          "K": "Bổ sung 85-105 kg/ha",
-          "organic": "Bón 15-22 tấn phân chuồng/ha"
+          "N": "90-120 kg/ha",
+          "P": "60-90 kg/ha",
+          "K": "60-100 kg/ha",
+          "organic": "10-18 tấn phân chuồng/ha"
         }
       },
       "dateCreated": {
         "type": "Property",
-        "value": "2025-12-10T04:39:47.872686+00:00"
+        "value": "2025-12-10T07:25:44.967216+00:00"
       },
       "dateModified": {
         "type": "Property",
-        "value": "2025-12-10T04:39:47.872687+00:00"
+        "value": "2025-12-10T07:25:44.967216+00:00"
       }
     },
     {
@@ -631,47 +631,47 @@
       },
       "pH": {
         "type": "Property",
-        "value": 6.8,
+        "value": 6.5,
         "unitCode": "pH",
-        "observedAt": "2025-12-10T04:39:47.872697+00:00"
+        "observedAt": "2025-12-10T07:25:44.967225+00:00"
       },
       "nitrogen": {
         "type": "Property",
-        "value": 0.19,
+        "value": 0.15,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.872699+00:00"
+        "observedAt": "2025-12-10T07:25:44.967225+00:00"
       },
       "phosphorus": {
         "type": "Property",
-        "value": 0.11,
+        "value": 0.08,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.872701+00:00"
+        "observedAt": "2025-12-10T07:25:44.967225+00:00"
       },
       "potassium": {
         "type": "Property",
         "value": 0.13,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.872702+00:00"
+        "observedAt": "2025-12-10T07:25:44.967225+00:00"
       },
       "organicMatter": {
         "type": "Property",
         "value": 2.7,
         "unitCode": "%",
-        "observedAt": "2025-12-10T04:39:47.872703+00:00"
+        "observedAt": "2025-12-10T07:25:44.967225+00:00"
       },
       "soilType": {
         "type": "Property",
-        "value": "Đất mặn"
+        "value": "Đất phèn nhẹ"
       },
       "moisture": {
         "type": "Property",
-        "value": 25.3,
+        "value": 28.6,
         "unitCode": "%",
-        "observedAt": "2025-12-10T04:39:47.872704+00:00"
+        "observedAt": "2025-12-10T07:25:44.967225+00:00"
       },
       "texture": {
         "type": "Property",
-        "value": "Thịt"
+        "value": "Sét"
       },
       "drainage": {
         "type": "Property",
@@ -680,28 +680,28 @@
       "recommendedCrops": {
         "type": "Property",
         "value": [
-          "Lúa",
           "Lúa nước",
           "Rau màu",
-          "Cây công nghiệp"
+          "Dừa",
+          "Thanh long"
         ]
       },
       "fertilizerRecommendation": {
         "type": "Property",
         "value": {
-          "N": "Bổ sung 115-135 kg/ha",
-          "P": "Bổ sung 80-100 kg/ha",
-          "K": "Bổ sung 75-95 kg/ha",
-          "organic": "Bón 11-18 tấn phân chuồng/ha"
+          "N": "90-120 kg/ha",
+          "P": "60-90 kg/ha",
+          "K": "60-100 kg/ha",
+          "organic": "10-18 tấn phân chuồng/ha"
         }
       },
       "dateCreated": {
         "type": "Property",
-        "value": "2025-12-10T04:39:47.872706+00:00"
+        "value": "2025-12-10T07:25:44.967225+00:00"
       },
       "dateModified": {
         "type": "Property",
-        "value": "2025-12-10T04:39:47.872707+00:00"
+        "value": "2025-12-10T07:25:44.967225+00:00"
       }
     },
     {
@@ -731,33 +731,33 @@
       },
       "pH": {
         "type": "Property",
-        "value": 5.9,
+        "value": 5.8,
         "unitCode": "pH",
-        "observedAt": "2025-12-10T04:39:47.872715+00:00"
+        "observedAt": "2025-12-10T07:25:44.967234+00:00"
       },
       "nitrogen": {
         "type": "Property",
-        "value": 0.14,
+        "value": 0.16,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.872717+00:00"
+        "observedAt": "2025-12-10T07:25:44.967234+00:00"
       },
       "phosphorus": {
         "type": "Property",
-        "value": 0.09,
+        "value": 0.1,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.872718+00:00"
+        "observedAt": "2025-12-10T07:25:44.967234+00:00"
       },
       "potassium": {
         "type": "Property",
-        "value": 0.13,
+        "value": 0.12,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.872719+00:00"
+        "observedAt": "2025-12-10T07:25:44.967234+00:00"
       },
       "organicMatter": {
         "type": "Property",
-        "value": 2.4,
+        "value": 2.6,
         "unitCode": "%",
-        "observedAt": "2025-12-10T04:39:47.872720+00:00"
+        "observedAt": "2025-12-10T07:25:44.967234+00:00"
       },
       "soilType": {
         "type": "Property",
@@ -765,43 +765,43 @@
       },
       "moisture": {
         "type": "Property",
-        "value": 18.9,
+        "value": 20.6,
         "unitCode": "%",
-        "observedAt": "2025-12-10T04:39:47.872723+00:00"
+        "observedAt": "2025-12-10T07:25:44.967234+00:00"
       },
       "texture": {
         "type": "Property",
-        "value": "Thịt"
+        "value": "Thịt pha sét"
       },
       "drainage": {
         "type": "Property",
-        "value": "Kém"
+        "value": "Tốt"
       },
       "recommendedCrops": {
         "type": "Property",
         "value": [
-          "Đậu tương",
+          "Ngô",
           "Rau màu",
-          "Lúa",
-          "Cây ăn quả ôn đới"
+          "Cây ăn quả ôn đới",
+          "Chè"
         ]
       },
       "fertilizerRecommendation": {
         "type": "Property",
         "value": {
-          "N": "Bổ sung 90-110 kg/ha",
-          "P": "Bổ sung 70-90 kg/ha",
-          "K": "Bổ sung 75-95 kg/ha",
-          "organic": "Bón 10-17 tấn phân chuồng/ha"
+          "N": "90-120 kg/ha",
+          "P": "60-90 kg/ha",
+          "K": "60-100 kg/ha",
+          "organic": "10-18 tấn phân chuồng/ha"
         }
       },
       "dateCreated": {
         "type": "Property",
-        "value": "2025-12-10T04:39:47.872725+00:00"
+        "value": "2025-12-10T07:25:44.967234+00:00"
       },
       "dateModified": {
         "type": "Property",
-        "value": "2025-12-10T04:39:47.872726+00:00"
+        "value": "2025-12-10T07:25:44.967234+00:00"
       }
     },
     {
@@ -831,47 +831,47 @@
       },
       "pH": {
         "type": "Property",
-        "value": 5.6,
+        "value": 6.5,
         "unitCode": "pH",
-        "observedAt": "2025-12-10T04:39:47.872735+00:00"
+        "observedAt": "2025-12-10T07:25:44.967243+00:00"
       },
       "nitrogen": {
         "type": "Property",
-        "value": 0.16,
+        "value": 0.15,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.872737+00:00"
+        "observedAt": "2025-12-10T07:25:44.967243+00:00"
       },
       "phosphorus": {
         "type": "Property",
-        "value": 0.09,
+        "value": 0.08,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.872738+00:00"
+        "observedAt": "2025-12-10T07:25:44.967243+00:00"
       },
       "potassium": {
         "type": "Property",
-        "value": 0.1,
+        "value": 0.14,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.872739+00:00"
+        "observedAt": "2025-12-10T07:25:44.967243+00:00"
       },
       "organicMatter": {
         "type": "Property",
-        "value": 2.6,
+        "value": 2.5,
         "unitCode": "%",
-        "observedAt": "2025-12-10T04:39:47.872740+00:00"
+        "observedAt": "2025-12-10T07:25:44.967243+00:00"
       },
       "soilType": {
         "type": "Property",
-        "value": "Đất phù sa"
+        "value": "Đất feralit đỏ vàng"
       },
       "moisture": {
         "type": "Property",
-        "value": 16.9,
+        "value": 19.7,
         "unitCode": "%",
-        "observedAt": "2025-12-10T04:39:47.872743+00:00"
+        "observedAt": "2025-12-10T07:25:44.967243+00:00"
       },
       "texture": {
         "type": "Property",
-        "value": "Thịt pha cát"
+        "value": "Thịt pha sét"
       },
       "drainage": {
         "type": "Property",
@@ -880,28 +880,28 @@
       "recommendedCrops": {
         "type": "Property",
         "value": [
+          "Ngô",
+          "Lúa",
           "Rau màu",
-          "Đậu tương",
-          "Cây ăn quả ôn đới",
-          "Lúa"
+          "Cây ăn quả ôn đới"
         ]
       },
       "fertilizerRecommendation": {
         "type": "Property",
         "value": {
-          "N": "Bổ sung 100-120 kg/ha",
-          "P": "Bổ sung 70-90 kg/ha",
-          "K": "Bổ sung 60-80 kg/ha",
-          "organic": "Bón 11-18 tấn phân chuồng/ha"
+          "N": "90-120 kg/ha",
+          "P": "60-90 kg/ha",
+          "K": "60-100 kg/ha",
+          "organic": "10-18 tấn phân chuồng/ha"
         }
       },
       "dateCreated": {
         "type": "Property",
-        "value": "2025-12-10T04:39:47.872744+00:00"
+        "value": "2025-12-10T07:25:44.967243+00:00"
       },
       "dateModified": {
         "type": "Property",
-        "value": "2025-12-10T04:39:47.872745+00:00"
+        "value": "2025-12-10T07:25:44.967243+00:00"
       }
     },
     {
@@ -931,77 +931,77 @@
       },
       "pH": {
         "type": "Property",
-        "value": 5.8,
+        "value": 6.0,
         "unitCode": "pH",
-        "observedAt": "2025-12-10T04:39:47.872755+00:00"
+        "observedAt": "2025-12-10T07:25:44.967252+00:00"
       },
       "nitrogen": {
         "type": "Property",
-        "value": 0.13,
+        "value": 0.17,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.872756+00:00"
+        "observedAt": "2025-12-10T07:25:44.967252+00:00"
       },
       "phosphorus": {
         "type": "Property",
-        "value": 0.09,
+        "value": 0.1,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.872757+00:00"
+        "observedAt": "2025-12-10T07:25:44.967252+00:00"
       },
       "potassium": {
         "type": "Property",
-        "value": 0.14,
+        "value": 0.11,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.872759+00:00"
+        "observedAt": "2025-12-10T07:25:44.967252+00:00"
       },
       "organicMatter": {
         "type": "Property",
-        "value": 2.5,
+        "value": 2.0,
         "unitCode": "%",
-        "observedAt": "2025-12-10T04:39:47.872760+00:00"
+        "observedAt": "2025-12-10T07:25:44.967252+00:00"
       },
       "soilType": {
         "type": "Property",
-        "value": "Đất phù sa"
+        "value": "Đất glây"
       },
       "moisture": {
         "type": "Property",
-        "value": 16.5,
+        "value": 16.8,
         "unitCode": "%",
-        "observedAt": "2025-12-10T04:39:47.872761+00:00"
+        "observedAt": "2025-12-10T07:25:44.967252+00:00"
       },
       "texture": {
         "type": "Property",
-        "value": "Cát pha thịt"
+        "value": "Thịt"
       },
       "drainage": {
         "type": "Property",
-        "value": "Trung bình"
+        "value": "Tốt"
       },
       "recommendedCrops": {
         "type": "Property",
         "value": [
-          "Cây ăn quả ôn đới",
-          "Rau màu",
           "Ngô",
-          "Lúa"
+          "Rau màu",
+          "Lúa",
+          "Cây ăn quả ôn đới"
         ]
       },
       "fertilizerRecommendation": {
         "type": "Property",
         "value": {
-          "N": "Bổ sung 85-105 kg/ha",
-          "P": "Bổ sung 70-90 kg/ha",
-          "K": "Bổ sung 80-100 kg/ha",
-          "organic": "Bón 10-17 tấn phân chuồng/ha"
+          "N": "90-120 kg/ha",
+          "P": "60-90 kg/ha",
+          "K": "60-100 kg/ha",
+          "organic": "10-18 tấn phân chuồng/ha"
         }
       },
       "dateCreated": {
         "type": "Property",
-        "value": "2025-12-10T04:39:47.872763+00:00"
+        "value": "2025-12-10T07:25:44.967252+00:00"
       },
       "dateModified": {
         "type": "Property",
-        "value": "2025-12-10T04:39:47.872764+00:00"
+        "value": "2025-12-10T07:25:44.967252+00:00"
       }
     },
     {
@@ -1031,77 +1031,77 @@
       },
       "pH": {
         "type": "Property",
-        "value": 6.5,
+        "value": 6.2,
         "unitCode": "pH",
-        "observedAt": "2025-12-10T04:39:47.872772+00:00"
+        "observedAt": "2025-12-10T07:25:44.967261+00:00"
       },
       "nitrogen": {
         "type": "Property",
-        "value": 0.16,
+        "value": 0.19,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.872773+00:00"
+        "observedAt": "2025-12-10T07:25:44.967261+00:00"
       },
       "phosphorus": {
         "type": "Property",
-        "value": 0.12,
+        "value": 0.1,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.872775+00:00"
+        "observedAt": "2025-12-10T07:25:44.967261+00:00"
       },
       "potassium": {
         "type": "Property",
         "value": 0.12,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.872776+00:00"
+        "observedAt": "2025-12-10T07:25:44.967261+00:00"
       },
       "organicMatter": {
         "type": "Property",
-        "value": 2.7,
+        "value": 2.5,
         "unitCode": "%",
-        "observedAt": "2025-12-10T04:39:47.872777+00:00"
+        "observedAt": "2025-12-10T07:25:44.967261+00:00"
       },
       "soilType": {
         "type": "Property",
-        "value": "Đất mặn"
+        "value": "Đất phèn nhẹ"
       },
       "moisture": {
         "type": "Property",
-        "value": 23.7,
+        "value": 28.0,
         "unitCode": "%",
-        "observedAt": "2025-12-10T04:39:47.872778+00:00"
+        "observedAt": "2025-12-10T07:25:44.967261+00:00"
       },
       "texture": {
         "type": "Property",
-        "value": "Cát pha thịt"
+        "value": "Thịt pha cát"
       },
       "drainage": {
         "type": "Property",
-        "value": "Trung bình"
+        "value": "Tốt"
       },
       "recommendedCrops": {
         "type": "Property",
         "value": [
-          "Rau màu",
           "Lúa nước",
-          "Cây công nghiệp",
-          "Cây ăn trái"
+          "Cây ăn trái",
+          "Rau màu",
+          "Thanh long"
         ]
       },
       "fertilizerRecommendation": {
         "type": "Property",
         "value": {
-          "N": "Bổ sung 100-120 kg/ha",
-          "P": "Bổ sung 85-105 kg/ha",
-          "K": "Bổ sung 70-90 kg/ha",
-          "organic": "Bón 11-18 tấn phân chuồng/ha"
+          "N": "90-120 kg/ha",
+          "P": "60-90 kg/ha",
+          "K": "60-100 kg/ha",
+          "organic": "10-18 tấn phân chuồng/ha"
         }
       },
       "dateCreated": {
         "type": "Property",
-        "value": "2025-12-10T04:39:47.872780+00:00"
+        "value": "2025-12-10T07:25:44.967261+00:00"
       },
       "dateModified": {
         "type": "Property",
-        "value": "2025-12-10T04:39:47.872782+00:00"
+        "value": "2025-12-10T07:25:44.967261+00:00"
       }
     },
     {
@@ -1131,77 +1131,77 @@
       },
       "pH": {
         "type": "Property",
-        "value": 6.2,
+        "value": 5.0,
         "unitCode": "pH",
-        "observedAt": "2025-12-10T04:39:47.872792+00:00"
+        "observedAt": "2025-12-10T07:25:44.967269+00:00"
       },
       "nitrogen": {
         "type": "Property",
-        "value": 0.16,
+        "value": 0.13,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.872793+00:00"
+        "observedAt": "2025-12-10T07:25:44.967269+00:00"
       },
       "phosphorus": {
         "type": "Property",
-        "value": 0.11,
+        "value": 0.08,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.872794+00:00"
+        "observedAt": "2025-12-10T07:25:44.967269+00:00"
       },
       "potassium": {
         "type": "Property",
-        "value": 0.18,
+        "value": 0.09,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.872795+00:00"
+        "observedAt": "2025-12-10T07:25:44.967269+00:00"
       },
       "organicMatter": {
         "type": "Property",
-        "value": 3.1,
+        "value": 2.5,
         "unitCode": "%",
-        "observedAt": "2025-12-10T04:39:47.872797+00:00"
+        "observedAt": "2025-12-10T07:25:44.967269+00:00"
       },
       "soilType": {
         "type": "Property",
-        "value": "Đất mặn"
+        "value": "Đất xám bạc màu"
       },
       "moisture": {
         "type": "Property",
-        "value": 26.7,
+        "value": 20.2,
         "unitCode": "%",
-        "observedAt": "2025-12-10T04:39:47.872798+00:00"
+        "observedAt": "2025-12-10T07:25:44.967269+00:00"
       },
       "texture": {
         "type": "Property",
-        "value": "Thịt pha sét"
+        "value": "Thịt pha cát"
       },
       "drainage": {
         "type": "Property",
-        "value": "Kém"
+        "value": "Tốt"
       },
       "recommendedCrops": {
         "type": "Property",
         "value": [
+          "Điều",
           "Rau màu",
-          "Cây ăn trái",
-          "Cây công nghiệp",
-          "Lúa nước"
+          "Lúa",
+          "Cây ăn quả nhiệt đới"
         ]
       },
       "fertilizerRecommendation": {
         "type": "Property",
         "value": {
-          "N": "Bổ sung 100-120 kg/ha",
-          "P": "Bổ sung 80-100 kg/ha",
-          "K": "Bổ sung 100-120 kg/ha",
-          "organic": "Bón 13-20 tấn phân chuồng/ha"
+          "N": "90-120 kg/ha",
+          "P": "60-90 kg/ha",
+          "K": "60-100 kg/ha",
+          "organic": "10-18 tấn phân chuồng/ha"
         }
       },
       "dateCreated": {
         "type": "Property",
-        "value": "2025-12-10T04:39:47.872800+00:00"
+        "value": "2025-12-10T07:25:44.967269+00:00"
       },
       "dateModified": {
         "type": "Property",
-        "value": "2025-12-10T04:39:47.872801+00:00"
+        "value": "2025-12-10T07:25:44.967269+00:00"
       }
     },
     {
@@ -1231,77 +1231,77 @@
       },
       "pH": {
         "type": "Property",
-        "value": 6.7,
+        "value": 6.6,
         "unitCode": "pH",
-        "observedAt": "2025-12-10T04:39:47.872809+00:00"
+        "observedAt": "2025-12-10T07:25:44.967279+00:00"
       },
       "nitrogen": {
         "type": "Property",
         "value": 0.16,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.872810+00:00"
+        "observedAt": "2025-12-10T07:25:44.967279+00:00"
       },
       "phosphorus": {
         "type": "Property",
-        "value": 0.12,
+        "value": 0.07,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.872811+00:00"
+        "observedAt": "2025-12-10T07:25:44.967279+00:00"
       },
       "potassium": {
         "type": "Property",
-        "value": 0.16,
+        "value": 0.12,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.872812+00:00"
+        "observedAt": "2025-12-10T07:25:44.967279+00:00"
       },
       "organicMatter": {
         "type": "Property",
-        "value": 3.1,
+        "value": 2.7,
         "unitCode": "%",
-        "observedAt": "2025-12-10T04:39:47.872813+00:00"
+        "observedAt": "2025-12-10T07:25:44.967279+00:00"
       },
       "soilType": {
         "type": "Property",
-        "value": "Đất mặn"
+        "value": "Đất phù sa ngọt"
       },
       "moisture": {
         "type": "Property",
-        "value": 24.3,
+        "value": 22.2,
         "unitCode": "%",
-        "observedAt": "2025-12-10T04:39:47.872816+00:00"
+        "observedAt": "2025-12-10T07:25:44.967279+00:00"
       },
       "texture": {
         "type": "Property",
-        "value": "Sét"
+        "value": "Thịt"
       },
       "drainage": {
         "type": "Property",
-        "value": "Kém"
+        "value": "Tốt"
       },
       "recommendedCrops": {
         "type": "Property",
         "value": [
+          "Thanh long",
+          "Dừa",
           "Lúa nước",
-          "Rau màu",
-          "Cây công nghiệp",
-          "Lúa"
+          "Rau màu"
         ]
       },
       "fertilizerRecommendation": {
         "type": "Property",
         "value": {
-          "N": "Bổ sung 100-120 kg/ha",
-          "P": "Bổ sung 85-105 kg/ha",
-          "K": "Bổ sung 90-110 kg/ha",
-          "organic": "Bón 13-20 tấn phân chuồng/ha"
+          "N": "90-120 kg/ha",
+          "P": "60-90 kg/ha",
+          "K": "60-100 kg/ha",
+          "organic": "10-18 tấn phân chuồng/ha"
         }
       },
       "dateCreated": {
         "type": "Property",
-        "value": "2025-12-10T04:39:47.872817+00:00"
+        "value": "2025-12-10T07:25:44.967279+00:00"
       },
       "dateModified": {
         "type": "Property",
-        "value": "2025-12-10T04:39:47.872818+00:00"
+        "value": "2025-12-10T07:25:44.967279+00:00"
       }
     },
     {
@@ -1331,47 +1331,47 @@
       },
       "pH": {
         "type": "Property",
-        "value": 7.0,
+        "value": 5.5,
         "unitCode": "pH",
-        "observedAt": "2025-12-10T04:39:47.872827+00:00"
+        "observedAt": "2025-12-10T07:25:44.967288+00:00"
       },
       "nitrogen": {
         "type": "Property",
-        "value": 0.18,
+        "value": 0.11,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.872829+00:00"
+        "observedAt": "2025-12-10T07:25:44.967288+00:00"
       },
       "phosphorus": {
         "type": "Property",
-        "value": 0.11,
+        "value": 0.06,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.872830+00:00"
+        "observedAt": "2025-12-10T07:25:44.967288+00:00"
       },
       "potassium": {
         "type": "Property",
-        "value": 0.13,
+        "value": 0.16,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.872831+00:00"
+        "observedAt": "2025-12-10T07:25:44.967288+00:00"
       },
       "organicMatter": {
         "type": "Property",
-        "value": 3.0,
+        "value": 2.6,
         "unitCode": "%",
-        "observedAt": "2025-12-10T04:39:47.872832+00:00"
+        "observedAt": "2025-12-10T07:25:44.967288+00:00"
       },
       "soilType": {
         "type": "Property",
-        "value": "Đất phù sa"
+        "value": "Ferralsols"
       },
       "moisture": {
         "type": "Property",
-        "value": 26.1,
+        "value": 18.2,
         "unitCode": "%",
-        "observedAt": "2025-12-10T04:39:47.872840+00:00"
+        "observedAt": "2025-12-10T07:25:44.967288+00:00"
       },
       "texture": {
         "type": "Property",
-        "value": "Thịt"
+        "value": "Sét"
       },
       "drainage": {
         "type": "Property",
@@ -1380,28 +1380,28 @@
       "recommendedCrops": {
         "type": "Property",
         "value": [
-          "Cây ăn trái",
-          "Lúa nước",
-          "Cây công nghiệp",
-          "Rau màu"
+          "Cao su",
+          "Cà phê",
+          "Ngô",
+          "Cây ăn trái"
         ]
       },
       "fertilizerRecommendation": {
         "type": "Property",
         "value": {
-          "N": "Bổ sung 110-130 kg/ha",
-          "P": "Bổ sung 80-100 kg/ha",
-          "K": "Bổ sung 75-95 kg/ha",
-          "organic": "Bón 13-20 tấn phân chuồng/ha"
+          "N": "90-120 kg/ha",
+          "P": "60-90 kg/ha",
+          "K": "60-100 kg/ha",
+          "organic": "10-18 tấn phân chuồng/ha"
         }
       },
       "dateCreated": {
         "type": "Property",
-        "value": "2025-12-10T04:39:47.872842+00:00"
+        "value": "2025-12-10T07:25:44.967288+00:00"
       },
       "dateModified": {
         "type": "Property",
-        "value": "2025-12-10T04:39:47.872843+00:00"
+        "value": "2025-12-10T07:25:44.967288+00:00"
       }
     },
     {
@@ -1431,77 +1431,77 @@
       },
       "pH": {
         "type": "Property",
-        "value": 6.5,
+        "value": 5.7,
         "unitCode": "pH",
-        "observedAt": "2025-12-10T04:39:47.872852+00:00"
+        "observedAt": "2025-12-10T07:25:44.967299+00:00"
       },
       "nitrogen": {
         "type": "Property",
-        "value": 0.15,
+        "value": 0.1,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.872854+00:00"
+        "observedAt": "2025-12-10T07:25:44.967299+00:00"
       },
       "phosphorus": {
         "type": "Property",
         "value": 0.08,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.872855+00:00"
+        "observedAt": "2025-12-10T07:25:44.967299+00:00"
       },
       "potassium": {
         "type": "Property",
-        "value": 0.16,
+        "value": 0.09,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.872856+00:00"
+        "observedAt": "2025-12-10T07:25:44.967299+00:00"
       },
       "organicMatter": {
         "type": "Property",
-        "value": 3.4,
+        "value": 2.6,
         "unitCode": "%",
-        "observedAt": "2025-12-10T04:39:47.872857+00:00"
+        "observedAt": "2025-12-10T07:25:44.967299+00:00"
       },
       "soilType": {
         "type": "Property",
-        "value": "Đất mặn"
+        "value": "Đất cát ven biển"
       },
       "moisture": {
         "type": "Property",
-        "value": 25.7,
+        "value": 15.1,
         "unitCode": "%",
-        "observedAt": "2025-12-10T04:39:47.872858+00:00"
+        "observedAt": "2025-12-10T07:25:44.967299+00:00"
       },
       "texture": {
         "type": "Property",
-        "value": "Thịt pha cát"
+        "value": "Cát pha"
       },
       "drainage": {
         "type": "Property",
-        "value": "Trung bình"
+        "value": "Tốt"
       },
       "recommendedCrops": {
         "type": "Property",
         "value": [
-          "Cây công nghiệp",
-          "Rau màu",
+          "Cây ăn quả nhiệt đới",
           "Lúa",
-          "Lúa nước"
+          "Điều",
+          "Mía"
         ]
       },
       "fertilizerRecommendation": {
         "type": "Property",
         "value": {
-          "N": "Bổ sung 95-115 kg/ha",
-          "P": "Bổ sung 65-85 kg/ha",
-          "K": "Bổ sung 90-110 kg/ha",
-          "organic": "Bón 15-22 tấn phân chuồng/ha"
+          "N": "90-120 kg/ha",
+          "P": "60-90 kg/ha",
+          "K": "60-100 kg/ha",
+          "organic": "10-18 tấn phân chuồng/ha"
         }
       },
       "dateCreated": {
         "type": "Property",
-        "value": "2025-12-10T04:39:47.872860+00:00"
+        "value": "2025-12-10T07:25:44.967299+00:00"
       },
       "dateModified": {
         "type": "Property",
-        "value": "2025-12-10T04:39:47.872861+00:00"
+        "value": "2025-12-10T07:25:44.967299+00:00"
       }
     },
     {
@@ -1531,47 +1531,47 @@
       },
       "pH": {
         "type": "Property",
-        "value": 5.7,
+        "value": 6.1,
         "unitCode": "pH",
-        "observedAt": "2025-12-10T04:39:47.872870+00:00"
+        "observedAt": "2025-12-10T07:25:44.967313+00:00"
       },
       "nitrogen": {
         "type": "Property",
-        "value": 0.13,
+        "value": 0.15,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.872871+00:00"
+        "observedAt": "2025-12-10T07:25:44.967313+00:00"
       },
       "phosphorus": {
         "type": "Property",
-        "value": 0.07,
+        "value": 0.12,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.872872+00:00"
+        "observedAt": "2025-12-10T07:25:44.967313+00:00"
       },
       "potassium": {
         "type": "Property",
         "value": 0.12,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.872874+00:00"
+        "observedAt": "2025-12-10T07:25:44.967313+00:00"
       },
       "organicMatter": {
         "type": "Property",
-        "value": 2.7,
+        "value": 3.9,
         "unitCode": "%",
-        "observedAt": "2025-12-10T04:39:47.872875+00:00"
+        "observedAt": "2025-12-10T07:25:44.967313+00:00"
       },
       "soilType": {
         "type": "Property",
-        "value": "Đất đen"
+        "value": "Đất mặn ven biển"
       },
       "moisture": {
         "type": "Property",
-        "value": 20.7,
+        "value": 31.9,
         "unitCode": "%",
-        "observedAt": "2025-12-10T04:39:47.872877+00:00"
+        "observedAt": "2025-12-10T07:25:44.967313+00:00"
       },
       "texture": {
         "type": "Property",
-        "value": "Thịt pha sét"
+        "value": "Thịt"
       },
       "drainage": {
         "type": "Property",
@@ -1580,28 +1580,28 @@
       "recommendedCrops": {
         "type": "Property",
         "value": [
-          "Cây ăn trái",
-          "Cao su",
-          "Hồ tiêu",
-          "Cà phê"
+          "Rau màu",
+          "Dừa",
+          "Lúa nước",
+          "Cây ăn trái"
         ]
       },
       "fertilizerRecommendation": {
         "type": "Property",
         "value": {
-          "N": "Bổ sung 85-105 kg/ha",
-          "P": "Bổ sung 60-80 kg/ha",
-          "K": "Bổ sung 70-90 kg/ha",
-          "organic": "Bón 11-18 tấn phân chuồng/ha"
+          "N": "90-120 kg/ha",
+          "P": "60-90 kg/ha",
+          "K": "60-100 kg/ha",
+          "organic": "10-18 tấn phân chuồng/ha"
         }
       },
       "dateCreated": {
         "type": "Property",
-        "value": "2025-12-10T04:39:47.872879+00:00"
+        "value": "2025-12-10T07:25:44.967313+00:00"
       },
       "dateModified": {
         "type": "Property",
-        "value": "2025-12-10T04:39:47.872881+00:00"
+        "value": "2025-12-10T07:25:44.967313+00:00"
       }
     },
     {
@@ -1631,77 +1631,77 @@
       },
       "pH": {
         "type": "Property",
-        "value": 6.1,
+        "value": 5.7,
         "unitCode": "pH",
-        "observedAt": "2025-12-10T04:39:47.872889+00:00"
+        "observedAt": "2025-12-10T07:25:44.967321+00:00"
       },
       "nitrogen": {
         "type": "Property",
         "value": 0.14,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.872890+00:00"
+        "observedAt": "2025-12-10T07:25:44.967321+00:00"
       },
       "phosphorus": {
         "type": "Property",
         "value": 0.1,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.872891+00:00"
+        "observedAt": "2025-12-10T07:25:44.967321+00:00"
       },
       "potassium": {
         "type": "Property",
-        "value": 0.14,
+        "value": 0.11,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.872892+00:00"
+        "observedAt": "2025-12-10T07:25:44.967321+00:00"
       },
       "organicMatter": {
         "type": "Property",
-        "value": 2.9,
+        "value": 3.1,
         "unitCode": "%",
-        "observedAt": "2025-12-10T04:39:47.872893+00:00"
+        "observedAt": "2025-12-10T07:25:44.967321+00:00"
       },
       "soilType": {
         "type": "Property",
-        "value": "Đất phù sa"
+        "value": "Đất feralit đỏ vàng"
       },
       "moisture": {
         "type": "Property",
-        "value": 18.5,
+        "value": 22.4,
         "unitCode": "%",
-        "observedAt": "2025-12-10T04:39:47.872895+00:00"
+        "observedAt": "2025-12-10T07:25:44.967321+00:00"
       },
       "texture": {
         "type": "Property",
-        "value": "Sét"
+        "value": "Thịt"
       },
       "drainage": {
         "type": "Property",
-        "value": "Trung bình"
+        "value": "Kém"
       },
       "recommendedCrops": {
         "type": "Property",
         "value": [
           "Rau màu",
-          "Lúa",
           "Cây ăn quả ôn đới",
+          "Lúa",
           "Ngô"
         ]
       },
       "fertilizerRecommendation": {
         "type": "Property",
         "value": {
-          "N": "Bổ sung 90-110 kg/ha",
-          "P": "Bổ sung 75-95 kg/ha",
-          "K": "Bổ sung 80-100 kg/ha",
-          "organic": "Bón 12-19 tấn phân chuồng/ha"
+          "N": "90-120 kg/ha",
+          "P": "60-90 kg/ha",
+          "K": "60-100 kg/ha",
+          "organic": "10-18 tấn phân chuồng/ha"
         }
       },
       "dateCreated": {
         "type": "Property",
-        "value": "2025-12-10T04:39:47.872896+00:00"
+        "value": "2025-12-10T07:25:44.967321+00:00"
       },
       "dateModified": {
         "type": "Property",
-        "value": "2025-12-10T04:39:47.872897+00:00"
+        "value": "2025-12-10T07:25:44.967321+00:00"
       }
     },
     {
@@ -1731,47 +1731,47 @@
       },
       "pH": {
         "type": "Property",
-        "value": 6.1,
+        "value": 5.1,
         "unitCode": "pH",
-        "observedAt": "2025-12-10T04:39:47.872905+00:00"
+        "observedAt": "2025-12-10T07:25:44.967331+00:00"
       },
       "nitrogen": {
         "type": "Property",
         "value": 0.17,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.872906+00:00"
+        "observedAt": "2025-12-10T07:25:44.967331+00:00"
       },
       "phosphorus": {
         "type": "Property",
-        "value": 0.09,
+        "value": 0.06,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.872908+00:00"
+        "observedAt": "2025-12-10T07:25:44.967331+00:00"
       },
       "potassium": {
         "type": "Property",
-        "value": 0.17,
+        "value": 0.15,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.872909+00:00"
+        "observedAt": "2025-12-10T07:25:44.967331+00:00"
       },
       "organicMatter": {
         "type": "Property",
-        "value": 3.1,
+        "value": 3.2,
         "unitCode": "%",
-        "observedAt": "2025-12-10T04:39:47.872910+00:00"
+        "observedAt": "2025-12-10T07:25:44.967331+00:00"
       },
       "soilType": {
         "type": "Property",
-        "value": "Đất phèn"
+        "value": "Ferralsols"
       },
       "moisture": {
         "type": "Property",
-        "value": 27.5,
+        "value": 24.1,
         "unitCode": "%",
-        "observedAt": "2025-12-10T04:39:47.872912+00:00"
+        "observedAt": "2025-12-10T07:25:44.967331+00:00"
       },
       "texture": {
         "type": "Property",
-        "value": "Cát pha thịt"
+        "value": "Thịt pha sét"
       },
       "drainage": {
         "type": "Property",
@@ -1780,28 +1780,28 @@
       "recommendedCrops": {
         "type": "Property",
         "value": [
-          "Lúa",
-          "Cây công nghiệp",
-          "Rau màu",
-          "Cây ăn trái"
+          "Ngô",
+          "Cà phê",
+          "Cây ăn trái",
+          "Hồ tiêu"
         ]
       },
       "fertilizerRecommendation": {
         "type": "Property",
         "value": {
-          "N": "Bổ sung 105-125 kg/ha",
-          "P": "Bổ sung 70-90 kg/ha",
-          "K": "Bổ sung 95-115 kg/ha",
-          "organic": "Bón 13-20 tấn phân chuồng/ha"
+          "N": "90-120 kg/ha",
+          "P": "60-90 kg/ha",
+          "K": "60-100 kg/ha",
+          "organic": "10-18 tấn phân chuồng/ha"
         }
       },
       "dateCreated": {
         "type": "Property",
-        "value": "2025-12-10T04:39:47.872914+00:00"
+        "value": "2025-12-10T07:25:44.967331+00:00"
       },
       "dateModified": {
         "type": "Property",
-        "value": "2025-12-10T04:39:47.872915+00:00"
+        "value": "2025-12-10T07:25:44.967331+00:00"
       }
     },
     {
@@ -1831,77 +1831,77 @@
       },
       "pH": {
         "type": "Property",
-        "value": 6.8,
+        "value": 5.2,
         "unitCode": "pH",
-        "observedAt": "2025-12-10T04:39:47.872923+00:00"
+        "observedAt": "2025-12-10T07:25:44.967339+00:00"
       },
       "nitrogen": {
         "type": "Property",
-        "value": 0.18,
+        "value": 0.16,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.872924+00:00"
+        "observedAt": "2025-12-10T07:25:44.967339+00:00"
       },
       "phosphorus": {
         "type": "Property",
-        "value": 0.11,
+        "value": 0.07,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.872925+00:00"
+        "observedAt": "2025-12-10T07:25:44.967339+00:00"
       },
       "potassium": {
         "type": "Property",
         "value": 0.16,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.872926+00:00"
+        "observedAt": "2025-12-10T07:25:44.967339+00:00"
       },
       "organicMatter": {
         "type": "Property",
-        "value": 3.2,
+        "value": 2.8,
         "unitCode": "%",
-        "observedAt": "2025-12-10T04:39:47.872928+00:00"
+        "observedAt": "2025-12-10T07:25:44.967339+00:00"
       },
       "soilType": {
         "type": "Property",
-        "value": "Đất phù sa sông Cửu Long"
+        "value": "Đất xám trên đá bazan"
       },
       "moisture": {
         "type": "Property",
-        "value": 24.9,
+        "value": 20.9,
         "unitCode": "%",
-        "observedAt": "2025-12-10T04:39:47.872930+00:00"
+        "observedAt": "2025-12-10T07:25:44.967339+00:00"
       },
       "texture": {
         "type": "Property",
-        "value": "Sét"
+        "value": "Thịt"
       },
       "drainage": {
         "type": "Property",
-        "value": "Kém"
+        "value": "Tốt"
       },
       "recommendedCrops": {
         "type": "Property",
         "value": [
-          "Rau màu",
-          "Cây công nghiệp",
-          "Cây ăn trái",
-          "Lúa nước"
+          "Ngô",
+          "Cà phê",
+          "Hồ tiêu",
+          "Cao su"
         ]
       },
       "fertilizerRecommendation": {
         "type": "Property",
         "value": {
-          "N": "Bổ sung 110-130 kg/ha",
-          "P": "Bổ sung 80-100 kg/ha",
-          "K": "Bổ sung 90-110 kg/ha",
-          "organic": "Bón 14-21 tấn phân chuồng/ha"
+          "N": "90-120 kg/ha",
+          "P": "60-90 kg/ha",
+          "K": "60-100 kg/ha",
+          "organic": "10-18 tấn phân chuồng/ha"
         }
       },
       "dateCreated": {
         "type": "Property",
-        "value": "2025-12-10T04:39:47.872931+00:00"
+        "value": "2025-12-10T07:25:44.967339+00:00"
       },
       "dateModified": {
         "type": "Property",
-        "value": "2025-12-10T04:39:47.872932+00:00"
+        "value": "2025-12-10T07:25:44.967339+00:00"
       }
     },
     {
@@ -1931,77 +1931,77 @@
       },
       "pH": {
         "type": "Property",
-        "value": 5.7,
+        "value": 6.2,
         "unitCode": "pH",
-        "observedAt": "2025-12-10T04:39:47.872942+00:00"
+        "observedAt": "2025-12-10T07:25:44.967522+00:00"
       },
       "nitrogen": {
         "type": "Property",
-        "value": 0.16,
+        "value": 0.13,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.872944+00:00"
+        "observedAt": "2025-12-10T07:25:44.967522+00:00"
       },
       "phosphorus": {
         "type": "Property",
-        "value": 0.1,
+        "value": 0.09,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.872945+00:00"
+        "observedAt": "2025-12-10T07:25:44.967522+00:00"
       },
       "potassium": {
         "type": "Property",
-        "value": 0.11,
+        "value": 0.15,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.872946+00:00"
+        "observedAt": "2025-12-10T07:25:44.967522+00:00"
       },
       "organicMatter": {
         "type": "Property",
         "value": 2.4,
         "unitCode": "%",
-        "observedAt": "2025-12-10T04:39:47.872947+00:00"
+        "observedAt": "2025-12-10T07:25:44.967522+00:00"
       },
       "soilType": {
         "type": "Property",
-        "value": "Đất glây"
+        "value": "Đất feralit đỏ vàng"
       },
       "moisture": {
         "type": "Property",
-        "value": 17.2,
+        "value": 23.0,
         "unitCode": "%",
-        "observedAt": "2025-12-10T04:39:47.872948+00:00"
+        "observedAt": "2025-12-10T07:25:44.967522+00:00"
       },
       "texture": {
         "type": "Property",
-        "value": "Thịt pha cát"
+        "value": "Cát pha"
       },
       "drainage": {
         "type": "Property",
-        "value": "Tốt"
+        "value": "Kém"
       },
       "recommendedCrops": {
         "type": "Property",
         "value": [
-          "Đậu tương",
+          "Chè",
+          "Cây ăn quả ôn đới",
           "Rau màu",
-          "Lúa",
           "Ngô"
         ]
       },
       "fertilizerRecommendation": {
         "type": "Property",
         "value": {
-          "N": "Bổ sung 100-120 kg/ha",
-          "P": "Bổ sung 75-95 kg/ha",
-          "K": "Bổ sung 65-85 kg/ha",
-          "organic": "Bón 10-17 tấn phân chuồng/ha"
+          "N": "90-120 kg/ha",
+          "P": "60-90 kg/ha",
+          "K": "60-100 kg/ha",
+          "organic": "10-18 tấn phân chuồng/ha"
         }
       },
       "dateCreated": {
         "type": "Property",
-        "value": "2025-12-10T04:39:47.872949+00:00"
+        "value": "2025-12-10T07:25:44.967522+00:00"
       },
       "dateModified": {
         "type": "Property",
-        "value": "2025-12-10T04:39:47.872950+00:00"
+        "value": "2025-12-10T07:25:44.967522+00:00"
       }
     },
     {
@@ -2033,45 +2033,45 @@
         "type": "Property",
         "value": 6.7,
         "unitCode": "pH",
-        "observedAt": "2025-12-10T04:39:47.872958+00:00"
+        "observedAt": "2025-12-10T07:25:44.967533+00:00"
       },
       "nitrogen": {
         "type": "Property",
         "value": 0.19,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.872960+00:00"
+        "observedAt": "2025-12-10T07:25:44.967533+00:00"
       },
       "phosphorus": {
         "type": "Property",
         "value": 0.11,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.872961+00:00"
+        "observedAt": "2025-12-10T07:25:44.967533+00:00"
       },
       "potassium": {
         "type": "Property",
-        "value": 0.17,
+        "value": 0.15,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.872962+00:00"
+        "observedAt": "2025-12-10T07:25:44.967533+00:00"
       },
       "organicMatter": {
         "type": "Property",
-        "value": 2.8,
+        "value": 3.1,
         "unitCode": "%",
-        "observedAt": "2025-12-10T04:39:47.872963+00:00"
+        "observedAt": "2025-12-10T07:25:44.967533+00:00"
       },
       "soilType": {
         "type": "Property",
-        "value": "Đất phù sa"
+        "value": "Đất phù sa ngọt"
       },
       "moisture": {
         "type": "Property",
-        "value": 26.7,
+        "value": 30.4,
         "unitCode": "%",
-        "observedAt": "2025-12-10T04:39:47.872964+00:00"
+        "observedAt": "2025-12-10T07:25:44.967533+00:00"
       },
       "texture": {
         "type": "Property",
-        "value": "Thịt"
+        "value": "Sét"
       },
       "drainage": {
         "type": "Property",
@@ -2080,28 +2080,28 @@
       "recommendedCrops": {
         "type": "Property",
         "value": [
-          "Lúa",
-          "Lúa nước",
-          "Cây ăn trái",
-          "Cây công nghiệp"
+          "Rau màu",
+          "Dừa",
+          "Thanh long",
+          "Cây ăn trái"
         ]
       },
       "fertilizerRecommendation": {
         "type": "Property",
         "value": {
-          "N": "Bổ sung 115-135 kg/ha",
-          "P": "Bổ sung 80-100 kg/ha",
-          "K": "Bổ sung 95-115 kg/ha",
-          "organic": "Bón 12-19 tấn phân chuồng/ha"
+          "N": "90-120 kg/ha",
+          "P": "60-90 kg/ha",
+          "K": "60-100 kg/ha",
+          "organic": "10-18 tấn phân chuồng/ha"
         }
       },
       "dateCreated": {
         "type": "Property",
-        "value": "2025-12-10T04:39:47.872965+00:00"
+        "value": "2025-12-10T07:25:44.967533+00:00"
       },
       "dateModified": {
         "type": "Property",
-        "value": "2025-12-10T04:39:47.872966+00:00"
+        "value": "2025-12-10T07:25:44.967533+00:00"
       }
     },
     {
@@ -2131,77 +2131,77 @@
       },
       "pH": {
         "type": "Property",
-        "value": 6.4,
+        "value": 6.1,
         "unitCode": "pH",
-        "observedAt": "2025-12-10T04:39:47.872975+00:00"
+        "observedAt": "2025-12-10T07:25:44.967542+00:00"
       },
       "nitrogen": {
         "type": "Property",
         "value": 0.18,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.872976+00:00"
+        "observedAt": "2025-12-10T07:25:44.967542+00:00"
       },
       "phosphorus": {
         "type": "Property",
-        "value": 0.08,
+        "value": 0.11,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.872978+00:00"
+        "observedAt": "2025-12-10T07:25:44.967542+00:00"
       },
       "potassium": {
         "type": "Property",
-        "value": 0.17,
+        "value": 0.15,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.872979+00:00"
+        "observedAt": "2025-12-10T07:25:44.967542+00:00"
       },
       "organicMatter": {
         "type": "Property",
-        "value": 2.8,
+        "value": 3.6,
         "unitCode": "%",
-        "observedAt": "2025-12-10T04:39:47.872980+00:00"
+        "observedAt": "2025-12-10T07:25:44.967542+00:00"
       },
       "soilType": {
         "type": "Property",
-        "value": "Đất mặn"
+        "value": "Đất phèn nhẹ"
       },
       "moisture": {
         "type": "Property",
-        "value": 24.1,
+        "value": 31.9,
         "unitCode": "%",
-        "observedAt": "2025-12-10T04:39:47.872982+00:00"
+        "observedAt": "2025-12-10T07:25:44.967542+00:00"
       },
       "texture": {
         "type": "Property",
-        "value": "Thịt pha cát"
+        "value": "Thịt"
       },
       "drainage": {
         "type": "Property",
-        "value": "Kém"
+        "value": "Trung bình"
       },
       "recommendedCrops": {
         "type": "Property",
         "value": [
-          "Lúa",
+          "Thanh long",
           "Cây ăn trái",
-          "Cây công nghiệp",
-          "Lúa nước"
+          "Lúa nước",
+          "Dừa"
         ]
       },
       "fertilizerRecommendation": {
         "type": "Property",
         "value": {
-          "N": "Bổ sung 110-130 kg/ha",
-          "P": "Bổ sung 65-85 kg/ha",
-          "K": "Bổ sung 95-115 kg/ha",
-          "organic": "Bón 12-19 tấn phân chuồng/ha"
+          "N": "90-120 kg/ha",
+          "P": "60-90 kg/ha",
+          "K": "60-100 kg/ha",
+          "organic": "10-18 tấn phân chuồng/ha"
         }
       },
       "dateCreated": {
         "type": "Property",
-        "value": "2025-12-10T04:39:47.872983+00:00"
+        "value": "2025-12-10T07:25:44.967542+00:00"
       },
       "dateModified": {
         "type": "Property",
-        "value": "2025-12-10T04:39:47.872984+00:00"
+        "value": "2025-12-10T07:25:44.967542+00:00"
       }
     },
     {
@@ -2231,77 +2231,77 @@
       },
       "pH": {
         "type": "Property",
-        "value": 6.2,
+        "value": 5.4,
         "unitCode": "pH",
-        "observedAt": "2025-12-10T04:39:47.872992+00:00"
+        "observedAt": "2025-12-10T07:25:44.967551+00:00"
       },
       "nitrogen": {
         "type": "Property",
-        "value": 0.16,
+        "value": 0.14,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.872993+00:00"
+        "observedAt": "2025-12-10T07:25:44.967551+00:00"
       },
       "phosphorus": {
         "type": "Property",
         "value": 0.1,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.872994+00:00"
+        "observedAt": "2025-12-10T07:25:44.967551+00:00"
       },
       "potassium": {
         "type": "Property",
-        "value": 0.17,
+        "value": 0.1,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.872996+00:00"
+        "observedAt": "2025-12-10T07:25:44.967551+00:00"
       },
       "organicMatter": {
         "type": "Property",
-        "value": 2.6,
+        "value": 3.2,
         "unitCode": "%",
-        "observedAt": "2025-12-10T04:39:47.872997+00:00"
+        "observedAt": "2025-12-10T07:25:44.967551+00:00"
       },
       "soilType": {
         "type": "Property",
-        "value": "Đất phèn"
+        "value": "Đất đỏ bazan"
       },
       "moisture": {
         "type": "Property",
-        "value": 23.0,
+        "value": 20.9,
         "unitCode": "%",
-        "observedAt": "2025-12-10T04:39:47.872998+00:00"
+        "observedAt": "2025-12-10T07:25:44.967551+00:00"
       },
       "texture": {
         "type": "Property",
-        "value": "Thịt pha cát"
+        "value": "Sét"
       },
       "drainage": {
         "type": "Property",
-        "value": "Trung bình"
+        "value": "Kém"
       },
       "recommendedCrops": {
         "type": "Property",
         "value": [
-          "Cây ăn trái",
-          "Lúa nước",
-          "Rau màu",
-          "Cây công nghiệp"
+          "Ngô",
+          "Hồ tiêu",
+          "Cà phê",
+          "Cây ăn trái"
         ]
       },
       "fertilizerRecommendation": {
         "type": "Property",
         "value": {
-          "N": "Bổ sung 100-120 kg/ha",
-          "P": "Bổ sung 75-95 kg/ha",
-          "K": "Bổ sung 95-115 kg/ha",
-          "organic": "Bón 11-18 tấn phân chuồng/ha"
+          "N": "90-120 kg/ha",
+          "P": "60-90 kg/ha",
+          "K": "60-100 kg/ha",
+          "organic": "10-18 tấn phân chuồng/ha"
         }
       },
       "dateCreated": {
         "type": "Property",
-        "value": "2025-12-10T04:39:47.873000+00:00"
+        "value": "2025-12-10T07:25:44.967551+00:00"
       },
       "dateModified": {
         "type": "Property",
-        "value": "2025-12-10T04:39:47.873002+00:00"
+        "value": "2025-12-10T07:25:44.967551+00:00"
       }
     },
     {
@@ -2331,47 +2331,47 @@
       },
       "pH": {
         "type": "Property",
-        "value": 6.4,
+        "value": 6.1,
         "unitCode": "pH",
-        "observedAt": "2025-12-10T04:39:47.873011+00:00"
+        "observedAt": "2025-12-10T07:25:44.967561+00:00"
       },
       "nitrogen": {
         "type": "Property",
-        "value": 0.16,
+        "value": 0.17,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.873012+00:00"
+        "observedAt": "2025-12-10T07:25:44.967561+00:00"
       },
       "phosphorus": {
         "type": "Property",
-        "value": 0.09,
+        "value": 0.07,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.873014+00:00"
+        "observedAt": "2025-12-10T07:25:44.967561+00:00"
       },
       "potassium": {
         "type": "Property",
-        "value": 0.13,
+        "value": 0.12,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.873015+00:00"
+        "observedAt": "2025-12-10T07:25:44.967561+00:00"
       },
       "organicMatter": {
         "type": "Property",
-        "value": 2.1,
+        "value": 3.0,
         "unitCode": "%",
-        "observedAt": "2025-12-10T04:39:47.873016+00:00"
+        "observedAt": "2025-12-10T07:25:44.967561+00:00"
       },
       "soilType": {
         "type": "Property",
-        "value": "Đất phù sa cổ"
+        "value": "Đất feralit đỏ vàng"
       },
       "moisture": {
         "type": "Property",
-        "value": 20.4,
+        "value": 21.0,
         "unitCode": "%",
-        "observedAt": "2025-12-10T04:39:47.873017+00:00"
+        "observedAt": "2025-12-10T07:25:44.967561+00:00"
       },
       "texture": {
         "type": "Property",
-        "value": "Cát pha thịt"
+        "value": "Thịt pha cát"
       },
       "drainage": {
         "type": "Property",
@@ -2380,28 +2380,28 @@
       "recommendedCrops": {
         "type": "Property",
         "value": [
-          "Đậu tương",
-          "Rau màu",
           "Ngô",
+          "Rau màu",
+          "Chè",
           "Lúa"
         ]
       },
       "fertilizerRecommendation": {
         "type": "Property",
         "value": {
-          "N": "Bổ sung 100-120 kg/ha",
-          "P": "Bổ sung 70-90 kg/ha",
-          "K": "Bổ sung 75-95 kg/ha",
-          "organic": "Bón 8-15 tấn phân chuồng/ha"
+          "N": "90-120 kg/ha",
+          "P": "60-90 kg/ha",
+          "K": "60-100 kg/ha",
+          "organic": "10-18 tấn phân chuồng/ha"
         }
       },
       "dateCreated": {
         "type": "Property",
-        "value": "2025-12-10T04:39:47.873018+00:00"
+        "value": "2025-12-10T07:25:44.967561+00:00"
       },
       "dateModified": {
         "type": "Property",
-        "value": "2025-12-10T04:39:47.873020+00:00"
+        "value": "2025-12-10T07:25:44.967561+00:00"
       }
     },
     {
@@ -2433,45 +2433,45 @@
         "type": "Property",
         "value": 6.4,
         "unitCode": "pH",
-        "observedAt": "2025-12-10T04:39:47.873029+00:00"
+        "observedAt": "2025-12-10T07:25:44.967574+00:00"
       },
       "nitrogen": {
         "type": "Property",
-        "value": 0.18,
+        "value": 0.13,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.873030+00:00"
+        "observedAt": "2025-12-10T07:25:44.967574+00:00"
       },
       "phosphorus": {
         "type": "Property",
-        "value": 0.08,
+        "value": 0.07,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.873032+00:00"
+        "observedAt": "2025-12-10T07:25:44.967574+00:00"
       },
       "potassium": {
         "type": "Property",
-        "value": 0.12,
+        "value": 0.11,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.873034+00:00"
+        "observedAt": "2025-12-10T07:25:44.967574+00:00"
       },
       "organicMatter": {
         "type": "Property",
-        "value": 2.4,
+        "value": 3.1,
         "unitCode": "%",
-        "observedAt": "2025-12-10T04:39:47.873035+00:00"
+        "observedAt": "2025-12-10T07:25:44.967574+00:00"
       },
       "soilType": {
         "type": "Property",
-        "value": "Feralit đỏ vàng"
+        "value": "Đất glây"
       },
       "moisture": {
         "type": "Property",
-        "value": 20.2,
+        "value": 23.2,
         "unitCode": "%",
-        "observedAt": "2025-12-10T04:39:47.873037+00:00"
+        "observedAt": "2025-12-10T07:25:44.967574+00:00"
       },
       "texture": {
         "type": "Property",
-        "value": "Thịt pha sét"
+        "value": "Thịt pha cát"
       },
       "drainage": {
         "type": "Property",
@@ -2480,28 +2480,28 @@
       "recommendedCrops": {
         "type": "Property",
         "value": [
-          "Cây ăn quả ôn đới",
+          "Lúa",
+          "Chè",
           "Ngô",
-          "Đậu tương",
-          "Lúa"
+          "Rau màu"
         ]
       },
       "fertilizerRecommendation": {
         "type": "Property",
         "value": {
-          "N": "Bổ sung 110-130 kg/ha",
-          "P": "Bổ sung 65-85 kg/ha",
-          "K": "Bổ sung 70-90 kg/ha",
-          "organic": "Bón 10-17 tấn phân chuồng/ha"
+          "N": "90-120 kg/ha",
+          "P": "60-90 kg/ha",
+          "K": "60-100 kg/ha",
+          "organic": "10-18 tấn phân chuồng/ha"
         }
       },
       "dateCreated": {
         "type": "Property",
-        "value": "2025-12-10T04:39:47.873039+00:00"
+        "value": "2025-12-10T07:25:44.967574+00:00"
       },
       "dateModified": {
         "type": "Property",
-        "value": "2025-12-10T04:39:47.873040+00:00"
+        "value": "2025-12-10T07:25:44.967574+00:00"
       }
     },
     {
@@ -2531,47 +2531,47 @@
       },
       "pH": {
         "type": "Property",
-        "value": 5.2,
+        "value": 5.9,
         "unitCode": "pH",
-        "observedAt": "2025-12-10T04:39:47.873230+00:00"
+        "observedAt": "2025-12-10T07:25:44.967582+00:00"
       },
       "nitrogen": {
         "type": "Property",
-        "value": 0.12,
+        "value": 0.13,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.873232+00:00"
+        "observedAt": "2025-12-10T07:25:44.967582+00:00"
       },
       "phosphorus": {
         "type": "Property",
-        "value": 0.08,
+        "value": 0.06,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.873234+00:00"
+        "observedAt": "2025-12-10T07:25:44.967582+00:00"
       },
       "potassium": {
         "type": "Property",
-        "value": 0.09,
+        "value": 0.1,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.873235+00:00"
+        "observedAt": "2025-12-10T07:25:44.967582+00:00"
       },
       "organicMatter": {
         "type": "Property",
-        "value": 2.3,
+        "value": 2.5,
         "unitCode": "%",
-        "observedAt": "2025-12-10T04:39:47.873236+00:00"
+        "observedAt": "2025-12-10T07:25:44.967582+00:00"
       },
       "soilType": {
         "type": "Property",
-        "value": "Đất feralit"
+        "value": "Đất cát ven biển"
       },
       "moisture": {
         "type": "Property",
-        "value": 15.6,
+        "value": 17.7,
         "unitCode": "%",
-        "observedAt": "2025-12-10T04:39:47.873237+00:00"
+        "observedAt": "2025-12-10T07:25:44.967582+00:00"
       },
       "texture": {
         "type": "Property",
-        "value": "Sét"
+        "value": "Thịt"
       },
       "drainage": {
         "type": "Property",
@@ -2580,28 +2580,28 @@
       "recommendedCrops": {
         "type": "Property",
         "value": [
-          "Ngô",
-          "Lúa",
-          "Rau màu",
-          "Cây ăn trái"
+          "Cây ăn quả nhiệt đới",
+          "Điều",
+          "Mía",
+          "Lúa"
         ]
       },
       "fertilizerRecommendation": {
         "type": "Property",
         "value": {
-          "N": "Bổ sung 80-100 kg/ha",
-          "P": "Bổ sung 65-85 kg/ha",
-          "K": "Bổ sung 54-75 kg/ha",
-          "organic": "Bón 9-16 tấn phân chuồng/ha"
+          "N": "90-120 kg/ha",
+          "P": "60-90 kg/ha",
+          "K": "60-100 kg/ha",
+          "organic": "10-18 tấn phân chuồng/ha"
         }
       },
       "dateCreated": {
         "type": "Property",
-        "value": "2025-12-10T04:39:47.873239+00:00"
+        "value": "2025-12-10T07:25:44.967582+00:00"
       },
       "dateModified": {
         "type": "Property",
-        "value": "2025-12-10T04:39:47.873240+00:00"
+        "value": "2025-12-10T07:25:44.967582+00:00"
       }
     },
     {
@@ -2631,77 +2631,77 @@
       },
       "pH": {
         "type": "Property",
-        "value": 5.7,
+        "value": 5.9,
         "unitCode": "pH",
-        "observedAt": "2025-12-10T04:39:47.873252+00:00"
+        "observedAt": "2025-12-10T07:25:44.967592+00:00"
       },
       "nitrogen": {
         "type": "Property",
-        "value": 0.15,
+        "value": 0.14,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.873254+00:00"
+        "observedAt": "2025-12-10T07:25:44.967592+00:00"
       },
       "phosphorus": {
         "type": "Property",
-        "value": 0.11,
+        "value": 0.1,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.873255+00:00"
+        "observedAt": "2025-12-10T07:25:44.967592+00:00"
       },
       "potassium": {
         "type": "Property",
-        "value": 0.13,
+        "value": 0.15,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.873257+00:00"
+        "observedAt": "2025-12-10T07:25:44.967592+00:00"
       },
       "organicMatter": {
         "type": "Property",
-        "value": 2.9,
+        "value": 3.5,
         "unitCode": "%",
-        "observedAt": "2025-12-10T04:39:47.873258+00:00"
+        "observedAt": "2025-12-10T07:25:44.967592+00:00"
       },
       "soilType": {
         "type": "Property",
-        "value": "Feralit đỏ vàng"
+        "value": "Đất feralit đỏ vàng"
       },
       "moisture": {
         "type": "Property",
-        "value": 17.0,
+        "value": 21.0,
         "unitCode": "%",
-        "observedAt": "2025-12-10T04:39:47.873259+00:00"
+        "observedAt": "2025-12-10T07:25:44.967592+00:00"
       },
       "texture": {
         "type": "Property",
-        "value": "Cát pha thịt"
+        "value": "Thịt pha cát"
       },
       "drainage": {
         "type": "Property",
-        "value": "Kém"
+        "value": "Tốt"
       },
       "recommendedCrops": {
         "type": "Property",
         "value": [
-          "Ngô",
+          "Lúa",
           "Rau màu",
           "Cây ăn quả ôn đới",
-          "Lúa"
+          "Chè"
         ]
       },
       "fertilizerRecommendation": {
         "type": "Property",
         "value": {
-          "N": "Bổ sung 95-115 kg/ha",
-          "P": "Bổ sung 80-100 kg/ha",
-          "K": "Bổ sung 75-95 kg/ha",
-          "organic": "Bón 12-19 tấn phân chuồng/ha"
+          "N": "90-120 kg/ha",
+          "P": "60-90 kg/ha",
+          "K": "60-100 kg/ha",
+          "organic": "10-18 tấn phân chuồng/ha"
         }
       },
       "dateCreated": {
         "type": "Property",
-        "value": "2025-12-10T04:39:47.873260+00:00"
+        "value": "2025-12-10T07:25:44.967592+00:00"
       },
       "dateModified": {
         "type": "Property",
-        "value": "2025-12-10T04:39:47.873261+00:00"
+        "value": "2025-12-10T07:25:44.967592+00:00"
       }
     },
     {
@@ -2731,33 +2731,33 @@
       },
       "pH": {
         "type": "Property",
-        "value": 6.1,
+        "value": 6.2,
         "unitCode": "pH",
-        "observedAt": "2025-12-10T04:39:47.873270+00:00"
+        "observedAt": "2025-12-10T07:25:44.967600+00:00"
       },
       "nitrogen": {
         "type": "Property",
-        "value": 0.14,
+        "value": 0.15,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.873271+00:00"
+        "observedAt": "2025-12-10T07:25:44.967600+00:00"
       },
       "phosphorus": {
         "type": "Property",
-        "value": 0.08,
+        "value": 0.07,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.873272+00:00"
+        "observedAt": "2025-12-10T07:25:44.967600+00:00"
       },
       "potassium": {
         "type": "Property",
         "value": 0.15,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.873273+00:00"
+        "observedAt": "2025-12-10T07:25:44.967600+00:00"
       },
       "organicMatter": {
         "type": "Property",
-        "value": 2.2,
+        "value": 2.8,
         "unitCode": "%",
-        "observedAt": "2025-12-10T04:39:47.873275+00:00"
+        "observedAt": "2025-12-10T07:25:44.967600+00:00"
       },
       "soilType": {
         "type": "Property",
@@ -2765,9 +2765,9 @@
       },
       "moisture": {
         "type": "Property",
-        "value": 18.1,
+        "value": 20.8,
         "unitCode": "%",
-        "observedAt": "2025-12-10T04:39:47.873277+00:00"
+        "observedAt": "2025-12-10T07:25:44.967600+00:00"
       },
       "texture": {
         "type": "Property",
@@ -2775,33 +2775,33 @@
       },
       "drainage": {
         "type": "Property",
-        "value": "Trung bình"
+        "value": "Kém"
       },
       "recommendedCrops": {
         "type": "Property",
         "value": [
-          "Cây ăn quả ôn đới",
-          "Đậu tương",
+          "Rau màu",
+          "Chè",
           "Lúa",
-          "Rau màu"
+          "Cây ăn quả ôn đới"
         ]
       },
       "fertilizerRecommendation": {
         "type": "Property",
         "value": {
-          "N": "Bổ sung 90-110 kg/ha",
-          "P": "Bổ sung 65-85 kg/ha",
-          "K": "Bổ sung 85-105 kg/ha",
-          "organic": "Bón 9-16 tấn phân chuồng/ha"
+          "N": "90-120 kg/ha",
+          "P": "60-90 kg/ha",
+          "K": "60-100 kg/ha",
+          "organic": "10-18 tấn phân chuồng/ha"
         }
       },
       "dateCreated": {
         "type": "Property",
-        "value": "2025-12-10T04:39:47.873280+00:00"
+        "value": "2025-12-10T07:25:44.967600+00:00"
       },
       "dateModified": {
         "type": "Property",
-        "value": "2025-12-10T04:39:47.873281+00:00"
+        "value": "2025-12-10T07:25:44.967600+00:00"
       }
     },
     {
@@ -2831,33 +2831,33 @@
       },
       "pH": {
         "type": "Property",
-        "value": 6.5,
+        "value": 5.5,
         "unitCode": "pH",
-        "observedAt": "2025-12-10T04:39:47.873290+00:00"
+        "observedAt": "2025-12-10T07:25:44.967608+00:00"
       },
       "nitrogen": {
         "type": "Property",
-        "value": 0.16,
+        "value": 0.15,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.873292+00:00"
+        "observedAt": "2025-12-10T07:25:44.967608+00:00"
       },
       "phosphorus": {
         "type": "Property",
         "value": 0.1,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.873293+00:00"
+        "observedAt": "2025-12-10T07:25:44.967608+00:00"
       },
       "potassium": {
         "type": "Property",
         "value": 0.13,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.873294+00:00"
+        "observedAt": "2025-12-10T07:25:44.967608+00:00"
       },
       "organicMatter": {
         "type": "Property",
-        "value": 2.9,
+        "value": 2.8,
         "unitCode": "%",
-        "observedAt": "2025-12-10T04:39:47.873295+00:00"
+        "observedAt": "2025-12-10T07:25:44.967608+00:00"
       },
       "soilType": {
         "type": "Property",
@@ -2865,13 +2865,13 @@
       },
       "moisture": {
         "type": "Property",
-        "value": 16.4,
+        "value": 21.0,
         "unitCode": "%",
-        "observedAt": "2025-12-10T04:39:47.873296+00:00"
+        "observedAt": "2025-12-10T07:25:44.967608+00:00"
       },
       "texture": {
         "type": "Property",
-        "value": "Thịt"
+        "value": "Cát pha"
       },
       "drainage": {
         "type": "Property",
@@ -2880,7 +2880,7 @@
       "recommendedCrops": {
         "type": "Property",
         "value": [
-          "Đậu tương",
+          "Chè",
           "Lúa",
           "Cây ăn quả ôn đới",
           "Rau màu"
@@ -2889,19 +2889,19 @@
       "fertilizerRecommendation": {
         "type": "Property",
         "value": {
-          "N": "Bổ sung 100-120 kg/ha",
-          "P": "Bổ sung 75-95 kg/ha",
-          "K": "Bổ sung 75-95 kg/ha",
-          "organic": "Bón 12-19 tấn phân chuồng/ha"
+          "N": "90-120 kg/ha",
+          "P": "60-90 kg/ha",
+          "K": "60-100 kg/ha",
+          "organic": "10-18 tấn phân chuồng/ha"
         }
       },
       "dateCreated": {
         "type": "Property",
-        "value": "2025-12-10T04:39:47.873297+00:00"
+        "value": "2025-12-10T07:25:44.967608+00:00"
       },
       "dateModified": {
         "type": "Property",
-        "value": "2025-12-10T04:39:47.873298+00:00"
+        "value": "2025-12-10T07:25:44.967608+00:00"
       }
     },
     {
@@ -2931,47 +2931,47 @@
       },
       "pH": {
         "type": "Property",
-        "value": 6.6,
+        "value": 6.1,
         "unitCode": "pH",
-        "observedAt": "2025-12-10T04:39:47.873307+00:00"
+        "observedAt": "2025-12-10T07:25:44.967617+00:00"
       },
       "nitrogen": {
         "type": "Property",
-        "value": 0.16,
+        "value": 0.14,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.873308+00:00"
+        "observedAt": "2025-12-10T07:25:44.967617+00:00"
       },
       "phosphorus": {
         "type": "Property",
-        "value": 0.1,
+        "value": 0.07,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.873309+00:00"
+        "observedAt": "2025-12-10T07:25:44.967617+00:00"
       },
       "potassium": {
         "type": "Property",
-        "value": 0.16,
+        "value": 0.11,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.873310+00:00"
+        "observedAt": "2025-12-10T07:25:44.967617+00:00"
       },
       "organicMatter": {
         "type": "Property",
-        "value": 3.4,
+        "value": 2.7,
         "unitCode": "%",
-        "observedAt": "2025-12-10T04:39:47.873312+00:00"
+        "observedAt": "2025-12-10T07:25:44.967617+00:00"
       },
       "soilType": {
         "type": "Property",
-        "value": "Đất mặn"
+        "value": "Đất cát ven biển"
       },
       "moisture": {
         "type": "Property",
-        "value": 24.7,
+        "value": 15.2,
         "unitCode": "%",
-        "observedAt": "2025-12-10T04:39:47.873313+00:00"
+        "observedAt": "2025-12-10T07:25:44.967617+00:00"
       },
       "texture": {
         "type": "Property",
-        "value": "Thịt pha cát"
+        "value": "Sét"
       },
       "drainage": {
         "type": "Property",
@@ -2980,28 +2980,28 @@
       "recommendedCrops": {
         "type": "Property",
         "value": [
-          "Lúa nước",
-          "Cây công nghiệp",
+          "Điều",
           "Rau màu",
+          "Mía",
           "Lúa"
         ]
       },
       "fertilizerRecommendation": {
         "type": "Property",
         "value": {
-          "N": "Bổ sung 100-120 kg/ha",
-          "P": "Bổ sung 75-95 kg/ha",
-          "K": "Bổ sung 90-110 kg/ha",
-          "organic": "Bón 15-22 tấn phân chuồng/ha"
+          "N": "90-120 kg/ha",
+          "P": "60-90 kg/ha",
+          "K": "60-100 kg/ha",
+          "organic": "10-18 tấn phân chuồng/ha"
         }
       },
       "dateCreated": {
         "type": "Property",
-        "value": "2025-12-10T04:39:47.873315+00:00"
+        "value": "2025-12-10T07:25:44.967617+00:00"
       },
       "dateModified": {
         "type": "Property",
-        "value": "2025-12-10T04:39:47.873316+00:00"
+        "value": "2025-12-10T07:25:44.967617+00:00"
       }
     },
     {
@@ -3031,77 +3031,77 @@
       },
       "pH": {
         "type": "Property",
-        "value": 5.5,
+        "value": 6.3,
         "unitCode": "pH",
-        "observedAt": "2025-12-10T04:39:47.873325+00:00"
+        "observedAt": "2025-12-10T07:25:44.967626+00:00"
       },
       "nitrogen": {
         "type": "Property",
-        "value": 0.1,
+        "value": 0.19,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.873326+00:00"
+        "observedAt": "2025-12-10T07:25:44.967626+00:00"
       },
       "phosphorus": {
         "type": "Property",
-        "value": 0.1,
+        "value": 0.08,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.873327+00:00"
+        "observedAt": "2025-12-10T07:25:44.967626+00:00"
       },
       "potassium": {
         "type": "Property",
-        "value": 0.11,
+        "value": 0.17,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.873328+00:00"
+        "observedAt": "2025-12-10T07:25:44.967626+00:00"
       },
       "organicMatter": {
         "type": "Property",
-        "value": 2.7,
+        "value": 3.6,
         "unitCode": "%",
-        "observedAt": "2025-12-10T04:39:47.873330+00:00"
+        "observedAt": "2025-12-10T07:25:44.967626+00:00"
       },
       "soilType": {
         "type": "Property",
-        "value": "Đất đỏ bazan"
+        "value": "Đất mặn ven biển"
       },
       "moisture": {
         "type": "Property",
-        "value": 19.9,
+        "value": 30.2,
         "unitCode": "%",
-        "observedAt": "2025-12-10T04:39:47.873331+00:00"
+        "observedAt": "2025-12-10T07:25:44.967626+00:00"
       },
       "texture": {
         "type": "Property",
-        "value": "Cát pha thịt"
+        "value": "Thịt pha sét"
       },
       "drainage": {
         "type": "Property",
-        "value": "Tốt"
+        "value": "Trung bình"
       },
       "recommendedCrops": {
         "type": "Property",
         "value": [
+          "Lúa nước",
           "Cây ăn trái",
-          "Hồ tiêu",
-          "Cao su",
-          "Rau màu"
+          "Rau màu",
+          "Dừa"
         ]
       },
       "fertilizerRecommendation": {
         "type": "Property",
         "value": {
-          "N": "Bổ sung 70-90 kg/ha",
-          "P": "Bổ sung 75-95 kg/ha",
-          "K": "Bổ sung 65-85 kg/ha",
-          "organic": "Bón 11-18 tấn phân chuồng/ha"
+          "N": "90-120 kg/ha",
+          "P": "60-90 kg/ha",
+          "K": "60-100 kg/ha",
+          "organic": "10-18 tấn phân chuồng/ha"
         }
       },
       "dateCreated": {
         "type": "Property",
-        "value": "2025-12-10T04:39:47.873333+00:00"
+        "value": "2025-12-10T07:25:44.967626+00:00"
       },
       "dateModified": {
         "type": "Property",
-        "value": "2025-12-10T04:39:47.873334+00:00"
+        "value": "2025-12-10T07:25:44.967626+00:00"
       }
     },
     {
@@ -3131,83 +3131,83 @@
       },
       "pH": {
         "type": "Property",
-        "value": 6.2,
+        "value": 5.7,
         "unitCode": "pH",
-        "observedAt": "2025-12-10T04:39:47.873343+00:00"
+        "observedAt": "2025-12-10T07:25:44.967635+00:00"
       },
       "nitrogen": {
         "type": "Property",
-        "value": 0.19,
+        "value": 0.14,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.873344+00:00"
+        "observedAt": "2025-12-10T07:25:44.967635+00:00"
       },
       "phosphorus": {
         "type": "Property",
-        "value": 0.11,
+        "value": 0.06,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.873345+00:00"
+        "observedAt": "2025-12-10T07:25:44.967635+00:00"
       },
       "potassium": {
         "type": "Property",
-        "value": 0.16,
+        "value": 0.13,
         "unitCode": "g/kg",
-        "observedAt": "2025-12-10T04:39:47.873347+00:00"
+        "observedAt": "2025-12-10T07:25:44.967635+00:00"
       },
       "organicMatter": {
         "type": "Property",
-        "value": 3.0,
+        "value": 3.2,
         "unitCode": "%",
-        "observedAt": "2025-12-10T04:39:47.873348+00:00"
+        "observedAt": "2025-12-10T07:25:44.967635+00:00"
       },
       "soilType": {
         "type": "Property",
-        "value": "Đất phù sa"
+        "value": "Ferralsols"
       },
       "moisture": {
         "type": "Property",
-        "value": 28.0,
+        "value": 24.8,
         "unitCode": "%",
-        "observedAt": "2025-12-10T04:39:47.873349+00:00"
+        "observedAt": "2025-12-10T07:25:44.967635+00:00"
       },
       "texture": {
         "type": "Property",
-        "value": "Thịt pha cát"
+        "value": "Sét"
       },
       "drainage": {
         "type": "Property",
-        "value": "Trung bình"
+        "value": "Kém"
       },
       "recommendedCrops": {
         "type": "Property",
         "value": [
-          "Lúa",
-          "Cây công nghiệp",
-          "Cây ăn trái",
-          "Lúa nước"
+          "Hồ tiêu",
+          "Cao su",
+          "Cà phê",
+          "Cây ăn trái"
         ]
       },
       "fertilizerRecommendation": {
         "type": "Property",
         "value": {
-          "N": "Bổ sung 115-135 kg/ha",
-          "P": "Bổ sung 80-100 kg/ha",
-          "K": "Bổ sung 90-110 kg/ha",
-          "organic": "Bón 13-20 tấn phân chuồng/ha"
+          "N": "90-120 kg/ha",
+          "P": "60-90 kg/ha",
+          "K": "60-100 kg/ha",
+          "organic": "10-18 tấn phân chuồng/ha"
         }
       },
       "dateCreated": {
         "type": "Property",
-        "value": "2025-12-10T04:39:47.873350+00:00"
+        "value": "2025-12-10T07:25:44.967635+00:00"
       },
       "dateModified": {
         "type": "Property",
-        "value": "2025-12-10T04:39:47.873351+00:00"
+        "value": "2025-12-10T07:25:44.967635+00:00"
       }
     }
   ],
   "metadata": {
     "totalEntities": 32,
-    "generatedAt": "2025-12-10T04:39:47.873353+00:00",
-    "description": "Dữ liệu phân tích đất cho 32 tỉnh thành Việt Nam theo chuẩn NGSI-LD"
+    "generatedAt": "2025-12-10T07:25:44.967645+00:00",
+    "description": "Dữ liệu đất mô phỏng 32 tỉnh/thành (điều chỉnh theo vùng sinh thái)"
   }
 }
