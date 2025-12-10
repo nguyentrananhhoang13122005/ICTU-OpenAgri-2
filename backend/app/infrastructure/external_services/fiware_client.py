@@ -7,11 +7,12 @@ Implements Smart Data Models for Agriculture (AgriFood).
 """
 import httpx
 import logging
-import os
 from typing import Dict, Any, Optional, List
 from datetime import datetime
+from app.infrastructure.config.settings import get_settings
 
 logger = logging.getLogger(__name__)
+settings = get_settings()
 
 # FIWARE Smart Data Models for Agriculture
 CONTEXT = [
@@ -19,16 +20,12 @@ CONTEXT = [
     "https://raw.githubusercontent.com/smart-data-models/dataModel.Agrifood/master/context.jsonld"
 ]
 
-# Configuration
-ORION_URL = os.getenv("ORION_URL", "http://localhost:1026")
-QUANTUMLEAP_URL = os.getenv("QUANTUMLEAP_URL", "http://localhost:8668")
-
 
 class FiwareClient:
     """Client for FIWARE Orion Context Broker (NGSI-LD)."""
     
     def __init__(self, orion_url: str = None):
-        self.orion_url = orion_url or ORION_URL
+        self.orion_url = orion_url or settings.ORION_URL
         self.headers = {
             "Content-Type": "application/ld+json",
             "Accept": "application/ld+json"
