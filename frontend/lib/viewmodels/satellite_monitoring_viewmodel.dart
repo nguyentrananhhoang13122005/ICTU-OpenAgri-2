@@ -6,15 +6,19 @@ import 'package:latlong2/latlong.dart';
 import '../models/api_models.dart';
 import '../models/crop_field.dart';
 import '../services/analysis_service.dart';
+import '../services/soil_service.dart';
 import '../services/farm_service.dart';
 
 class SatelliteMonitoringViewModel extends ChangeNotifier {
   final FarmService _farmService = FarmService();
   final AnalysisService _analysisService = AnalysisService();
+  final SoilService _soilService = SoilService();
+  final Distance _distance = const Distance();
 
   List<CropField> _fields = [];
   CropField? _selectedField;
   bool _isLoading = false;
+  List<SoilAnalysisModel> _soilData = [];
 
   String _mapMode = 'NDVI';
   String _mapLayerType = 'Satellite';
@@ -29,6 +33,7 @@ class SatelliteMonitoringViewModel extends ChangeNotifier {
   List<CropField> get fields => _fields;
   CropField? get selectedField => _selectedField;
   bool get isLoading => _isLoading;
+  List<SoilAnalysisModel> get soilData => _soilData;
   String get mapMode => _mapMode;
   String get mapLayerType => _mapLayerType;
   String get activeControlTab => _activeControlTab;
@@ -47,7 +52,10 @@ class SatelliteMonitoringViewModel extends ChangeNotifier {
       _fields = farmDtos.map((dto) => _mapDtoToCropField(dto)).toList();
 
       // Fetch satellite data for ALL fields in parallel
-      await _fetchAllSatelliteData();
+      await Future.wait([
+        _fetchAllSatelliteData(),
+        _fetchSoilData(),
+      ]);
 
       if (initialFieldId != null) {
         try {
@@ -73,6 +81,14 @@ class SatelliteMonitoringViewModel extends ChangeNotifier {
   Future<void> _fetchAllSatelliteData() async {
     // Fetch satellite data for all fields in parallel
     await Future.wait(_fields.map((field) => _fetchSatelliteData(field)));
+  }
+
+  Future<void> _fetchSoilData() async {
+    try {
+      _soilData = await _soilService.getSoilData();
+    } catch (_) {
+      _soilData = [];
+    }
   }
 
   Future<void> _fetchSatelliteData(CropField field) async {
@@ -215,6 +231,25 @@ class SatelliteMonitoringViewModel extends ChangeNotifier {
     _selectedField = field;
     // No need to fetch - data already loaded in initData
     notifyListeners();
+  }
+
+  SoilAnalysisModel? nearestSoilData() {
+    if (_selectedField == null || _soilData.isEmpty) return null;
+    final center = _selectedField!.center;
+    SoilAnalysisModel? best;
+    double? bestDist;
+    for (final item in _soilData) {
+      if (item.coordinate == null) continue;
+      final d = _distance(
+        center,
+        LatLng(item.coordinate!.latitude, item.coordinate!.longitude),
+      );
+      if (bestDist == null || d < bestDist) {
+        bestDist = d;
+        best = item;
+      }
+    }
+    return best;
   }
 
   void setMapMode(String mode) {
