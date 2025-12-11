@@ -8,7 +8,7 @@ Implements Smart Data Models for Agriculture (AgriFood).
 import httpx
 import logging
 from typing import Dict, Any, Optional, List
-from datetime import datetime
+from datetime import datetime, timezone
 from app.infrastructure.config.settings import get_settings
 
 logger = logging.getLogger(__name__)
@@ -241,6 +241,7 @@ def create_agriparcel_entity(
     if polygon_coords[0] != polygon_coords[-1]:
         polygon_coords.append(polygon_coords[0])  # Close the polygon
     
+    now_utc = datetime.now(timezone.utc)
     entity = {
         "@context": CONTEXT,
         "id": f"urn:ngsi-ld:AgriParcel:OpenAgri:{farm_id}",
@@ -258,11 +259,11 @@ def create_agriparcel_entity(
         },
         "dateCreated": {
             "type": "Property",
-            "value": datetime.utcnow().isoformat() + "Z"
+            "value": _format_datetime(now_utc)
         },
         "dateModified": {
             "type": "Property",
-            "value": datetime.utcnow().isoformat() + "Z"
+            "value": _format_datetime(now_utc)
         }
     }
     
@@ -300,7 +301,8 @@ def create_agriparcel_record(
         observed_at: Timestamp of observation
         unit_code: UN/CEFACT unit code
     """
-    timestamp_str = observed_at.strftime('%Y%m%dT%H%M%S')
+    observed_at_utc = _ensure_utc(observed_at)
+    timestamp_str = observed_at_utc.strftime('%Y%m%dT%H%M%S')
     
     entity = {
         "@context": CONTEXT,
@@ -313,11 +315,11 @@ def create_agriparcel_record(
         record_type: {
             "type": "Property",
             "value": value,
-            "observedAt": observed_at.isoformat() + "Z"
+            "observedAt": _format_datetime(observed_at_utc)
         },
         "dateObserved": {
             "type": "Property",
-            "value": observed_at.isoformat() + "Z"
+            "value": _format_datetime(observed_at_utc)
         }
     }
     
@@ -352,9 +354,10 @@ def create_weather_observed(
         observed_at: Observation timestamp
     """
     if observed_at is None:
-        observed_at = datetime.utcnow()
+        observed_at = datetime.now(timezone.utc)
+    observed_at_utc = _ensure_utc(observed_at)
     
-    timestamp_str = observed_at.strftime('%Y%m%dT%H%M%S')
+    timestamp_str = observed_at_utc.strftime('%Y%m%dT%H%M%S')
     
     entity = {
         "@context": CONTEXT,
@@ -369,7 +372,7 @@ def create_weather_observed(
         },
         "dateObserved": {
             "type": "Property",
-            "value": observed_at.isoformat() + "Z"
+            "value": _format_datetime(observed_at_utc)
         }
     }
     
@@ -474,6 +477,21 @@ def _get_controlled_property(device_type: str) -> List[str]:
         "NDVISensor": ["ndvi"],
     }
     return property_map.get(device_type, ["unknown"])
+
+
+# ==================== Date/Time Helpers ====================
+
+def _ensure_utc(dt: datetime) -> datetime:
+    """Ensure datetime is timezone-aware in UTC."""
+    if dt.tzinfo is None:
+        return dt.replace(tzinfo=timezone.utc)
+    return dt.astimezone(timezone.utc)
+
+
+def _format_datetime(dt: datetime) -> str:
+    """Return ISO string with trailing Z required by FIWARE."""
+    dt_utc = _ensure_utc(dt)
+    return dt_utc.isoformat().replace("+00:00", "Z")
 
 
 # ==================== Utility Functions ====================

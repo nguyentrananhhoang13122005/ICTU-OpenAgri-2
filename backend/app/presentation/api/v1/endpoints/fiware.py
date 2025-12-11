@@ -7,7 +7,7 @@ FIWARE API endpoints for managing NGSI-LD entities.
 from typing import List, Optional
 from fastapi import APIRouter, HTTPException, status, Query
 from pydantic import BaseModel, Field
-from datetime import datetime
+from datetime import datetime, timezone
 
 from app.infrastructure.config.settings import get_settings
 from app.infrastructure.external_services.fiware_client import (
@@ -163,7 +163,11 @@ async def create_observation_entity(request: SyncObservationRequest):
             detail="FIWARE Orion is not available"
         )
     
-    observed_at = request.observed_at or datetime.utcnow()
+    observed_at = request.observed_at or datetime.now(timezone.utc)
+    if observed_at.tzinfo is None:
+        observed_at = observed_at.replace(tzinfo=timezone.utc)
+    else:
+        observed_at = observed_at.astimezone(timezone.utc)
     try:
         success = await sync_observation_to_fiware(
             fiware_client=fiware,
