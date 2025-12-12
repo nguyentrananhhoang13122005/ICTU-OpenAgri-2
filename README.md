@@ -5,9 +5,9 @@
 ![Python](https://img.shields.io/badge/python-3.10+-blue.svg)
 ![Flutter](https://img.shields.io/badge/flutter-3.0+-02569B.svg)
 
-**ICTU-OpenAgri** là một nền tảng nông nghiệp số toàn diện, kết hợp sức mạnh của **Trí tuệ nhân tạo (AI)**, **Công nghệ viễn thám (Remote Sensing)** và **Bản đồ số (GIS)** để cung cấp giải pháp canh tác thông minh cho người nông dân và nhà quản lý.
+**ICTU-OpenAgri** là một nền tảng nông nghiệp số toàn diện, kết hợp sức mạnh của **Trí tuệ nhân tạo (AI)**, **Công nghệ viễn thám (Remote Sensing)**, **Bản đồ số (GIS)** và **FIWARE IoT Platform** để cung cấp giải pháp canh tác thông minh cho người nông dân và nhà quản lý.
 
-Dự án được xây dựng với kiến trúc hiện đại (Clean Architecture), mã nguồn mở và sử dụng các nguồn dữ liệu mở miễn phí.
+Dự án được xây dựng với kiến trúc hiện đại (Clean Architecture), mã nguồn mở, sử dụng chuẩn dữ liệu **NGSI-LD** và các nguồn dữ liệu mở miễn phí.
 
 ---
 
@@ -42,7 +42,14 @@ Dự án được xây dựng với kiến trúc hiện đại (Clean Architectu
 - **Thời tiết nông vụ:** Cung cấp thông tin thời tiết hiện tại và dự báo 7 ngày (Nhiệt độ, độ ẩm, lượng mưa) từ **Open-Meteo**.
 - **Giá cả thị trường:** Cập nhật giá nông sản hàng ngày để hỗ trợ quyết định thu hoạch và bán hàng.
 
-### 6. 🛡️ Admin Dashboard
+### 6. 🔗 Tích Hợp FIWARE (IoT Platform)
+
+- **NGSI-LD Standard:** Dữ liệu được chuẩn hóa theo tiêu chuẩn NGSI-LD của ETSI, tương thích với Smart Data Models.
+- **Orion Context Broker:** Quản lý context data theo thời gian thực.
+- **QuantumLeap & CrateDB:** Lưu trữ dữ liệu time-series cho phân tích lịch sử.
+- **Smart Data Models:** Sử dụng các mô hình dữ liệu chuẩn AgriFood (AgriParcel, AgriCrop, WeatherObserved...).
+
+### 7. 🛡️ Admin Dashboard
 
 - **Quản trị hệ thống:** Quản lý người dùng, vùng trồng và dữ liệu toàn hệ thống.
 - **Thống kê báo cáo:** Biểu đồ phân bố cây trồng, diện tích và tình hình sâu bệnh tổng quan.
@@ -55,15 +62,26 @@ Dự án được xây dựng với kiến trúc hiện đại (Clean Architectu
 
 Hệ thống Backend được xây dựng bằng **Python** với kiến trúc **Clean Architecture**.
 
-| Công Nghệ / Thư Viện                             | Mục Đích                          | License    |
-| :----------------------------------------------- | :-------------------------------- | :--------- |
-| **[FastAPI](https://fastapi.tiangolo.com/)**     | Web Framework hiệu năng cao       | MIT        |
-| **[SQLAlchemy](https://www.sqlalchemy.org/)**    | ORM & Database Toolkit (AsyncIO)  | MIT        |
-| **[TensorFlow](https://www.tensorflow.org/)**    | Chạy mô hình AI nhận diện bệnh    | Apache 2.0 |
-| **[Rasterio](https://rasterio.readthedocs.io/)** | Xử lý ảnh vệ tinh (GeoTIFF)       | BSD        |
-| **[NumPy](https://numpy.org/)**                  | Tính toán khoa học & mảng dữ liệu | BSD        |
-| **[Pydantic](https://docs.pydantic.dev/)**       | Validation dữ liệu                | MIT        |
-| **[HTTPX](https://www.python-httpx.org/)**       | Async HTTP Client                 | BSD        |
+| Công Nghệ / Thư Viện                                   | Mục Đích                          | License    |
+| :----------------------------------------------------- | :-------------------------------- | :--------- |
+| **[FastAPI](https://fastapi.tiangolo.com/)**           | Web Framework hiệu năng cao       | MIT        |
+| **[SQLAlchemy](https://www.sqlalchemy.org/)**          | ORM & Database Toolkit (AsyncIO)  | MIT        |
+| **[TensorFlow](https://www.tensorflow.org/)**          | Chạy mô hình AI nhận diện bệnh    | Apache 2.0 |
+| **[Rasterio](https://rasterio.readthedocs.io/)**       | Xử lý ảnh vệ tinh (GeoTIFF)       | BSD        |
+| **[NumPy](https://numpy.org/)**                        | Tính toán khoa học & mảng dữ liệu | BSD        |
+| **[Pydantic](https://docs.pydantic.dev/)**             | Validation dữ liệu                | MIT        |
+| **[HTTPX](https://www.python-httpx.org/)**             | Async HTTP Client                 | BSD        |
+| **[APScheduler](https://apscheduler.readthedocs.io/)** | Job Scheduling (Background Tasks) | MIT        |
+
+### FIWARE Components (IoT Platform)
+
+| Công Nghệ                                                  | Mục Đích                           | License    |
+| :--------------------------------------------------------- | :--------------------------------- | :--------- |
+| **[Orion-LD](https://github.com/FIWARE/context.Orion-LD)** | NGSI-LD Context Broker             | AGPL-3.0   |
+| **[QuantumLeap](https://quantumleap.readthedocs.io/)**     | Time-series data handler           | MIT        |
+| **[CrateDB](https://crate.io/)**                           | Time-series database               | Apache 2.0 |
+| **[MongoDB](https://www.mongodb.com/)**                    | Database cho Orion Context Broker  | SSPL       |
+| **[Smart Data Models](https://smartdatamodels.org/)**      | Chuẩn dữ liệu NGSI-LD cho AgriFood | CC BY 4.0  |
 
 ### Frontend (Mobile App)
 
@@ -88,6 +106,7 @@ Dự án cam kết sử dụng các nguồn dữ liệu mở và miễn phí.
 | **[GBIF](https://www.gbif.org/)**                             | Dữ liệu đa dạng sinh học (Sâu bệnh) | CC0 / CC BY 4.0    |
 | **[Open-Meteo](https://open-meteo.com/)**                     | Dữ liệu thời tiết                   | CC BY 4.0          |
 | **[OpenStreetMap](https://www.openstreetmap.org/)**           | Dữ liệu bản đồ nền                  | ODbL               |
+| **[Smart Data Models](https://smartdatamodels.org/)**         | Chuẩn dữ liệu NGSI-LD AgriFood      | CC BY 4.0          |
 
 ---
 
@@ -203,16 +222,69 @@ flutter run
 
 ---
 
-### 3️⃣ Chạy bằng Docker (Tùy chọn)
+### 3️⃣ Hướng Dẫn Build/Compile Ứng Dụng (Production)
 
-Nếu bạn muốn chạy nhanh toàn bộ hệ thống mà không cần cài đặt môi trường thủ công:
+Để tạo ra file cài đặt (.apk, .ipa) cho thiết bị thật hoặc đưa lên kho ứng dụng, bạn cần thực hiện quy trình build.
+
+**Lưu ý quan trọng:**
+
+- Đảm bảo bạn đã cấu hình đúng `signing config` (chữ ký số) nếu muốn đưa lên Google Play hoặc App Store.
+- Đối với Android, file kết quả sẽ nằm trong thư mục `build/app/outputs/flutter-apk/`.
+
+#### 📱 Build cho Android
+
+**Tạo file APK (Cài đặt trực tiếp):**
+
+```bash
+flutter build apk --release
+```
+
+_Lệnh này tạo ra file APK tối ưu hiệu năng để cài đặt thủ công trên thiết bị Android._
+
+**Tạo Android App Bundle (Đăng tải Google Play):**
+
+```bash
+flutter build appbundle
+```
+
+_File `.aab` được Google Play yêu cầu để tối ưu hóa kích thước tải về cho từng thiết bị._
+
+#### 🍎 Build cho iOS (Yêu cầu macOS)
+
+Để build ứng dụng cho iPhone/iPad, bạn cần máy tính Mac có cài đặt Xcode.
+
+```bash
+flutter build ipa
+```
+
+_Sau khi build xong, mở Xcode để thực hiện Archive và Upload lên TestFlight hoặc App Store._
+
+#### 🌐 Build cho Web
+
+```bash
+flutter build web
+```
+
+_Kết quả sẽ nằm trong thư mục `build/web`. Bạn có thể deploy thư mục này lên bất kỳ web server nào._
+
+---
+
+### 4️⃣ Chạy bằng Docker (Khuyên dùng)
+
+Nếu bạn muốn chạy nhanh toàn bộ hệ thống với đầy đủ FIWARE components:
 
 1.  Cài đặt [Docker Desktop](https://www.docker.com/products/docker-desktop/).
 2.  Tại thư mục gốc của dự án, chạy:
     ```bash
     docker-compose up --build
     ```
-3.  Hệ thống sẽ tự động khởi tạo Database và chạy cả Backend lẫn Frontend (Web).
+3.  Hệ thống sẽ tự động khởi tạo:
+    - **Backend API**: `http://localhost:8000`
+    - **Frontend Web**: `http://localhost:3000`
+    - **Orion Context Broker**: `http://localhost:1026`
+    - **QuantumLeap API**: `http://localhost:8668`
+    - **CrateDB Admin**: `http://localhost:4200`
+    - **MongoDB**: `localhost:27017`
 
 ---
 
@@ -236,6 +308,7 @@ graph TD
     classDef person fill:#08427b,stroke:#052e56,color:white;
     classDef system fill:#1168bd,stroke:#0b4884,color:white;
     classDef external fill:#999999,stroke:#6b6b6b,color:white;
+    classDef fiware fill:#ff6600,stroke:#cc5200,color:white;
 
     %% Nodes
     Farmer("🧑‍🌾 Nông Dân"):::person
@@ -247,6 +320,7 @@ graph TD
     GBIF("🐞 GBIF API<br>(Dữ liệu sâu bệnh)"):::external
     Weather("🌦️ Open-Meteo<br>(Thời tiết)"):::external
     OSM("🗺️ OpenStreetMap<br>(Bản đồ nền)"):::external
+    SmartDataModels("📊 Smart Data Models<br>(NGSI-LD AgriFood)"):::fiware
 
     %% Relationships
     Farmer -->|Quản lý vùng trồng, xem thời tiết, chẩn đoán bệnh| System
@@ -255,6 +329,7 @@ graph TD
     System -->|Tra cứu lịch sử dịch hại| GBIF
     System -->|Lấy dữ liệu thời tiết hiện tại & dự báo| Weather
     System -->|Hiển thị bản đồ| OSM
+    System -.->|Tuân thủ chuẩn dữ liệu| SmartDataModels
 ```
 
 ### Level 2: Container (Thành phần chứa)
@@ -269,6 +344,7 @@ graph TD
     classDef db fill:#2f2f2f,stroke:#000000,color:white;
     classDef file fill:#e6b800,stroke:#b38f00,color:white;
     classDef ext fill:#999999,stroke:#6b6b6b,color:white;
+    classDef fiware fill:#ff6600,stroke:#cc5200,color:white;
 
     %% Nodes
     User("👤 Người Dùng")
@@ -278,6 +354,13 @@ graph TD
         Backend("⚙️ Backend API<br>[FastAPI + Python]"):::api
         Database("🗄️ Database<br>[SQLite/PostgreSQL]"):::db
         FileStore("📂 File Storage<br>[Local Disk/S3]"):::file
+
+        subgraph "FIWARE Stack"
+            Orion("🔗 Orion-LD<br>[Context Broker]"):::fiware
+            QuantumLeap("📈 QuantumLeap<br>[Time-series API]"):::fiware
+            MongoDB("🍃 MongoDB<br>[Context Data]"):::db
+            CrateDB("📊 CrateDB<br>[Time-series DB]"):::db
+        end
     end
 
     External("☁️ External APIs"):::ext
@@ -288,6 +371,10 @@ graph TD
     Backend -->|SQLAlchemy Async| Database
     Backend -->|Read Write Images Models| FileStore
     Backend -->|HTTP Requests| External
+    Backend -->|NGSI-LD Entities| Orion
+    Orion -->|Store Context| MongoDB
+    Orion -->|Notify Changes| QuantumLeap
+    QuantumLeap -->|Store History| CrateDB
 
     %% Internal Logic
     Backend -.->|Chạy mô hình AI| FileStore
@@ -303,12 +390,14 @@ graph TD
     classDef layer fill:#ffffff,stroke:#000000,color:black;
     classDef infra fill:#e1f5fe,stroke:#01579b,color:black;
     classDef domain fill:#fff3e0,stroke:#e65100,color:black;
+    classDef fiware fill:#ffe0b2,stroke:#ff6600,color:black;
 
     subgraph "Backend Server"
         API["📡 Presentation Layer<br>(API Routers & Endpoints)"]:::layer
 
         subgraph "Application Layer"
             UseCases["🧠 Use Cases<br>(Business Logic)"]:::layer
+            Scheduler["⏰ Scheduler<br>(APScheduler Jobs)"]:::layer
         end
 
         subgraph "Domain Layer"
@@ -320,6 +409,7 @@ graph TD
             ExtServices["🔌 External Services<br>(GBIF, Weather, Sentinel)"]:::infra
             AIModule["🤖 AI Engine<br>(TensorFlow/Keras)"]:::infra
             SatModule["🛰️ Satellite Processor<br>(Rasterio/NumPy)"]:::infra
+            FiwareClient["🔗 FIWARE Client<br>(NGSI-LD API)"]:::fiware
         end
     end
 
@@ -330,6 +420,8 @@ graph TD
     UseCases --> ExtServices
     UseCases --> AIModule
     UseCases --> SatModule
+    UseCases --> FiwareClient
+    Scheduler --> FiwareClient
 
     RepoImpl -.->|Implements| Entities
     ExtServices -.->|Implements| Entities
@@ -405,6 +497,14 @@ classDiagram
         class AIModelLoader {
             +load_keras_model()
         }
+        class FiwareClient {
+            +create_entity()
+            +update_entity()
+            +get_entity()
+            +query_entities()
+            +create_agri_parcel()
+            +create_weather_observed()
+        }
     }
 
     %% --- Relationships ---
@@ -423,13 +523,15 @@ classDiagram
     DiseaseDetectionService --> AIModelLoader : Uses
     SatelliteUseCase --> CopernicusService : Uses
     SatelliteUseCase ..> FarmArea : Analyzes
+    SatelliteUseCase --> FiwareClient : Sync NGSI-LD
+    FarmUseCase --> FiwareClient : Sync AgriParcel
 ```
 
 **Giải thích:**
 
 - **Domain**: Chứa các thực thể cốt lõi (`User`, `FarmArea`) đại diện cho dữ liệu nghiệp vụ.
 - **Application**: Chứa các logic nghiệp vụ (`UseCases`), điều phối luồng dữ liệu giữa UI và Infrastructure.
-- **Infrastructure**: Chứa các lớp thực thi cụ thể như truy cập Database (`Repository`) hoặc gọi API bên ngoài (`Service`).
+- **Infrastructure**: Chứa các lớp thực thi cụ thể như truy cập Database (`Repository`), gọi API bên ngoài (`Service`), và đồng bộ dữ liệu với FIWARE (`FiwareClient`).
 
 ---
 
@@ -441,10 +543,14 @@ ICTU-OpenAgri/
 │   ├── app/                 # Source code chính
 │   │   ├── application/     # Business Logic (Use Cases, DTOs)
 │   │   ├── domain/          # Entities & Interfaces (Core)
-│   │   ├── infrastructure/  # Database, External Services, AI Impl
+│   │   ├── infrastructure/  # Database, External Services, AI, FIWARE
 │   │   ├── presentation/    # API Endpoints & Dependencies
+│   │   ├── scheduler.py     # Background Jobs (FIWARE Sync)
 │   │   └── main.py          # Entry point
-│   ├── data/                # Dữ liệu mẫu (Mock data)
+│   ├── data/                # Dữ liệu NGSI-LD (Smart Data Models)
+│   │   ├── vietnam_pest_ngsi_ld.json         # Dữ liệu sâu bệnh
+│   │   ├── vietnam_commodity_prices_ngsi_ld.json  # Giá nông sản
+│   │   └── vietnam_32_provinces_soil_ngsi_ld.json # Dữ liệu đất
 │   ├── ml_models/           # Mô hình AI (Keras/TensorFlow)
 │   ├── output/              # Dữ liệu đầu ra (Ảnh vệ tinh đã xử lý)
 │   ├── tests/               # Unit Tests

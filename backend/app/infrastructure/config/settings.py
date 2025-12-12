@@ -52,6 +52,7 @@ class Settings(BaseSettings):
     OUTPUT_DIR: str = "./output"
     MAX_PRODUCTS: int = 20
 
+
     # Gemini AI
     GEMINI_API_KEY: str = ""
     GEMINI_MODEL: str = "gemini-2.5-flash"
@@ -62,6 +63,14 @@ class Settings(BaseSettings):
         "hành động cụ thể và nhắc nhở tham khảo chuyên gia địa phương cho quyết định quan trọng."
     )
     GEMINI_KNOWLEDGE_PATH: str = os.path.join(BASE_DIR, "data", "agri_expert_tips.json")
+
+    # FIWARE Configuration
+    ORION_URL: str = "http://localhost:1026"
+    QUANTUMLEAP_URL: str = "http://localhost:8668"
+    FIWARE_SERVICE: str = "openagri"
+    FIWARE_SERVICEPATH: str = "/farms"
+    FIWARE_ENABLED: bool = True
+
 
 
 @lru_cache()
